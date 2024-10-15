@@ -1,3 +1,10 @@
 <%-- any content can be specified here e.g.: --%>
-<%@ page pageEncoding="UTF-8" %>
-<h2>Hello World!</h2>
+    <header>
+        <nav>
+            <ul>
+                <li><a href="${pageContext.request.contextPath}/home.jsp">Início</a></li>
+                <li><a href="${pageContext.request.contextPath}/beneficios.jsp">Benefícios</a></li>
+                <li><a href="${pageContext.request.contextPath}/faleConosco.jsp">Fale Conosco</a></li>
+            </ul>
+        </nav>
+    </header>
