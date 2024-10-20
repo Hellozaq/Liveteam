@@ -1,0 +1,27 @@
+/* Estilização Específica para a Página Inicial */
+.inicio-page {
+    max-width: 1200px; /* Largura máxima da página */
+    margin: 20px auto; /* Margem automática para centralizar a página */
+    padding: 20px; /* Espaçamento interno */
+    background-color: #f9f9f9; /* Cor de fundo suave */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilização de Títulos na Página Inicial */
+.inicio-page h1 {
+    font-size: 2.5rem; /* Tamanho do título */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+    color: #A0D683; /* Cor do título */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Estilização de Parágrafos na Página Inicial */
+.inicio-page p {
+    font-size: 1rem; /* Tamanho do texto do parágrafo */
+    line-height: 1.6; /* Espaçamento entre linhas */
+    margin-bottom: 15px; /* Espaçamento abaixo do parágrafo */
+    color: #333; /* Cor do texto */
+    text-align: left; /* Alinhamento à esquerda */
+}
+

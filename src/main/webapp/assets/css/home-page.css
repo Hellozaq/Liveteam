@@ -1,0 +1,53 @@
+/* Estilos da página Home */
+.home-page {
+    max-width: 1200px; /* Largura máxima da página */
+    margin: 20px auto; /* Margem automática para centralizar a página */
+    padding: 20px; /* Espaçamento interno */
+    background-color: #f9f9f9; /* Cor de fundo suave */
+    border-radius: 8px; /* Bordas arredondadas */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+/* Estilos para o título principal */
+.home-page h1 {
+    font-size: 2.5rem; /* Tamanho do título */
+    margin-bottom: 20px; /* Espaçamento abaixo do título */
+    color: #A0D683; /* Cor do título (mesma do benefícios) */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Estilos para os subtítulos (h2) */
+.home-page h2 {
+    font-size: 1.8rem; /* Tamanho dos subtítulos */
+    margin-top: 20px; /* Espaçamento acima dos subtítulos */
+    margin-bottom: 10px; /* Espaçamento abaixo dos subtítulos */
+    color: #A0D683; /* Cor dos subtítulos */
+}
+
+/* Estilos para os parágrafos */
+.home-page p {
+    font-size: 1rem; /* Tamanho do texto */
+    line-height: 1.6; /* Espaçamento entre linhas */
+    margin-bottom: 15px; /* Espaçamento abaixo dos parágrafos */
+    color: #333; /* Cor do texto */
+    text-align: left; /* Alinhamento à esquerda */
+}
+
+/* Estilos para listas */
+.home-page ul {
+    padding-left: 20px; /* Espaçamento à esquerda para listas */
+    margin-bottom: 15px; /* Margem abaixo da lista */
+}
+
+/* Estilos para os itens da lista */
+.home-page li {
+    font-size: 1rem; /* Tamanho do texto das listas */
+    line-height: 1.6; /* Espaçamento entre linhas */
+    margin-bottom: 10px; /* Margem entre os itens da lista */
+}
+
+/* Itens destacados em negrito dentro das listas */
+.home-page li strong {
+    color: #A0D683; /* Cor do texto em destaque */
+    font-weight: bold;
+}

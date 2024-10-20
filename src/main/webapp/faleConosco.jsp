@@ -4,6 +4,7 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Fale Conosco</title>
+        <%@ include file="WEB-INF/jspf/html-head.jspf" %>
         <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css"> 
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -11,8 +12,8 @@
     </head>
     <body>
         <%@ include file="WEB-INF/jspf/header.jspf" %>
-        <main class="central-container">
-            <div class="page-specific">
+        <main>
+            <div class="contact-page">
                 <h1>Sobre Nós</h1>
                 <p>Bem-vindo à nossa ferramenta de suporte para nutricionistas! Somos dedicados a fornecer soluções que facilitam a prática profissional e melhoram a qualidade do atendimento aos pacientes.</p>
 

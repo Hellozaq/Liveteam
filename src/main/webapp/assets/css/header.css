@@ -1,29 +1,14 @@
-/* Header */
-header {
-    background-color: #007bff;
-    padding: 20px 0;
-    color: #fff;
-    display:flex;
-    width: 100%;
-    justify-content: flex-end;
-    align-items: center;
+.link-hover {
+    text-decoration: none; /* Remove o sublinhado padrão */
+    transition: text-decoration 0.3s; /* Transição suave */
 }
 
-header nav ul {
-    list-style-type: none;
-    display: flex;   
+.link-hover:hover {
+    text-decoration: underline; /* Adiciona o sublinhado no hover */
 }
 
-header nav ul li {
-    margin: 0 15px;
-}
-
-header nav ul li a {
-    color: #fff;
-    text-decoration: none;
-    font-weight: bold;
-}
-
-header nav ul li a:hover {
-    text-decoration: underline;
+/* Opcional: Se necessário, ajuste a altura dos itens do nav */
+.nav-item {
+    display: flex;
+    align-items: center; /* Alinha verticalmente os itens do menu */
 }
