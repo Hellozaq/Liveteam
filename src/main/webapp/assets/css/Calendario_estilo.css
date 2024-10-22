@@ -5,7 +5,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: #f4f4f4;
-    margin: 0;
+    margin: 0;  /* Certifique-se de que a margem do body esteja zerada */
 }
 
 .calendario-container {
@@ -13,17 +13,24 @@ body {
     border-radius: 10px;
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     padding: 20px;
-    width: 320px;
+    width: 600px;
     text-align: center;
     font-size: 16px;
     position: relative;
 }
 
-header {
+h1 {
     display: flex;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 20px;
+}
+
+.calendar-header {
+    display: flex;
+    justify-content: center;  /* Alinhamento central para o cabeçalho */
+    align-items: center;
+
 }
 
 .nav-btn {
@@ -33,6 +40,7 @@ header {
     cursor: pointer;
     padding: 5px;
     color: #333;
+    margin: 0 
 }
 
 h2 {
@@ -77,10 +85,6 @@ td.inactive {
     cursor: default;
 }
 
-.calendario-container {
-    position: relative;
-}
-
 .calendario-container::before {
     content: '';
     position: absolute;
@@ -93,3 +97,5 @@ td.inactive {
     box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
     z-index: -1;
 }
+
+

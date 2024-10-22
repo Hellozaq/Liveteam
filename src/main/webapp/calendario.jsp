@@ -4,20 +4,25 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <title>Calendário com Vue</title>
-    <link rel="stylesheet" type="text/css" href="assets/css/Calendario_estilo.css">
+    <title>Calendário Interativo</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
-    <script type="text/javascript" src="assets/script/Calendario_script.js" defer></script>
+    
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQCTmo/sBieD/cH7i7fa/WPvB9E2W5/qOGeTAfF0lC5HEt" crossorigin="anonymous">
+    
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/Calendario_estilo.css">
+
 </head>
 <body>
-    <%@ include file="WEB-INF/jspf/header.jspf" %>
+
+    
     <div id="app">
         <div class="calendario-container">
-            <header>
+            <div class="calendar-header">
                 <button @click="prevMonth" class="nav-btn">❮</button>
                 <h2>{{ currentMonthName }} {{ currentYear }}</h2>
                 <button @click="nextMonth" class="nav-btn">❯</button>
-            </header>
+            </div>
             <table>
                 <thead>
                     <tr>
@@ -40,5 +45,7 @@
             </table>
         </div>
     </div>
+
+     <script type="text/javascript" src="assets/script/Calendario_script.js" defer></script>
 </body>
 </html>
