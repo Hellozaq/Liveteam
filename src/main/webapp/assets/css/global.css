@@ -30,3 +30,31 @@ body::-webkit-scrollbar {
 ul {
     list-style: none;
 }
+
+/* Estilo base dos elementos na página Home */
+.global-vue h1,
+.global-vue p,
+.global-vue h2,
+.global-vue h3,
+.global-vue li {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+/* Classe que ativa a animação ao carregar a página */
+.global-vue h1.animate,
+.global-vue p.animate,
+.global-vue h2.animate,
+.global-vue h3.animate,
+.global-vue li.animate {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.carousel-item img {
+    width: 100%;      /* Garante que a imagem use 100% da largura do contêiner */
+    height: auto;     /* Mantém a proporção da imagem */
+    max-height: 500px; /* Define uma altura máxima (ajuste conforme necessário) */
+    object-fit: cover; /* Faz com que a imagem cubra todo o espaço, mantendo a proporção */
+}

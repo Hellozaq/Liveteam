@@ -1,6 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
+<html lang="pt-BR">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <title>Home</title>
@@ -9,34 +9,64 @@
         <link rel="preconnect" href="https://fonts.googleapis.com">
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto&display=swap" rel="stylesheet">
+        <!-- Vue 3 -->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
     <body>
         <%@ include file="WEB-INF/jspf/header.jspf" %>
-        <main>
-            <div class="home-page">
-                <h1>Bem-vindo!</h1>
-                <p>Estamos felizes em tê-lo conosco. Nossa plataforma oferece soluções inovadoras para nutricionistas, ajudando você a oferecer um atendimento de qualidade aos seus pacientes.</p>
-                
-                <h2>Sobre Nosso Produto</h2>
-                <p>Nosso produto é uma ferramenta inteligente que utiliza inteligência artificial para auxiliar nutricionistas em suas rotinas diárias. Ele proporciona:</p>
+
+        <!-- Vue Container -->
+        <main id="home-app" class="home-page">
+            <div class="global-vue">
+                <h1 :class="{ 'animate': isLoaded[0] }">Bem-vindo!</h1>
+                <p :class="{ 'animate': isLoaded[1] }">Estamos felizes em tê-lo conosco. Nossa plataforma oferece soluções inovadoras para nutricionistas, ajudando você a oferecer um atendimento de qualidade aos seus pacientes.</p>
+
+                <h2 :class="{ 'animate': isLoaded[2] }">Sobre Nosso Produto</h2>
+                <p :class="{ 'animate': isLoaded[3] }">Nosso produto é uma ferramenta inteligente que utiliza inteligência artificial para auxiliar nutricionistas em suas rotinas diárias. Ele proporciona:</p>
                 <ul>
-                    <li><strong>Agilidade:</strong> Facilita a criação de planos alimentares personalizados e otimizados.</li>
-                    <li><strong>Precisão:</strong> Fornece informações nutricionais atualizadas e detalhadas.</li>
-                    <li><strong>Integração:</strong> Possui recursos que se integram a outras plataformas utilizadas na área da saúde.</li>
+                    <li :class="{ 'animate': isLoaded[4] }"><strong>Agilidade:</strong> Facilita a criação de planos alimentares personalizados e otimizados.</li>
+                    <li :class="{ 'animate': isLoaded[5] }"><strong>Precisão:</strong> Fornece informações nutricionais atualizadas e detalhadas.</li>
+                    <li :class="{ 'animate': isLoaded[6] }"><strong>Integração:</strong> Possui recursos que se integram a outras plataformas utilizadas na área da saúde.</li>
                 </ul>
 
-                <h2>Benefícios de Usar Nossa Plataforma</h2>
-                <p>Ao escolher nossa solução, você terá acesso a diversos benefícios, incluindo:</p>
+                <h2 :class="{ 'animate': isLoaded[7] }">Benefícios de Usar Nossa Plataforma</h2>
+                <p :class="{ 'animate': isLoaded[8] }">Ao escolher nossa solução, você terá acesso a diversos benefícios, incluindo:</p>
                 <ul>
-                    <li>Maior eficiência no atendimento ao paciente.</li>
-                    <li>Relatórios e análises personalizadas que ajudam no acompanhamento do progresso.</li>
-                    <li>Suporte técnico dedicado para auxiliá-lo em todas as etapas.</li>
+                    <li :class="{ 'animate': isLoaded[9] }">Maior eficiência no atendimento ao paciente.</li>
+                    <li :class="{ 'animate': isLoaded[10] }">Relatórios e análises personalizadas que ajudam no acompanhamento do progresso.</li>
+                    <li :class="{ 'animate': isLoaded[11] }">Suporte técnico dedicado para auxiliá-lo em todas as etapas.</li>
                 </ul>
 
-                <h2>Pronto para Começar?</h2>
-                <p>Explore todas as funcionalidades da nossa plataforma.</p>
+                <h2 :class="{ 'animate': isLoaded[12] }">Pronto para Começar?</h2>
+                <p :class="{ 'animate': isLoaded[13] }">Explore todas as funcionalidades da nossa plataforma.</p>
             </div>
         </main>
+
         <%@ include file="WEB-INF/jspf/footer.jspf" %>
+
+        <!-- Script Vue -->
+        <script>
+            const app = Vue.createApp({
+                data() {
+                    return {
+                        isLoaded: Array(14).fill(false)  // Controle para cada elemento animado
+                    };
+                },
+                mounted() {
+                    // Animação em cascata
+                    this.animateElements();
+                },
+                methods: {
+                    animateElements() {
+                        this.isLoaded.forEach((_, index) => {
+                            setTimeout(() => {
+                                this.isLoaded[index] = true;  // Define isLoaded para cada elemento com delay
+                            }, index * 100);  // Atraso de 200ms entre cada item
+                        });
+                    }
+                }
+            });
+            app.mount('#home-app');
+        </script>
     </body>
 </html>
