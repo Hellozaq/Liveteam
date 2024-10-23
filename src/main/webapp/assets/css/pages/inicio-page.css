@@ -6,6 +6,11 @@
     background-color: #f9f9f9; /* Cor de fundo suave */
     border-radius: 8px; /* Bordas arredondadas */
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    transition: all 0.3s ease; /* Suaviza a transição ao passar o mouse */
+}
+
+.inicio-page:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efeito de sombra ao passar o mouse */
 }
 
 /* Estilização de Títulos na Página Inicial */

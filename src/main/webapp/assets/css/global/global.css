@@ -52,9 +52,24 @@ ul {
     transform: translateY(0);
 }
 
+/* Estilização do Carrossel */
+.carousel {
+    margin-bottom: 20px; /* Espaçamento abaixo do carrossel */
+    border-radius: 8px;  /* Bordas arredondadas */
+    overflow: hidden;     /* Oculta partes que ultrapassam o contêiner */
+}
+
 .carousel-item img {
-    width: 100%;      /* Garante que a imagem use 100% da largura do contêiner */
-    height: auto;     /* Mantém a proporção da imagem */
-    max-height: 500px; /* Define uma altura máxima (ajuste conforme necessário) */
-    object-fit: cover; /* Faz com que a imagem cubra todo o espaço, mantendo a proporção */
+    width: 100%;          /* Garante que a imagem use 100% da largura do contêiner */
+    height: auto;         /* Mantém a proporção da imagem */
+    max-height: 500px;    /* Define uma altura máxima */
+    object-fit: cover;    /* Faz com que a imagem cubra todo o espaço, mantendo a proporção */
+}
+
+/* Estilização das legendas do carrossel */
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo semitransparente para melhor legibilidade */
+    border-radius: 5px; /* Bordas arredondadas para a legenda */
+    padding: 10px; /* Espaçamento interno para as legendas */
+    color: #fff; /* Cor do texto das legendas */
 }
