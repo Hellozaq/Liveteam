@@ -10,11 +10,12 @@
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQCTmo/sBieD/cH7i7fa/WPvB9E2W5/qOGeTAfF0lC5HEt" crossorigin="anonymous">
     
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/Calendario_estilo.css">
-
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/calendario-page.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">  
+    <%@ include file="WEB-INF/jspf/html-head.jspf" %>
 </head>
 <body>
-
+    <%@ include file="WEB-INF/jspf/header.jspf" %>
     
     <div id="app">
         <div class="calendario-container">
@@ -47,5 +48,6 @@
     </div>
 
      <script type="text/javascript" src="assets/script/Calendario_script.js" defer></script>
+      <%@ include file="WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>
