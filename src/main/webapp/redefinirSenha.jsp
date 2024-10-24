@@ -18,6 +18,10 @@
             <div class="form-container">
                 <h2>Redefina a sua senha</h2>
                 <form action="${pageContext.request.contextPath}/login.jsp" method="post">
+                    
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" required>
+                    
                     <label for="senha">Senha:</label>
                     <input type="password" id="senha1" name="senha1" required>
 
