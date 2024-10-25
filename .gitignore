@@ -39,3 +39,6 @@ Thumbs.db
 *.war
 *.ear
 *.class
+
+# db
+db.properties
