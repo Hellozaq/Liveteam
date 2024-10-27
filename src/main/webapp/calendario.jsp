@@ -34,7 +34,7 @@
                 </thead>
                 <tbody class="calendario-tbody">
                     <tr v-for="(week, index) in calendarDays" :key="index" class="calendario-week">
-                        <td v-for="(day, idx) in week" :key="idx" class="calendario-day" :class="{'current-day': isToday(day), 'inactive': day.isOtherMonth}">
+                        <td v-for="(day, idx) in week" :key="idx" class="calendario-day" :class="{'current-day rounded-pill': isToday(day), 'inactive': day.isOtherMonth}">
                             {{ day.date }}
                         </td>
                     </tr>

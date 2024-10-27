@@ -45,7 +45,10 @@ body {
     color: #333;
     margin: 0;
 }
-
+.nav-btn:hover {
+    color: #A0D683; /* Alterar a cor do texto do botão ao passar o mouse */
+    background-color: transparent; /* Exemplo de cor de fundo no hover */
+}
 .calendario-title {
     font-size: 36px;
     font-weight: bold;
@@ -70,7 +73,7 @@ body {
 }
 
 .calendario-week {
-    /* Adicione estilos se necessário */
+
 }
 
 .calendario-day {
@@ -84,9 +87,15 @@ body {
 }
 
 td.current-day {
-    background-color: #00bfff;
+    background-color: #A0D683;
     color: white;
-    border-radius: 50%;
+    width: 60px;         /* Defina a largura e altura iguais */
+    height: 60px;
+    border-radius: 50%;  /* Bordas arredondadas para fazer um círculo */
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Centralizar o conteúdo */
+    margin: auto;  
 }
 
 td.inactive {
