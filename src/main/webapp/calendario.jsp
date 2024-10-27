@@ -34,17 +34,126 @@
                 </thead>
                 <tbody class="calendario-tbody">
                     <tr v-for="(week, index) in calendarDays" :key="index" class="calendario-week">
-                        <td v-for="(day, idx) in week" :key="idx" class="calendario-day" :class="{'current-day rounded-pill': isToday(day), 'inactive': day.isOtherMonth}">
+                        <td v-for="(day, idx) in week" :key="idx" class="calendario-day" 
+                            :class="{'current-day rounded-pill': isToday(day), 'inactive': day.isOtherMonth}" 
+                            @click="selectDay(day)">
                             {{ day.date }}
                         </td>
                     </tr>
                 </tbody>
             </table>
         </div>
+
+        <!-- Se um dia for selecionado, exibe esta seção -->
+        <div v-if="selectedDay" class="day-info mt-4">
+            <h3>Informações para o dia {{ selectedDay.date }}/{{ currentMonth + 1 }}/{{ currentYear }}</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Evento</th>
+                        <th>Hora</th>
+                        <th>Descrição</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Dados de exemplo que serão substituídos futuramente por informações reais -->
+                    <tr>
+                        <td>Reunião de Trabalho</td>
+                        <td>09:00</td>
+                        <td>Discussão de projeto</td>
+                    </tr>
+                    <tr>
+                        <td>Almoço com Cliente</td>
+                        <td>12:30</td>
+                        <td>Restaurante ABC</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 
-    <script type="text/javascript" src="assets/script/Calendario_script.js" defer></script>
+    <script type="text/javascript">
+        const app = Vue.createApp({
+            data() {
+                return {
+                    currentMonth: new Date().getMonth(),
+                    currentYear: new Date().getFullYear(),
+                    selectedDay: null, // Armazena o dia selecionado
+                    calendarDays: [] // Dias do calendário (a serem preenchidos)
+                };
+            },
+            methods: {
+                selectDay(day) {
+                    if (!day.isOtherMonth) {
+                        this.selectedDay = day; // Armazena o dia clicado
+                    }
+                },
+                prevMonth() {
+                    this.currentMonth--;
+                    if (this.currentMonth < 0) {
+                        this.currentMonth = 11;
+                        this.currentYear--;
+                    }
+                    this.generateCalendar();
+                },
+                nextMonth() {
+                    this.currentMonth++;
+                    if (this.currentMonth > 11) {
+                        this.currentMonth = 0;
+                        this.currentYear++;
+                    }
+                    this.generateCalendar();
+                },
+                isToday(day) {
+                    const today = new Date();
+                    return day.date === today.getDate() && this.currentMonth === today.getMonth() && this.currentYear === today.getFullYear();
+                },
+                generateCalendar() {
+                    const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
+                    const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
+                    const startDayOfWeek = firstDayOfMonth.getDay();
+                    const daysInMonth = lastDayOfMonth.getDate();
+
+                    const weeks = [];
+                    let currentWeek = [];
+
+                    // Preencher dias do mês anterior (vazios)
+                    for (let i = 0; i < startDayOfWeek; i++) {
+                        currentWeek.push({ date: '', isOtherMonth: true });
+                    }
+
+                    // Preencher dias do mês atual
+                    for (let day = 1; day <= daysInMonth; day++) {
+                        currentWeek.push({ date: day, isOtherMonth: false });
+
+                        if (currentWeek.length === 7) {
+                            weeks.push(currentWeek);
+                            currentWeek = [];
+                        }
+                    }
+
+                    // Preencher dias do próximo mês (vazios)
+                    while (currentWeek.length < 7) {
+                        currentWeek.push({ date: '', isOtherMonth: true });
+                    }
+
+                    weeks.push(currentWeek);
+                    this.calendarDays = weeks;
+                }
+            },
+            computed: {
+                currentMonthName() {
+                    return new Date(this.currentYear, this.currentMonth).toLocaleString('default', { month: 'long' });
+                }
+            },
+            mounted() {
+                this.generateCalendar();
+            }
+        });
+
+        app.mount('#app');
+    </script>
+
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
 </body>
 </html>
-
