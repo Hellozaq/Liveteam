@@ -46,7 +46,7 @@ Você pode baixar o projeto inteiro em sua máquina em **<>Code** e depois em **
 ## Licença
 Este projeto está sob a licença MIT.
 
-# Autores
-[<p>Victor Hugo Araujo Delfino</p>](https://github.com/victor-delfino)
-[<p>Luccas Lima Pierotti</p>](https://github.com/Luccas-Pierotti)
-[<p>Enzo Uemura Fernandes</p>](https://github.com/Enygm4UF)
+## Autores
+- [Victor Hugo Araujo Delfino](https://github.com/victor-delfino)
+- [Luccas Lima Pierotti](https://github.com/Luccas-Pierotti)
+- [Enzo Uemura Fernandes](https://github.com/Enygm4UF)
