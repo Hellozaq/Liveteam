@@ -17,7 +17,7 @@
         <main>
             <div class="form-container">
                 <h2>Crie sua conta</h2>
-                <form action="${pageContext.request.contextPath}/login.jsp" method="post">
+                <form action="${pageContext.request.contextPath}/RegistroServlet" method="post">
                     <label for="nome">Nome:</label>
                     <input type="text" id="nome" name="nome" required>
 
