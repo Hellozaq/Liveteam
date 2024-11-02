@@ -17,7 +17,7 @@
         <main>
             <div class="form-container">
                 <h2>Entrar</h2>
-                <form action="${pageContext.request.contextPath}/home.jsp" method="post">
+                <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
 

@@ -2,8 +2,10 @@
 <header class="bg-success py-3">
   <nav class="container d-flex justify-content-between align-items-center">
     <div class="app-name">
-      <a href="home.jsp" class="text-white text-decoration-none fw-bold fs-3">Liveteam</a>
+      <a href="${pageContext.request.contextPath}/home.jsp" class="text-white text-decoration-none fw-bold fs-3">Liveteam</a>
     </div>
+    
+    <!-- Menu de navegação principal -->
     <ul class="nav">
       <li class="nav-item">
         <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/home.jsp">Início</a>
@@ -15,5 +17,28 @@
         <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/faleConosco.jsp">Fale Conosco</a>
       </li>
     </ul>
+
+    <!-- Verificação da sessão para login/logout -->
+    <div class="user-options text-white fw-bold">
+       <%
+        String usuarioLogado = (String) session.getAttribute("usuarioLogado");
+        
+        if (usuarioLogado != null) {
+      %>
+        <!-- Menu para usuário logado -->
+        <div class="dropdown">
+          <a class="text-white dropdown-toggle" href="#" role="button" id="userMenu" data-bs-toggle="dropdown" aria-expanded="false">
+            Olá, <%= usuarioLogado %>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userMenu">
+            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/perfil.jsp">Perfil</a></li>
+            <li><a class="dropdown-item" href="${pageContext.request.contextPath}/LogoutServlet">Sair</a></li>
+          </ul>
+        </div>
+      <% } else { %>
+        <!-- Link de login para visitantes -->
+        <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/login.jsp">Entrar</a>
+      <% } %>
+    </div>
   </nav>
 </header>

@@ -1,5 +1,11 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
+<% 
+    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">

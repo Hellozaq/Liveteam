@@ -3,7 +3,12 @@
     Created on : 22 de out. de 2024, 14:46:43
     Author     : piero
 --%>
-
+<% 
+    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
