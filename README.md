@@ -32,7 +32,7 @@ Você pode baixar o projeto inteiro em sua máquina em **<>Code** e depois em **
 
 1. **Descompactação do Projeto**: Feito o download do projeto, descompacte o arquivo em formato ZIP. Recomendamos o uso do **WinRAR**.
 2. **Abrir o Projeto no NetBeans**: Utilize a IDE **NetBeans** para abrir e executar o projeto.
-3. **Configuração do Banco de Dados**: Configure o PostgreSQL e crie o banco de dados conforme os scripts SQL no arquivo `/schema.sql`.
+3. **Configuração do Banco de Dados**: Inicie o seu PostgresSQL e realize o run na classe java `/tabelas`.
 4. **Deploy no GlassFish**: Certifique-se de que o **GlassFish** está instalado e em execução.
 5. **Acesso**: Acesse a aplicação em `http://localhost:8080/lifeteam`.
 
