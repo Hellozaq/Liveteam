@@ -24,30 +24,32 @@ public class LoginServlet extends HttpServlet {
         String senha = request.getParameter("senha");
 
         try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement("SELECT * FROM usuario WHERE email = ? AND senha = ?")) {
-            
-            ps.setString(1, email);
-            ps.setString(2, senha);
-            ResultSet rs = ps.executeQuery();
+     PreparedStatement ps = connection.prepareStatement("SELECT nome FROM usuario WHERE email = ? AND senha = ?")) {
+    
+    ps.setString(1, email);
+    ps.setString(2, senha);
+    ResultSet rs = ps.executeQuery();
 
-            if (rs.next()) {
-                HttpSession session = request.getSession();
-                session.setAttribute("usuarioLogado", email);
+    if (rs.next()) {
+        String nomeUsuario = rs.getString("nome");  // Obter o nome do usuário
 
-                response.sendRedirect("home.jsp");
-            } else {
-                System.out.println("Usuário não encontrado ou senha incorreta.");
-                response.sendRedirect("login.jsp?error=invalid");
-            }
+        HttpSession session = request.getSession();
+        session.setAttribute("usuarioLogado", nomeUsuario);  // Armazenar o nome na sessão
 
-        } catch (SQLException e) {
-            System.err.println("Erro ao conectar ou executar a query no banco de dados:");
-            e.printStackTrace();  // Log completo da exceção
-            response.sendRedirect("login.jsp?error=exception");
-        } catch (Exception e) {
-            System.err.println("Erro inesperado: " + e.getMessage());
-            e.printStackTrace();
-            response.sendRedirect("login.jsp?error=exception");
-        }
+        response.sendRedirect("home.jsp");
+    } else {
+        System.out.println("Usuário não encontrado ou senha incorreta.");
+        response.sendRedirect("login.jsp?error=invalid");
+    }
+
+} catch (SQLException e) {
+    System.err.println("Erro ao conectar ou executar a query no banco de dados:");
+    e.printStackTrace();
+    response.sendRedirect("login.jsp?error=exception");
+} catch (Exception e) {
+    System.err.println("Erro inesperado: " + e.getMessage());
+    e.printStackTrace();
+    response.sendRedirect("login.jsp?error=exception");
+}
     }
 }

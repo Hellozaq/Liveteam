@@ -12,3 +12,13 @@
     display: flex;
     align-items: center; /* Alinha verticalmente os itens do menu */
 }
+
+  @media (max-width: 768px) {
+    .nav {
+      flex-direction: column; /* Alinha os itens do menu em coluna */
+      align-items: center; /* Centraliza os itens no centro */
+    }
+    .nav-item {
+      margin-bottom: 5px; /* Espaçamento entre itens do menu */
+    }
+  }
