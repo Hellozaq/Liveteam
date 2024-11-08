@@ -91,7 +91,7 @@
                         this.dailyInfo = null; // Limpa informações anteriores
 
                         // Busca informações do dia selecionado
-                        fetch(`getDailyInfo.jsp?day=${day.date}&month=${this.currentMonth + 1}&year=${this.currentYear}`)
+                        fetch(`obterDadosDiarios.jsp?day=${day.date}&month=${this.currentMonth + 1}&year=${this.currentYear}`)
                             .then(response => response.json())
                             .then(data => {
                                 // Verifica se há dados para o dia
