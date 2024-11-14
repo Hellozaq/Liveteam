@@ -26,9 +26,9 @@ public class LoginServlet extends HttpServlet {
         try (Connection connection = DatabaseConnection.getConnection();
      PreparedStatement ps = connection.prepareStatement("SELECT nome FROM usuario WHERE email = ? AND senha = ?")) {
     
-    ps.setString(1, email);
-    ps.setString(2, senha);
-    ResultSet rs = ps.executeQuery();
+        ps.setString(1, email);
+        ps.setString(2, senha);
+        ResultSet rs = ps.executeQuery();
 
     if (rs.next()) {
         String nomeUsuario = rs.getString("nome");  // Obter o nome do usuário
@@ -42,14 +42,14 @@ public class LoginServlet extends HttpServlet {
         response.sendRedirect("login.jsp?error=invalid");
     }
 
-} catch (SQLException e) {
-    System.err.println("Erro ao conectar ou executar a query no banco de dados:");
-    e.printStackTrace();
-    response.sendRedirect("login.jsp?error=exception");
-} catch (Exception e) {
-    System.err.println("Erro inesperado: " + e.getMessage());
-    e.printStackTrace();
-    response.sendRedirect("login.jsp?error=exception");
-}
+    } catch (SQLException e) {
+        System.err.println("Erro ao conectar ou executar a query no banco de dados:");
+        e.printStackTrace();
+        response.sendRedirect("login.jsp?error=exception");
+    } catch (Exception e) {
+        System.err.println("Erro inesperado: " + e.getMessage());
+        e.printStackTrace();
+        response.sendRedirect("login.jsp?error=exception");
+    }
     }
 }

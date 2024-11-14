@@ -53,28 +53,23 @@
         <!-- Se um dia for selecionado, exibe esta seção -->
         <div v-if="selectedDay" class="day-info mt-4">
             <h3>Informações para o dia {{ selectedDay.date }}/{{ currentMonth + 1 }}/{{ currentYear }}</h3>
-            <table class="table table-striped">
+            <table v-if="dailyInfo && dailyInfo.length > 0" class="table table-striped">
                 <thead>
                     <tr>
-                        <th>Evento</th>
-                        <th>Hora</th>
+                        <th>Tipo</th>
+                        <th>Horário</th>
                         <th>Descrição</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Dados de exemplo que serão substituídos futuramente por informações reais -->
-                    <tr>
-                        <td>Reunião de Trabalho</td>
-                        <td>09:00</td>
-                        <td>Discussão de projeto</td>
-                    </tr>
-                    <tr>
-                        <td>Almoço com Cliente</td>
-                        <td>12:30</td>
-                        <td>Restaurante ABC</td>
+                    <tr v-for="(info, index) in dailyInfo" :key="index">
+                        <td>{{ info.tipo }}</td>
+                        <td>{{ info.hora }}</td>
+                        <td>{{ info.descricao }}</td>
                     </tr>
                 </tbody>
             </table>
+            <p v-else>Não há atualizações para o dia selecionado.</p>
         </div>
     </div>
 
@@ -85,13 +80,31 @@
                     currentMonth: new Date().getMonth(),
                     currentYear: new Date().getFullYear(),
                     selectedDay: null, // Armazena o dia selecionado
-                    calendarDays: [] // Dias do calendário (a serem preenchidos)
+                    dailyInfo: null,   // Informação diária vinda do banco
+                    calendarDays: []   // Dias do calendário (a serem preenchidos)
                 };
             },
             methods: {
                 selectDay(day) {
                     if (!day.isOtherMonth) {
-                        this.selectedDay = day; // Armazena o dia clicado
+                        this.selectedDay = day;
+                        this.dailyInfo = null; // Limpa informações anteriores
+
+                        // Busca informações do dia selecionado
+                        fetch(`obterDadosDiarios.jsp?day=${day.date}&month=${this.currentMonth + 1}&year=${this.currentYear}`)
+                            .then(response => response.json())
+                            .then(data => {
+                                // Verifica se há dados para o dia
+                                if (data.length > 0) {
+                                    this.dailyInfo = data;
+                                } else {
+                                    this.dailyInfo = null;
+                                }
+                            })
+                            .catch(error => {
+                                console.error("Erro ao buscar dados do dia:", error);
+                                this.dailyInfo = null;
+                            });
                     }
                 },
                 prevMonth() {
@@ -101,6 +114,7 @@
                         this.currentYear--;
                     }
                     this.generateCalendar();
+                    
                 },
                 nextMonth() {
                     this.currentMonth++;
@@ -109,6 +123,7 @@
                         this.currentYear++;
                     }
                     this.generateCalendar();
+                    
                 },
                 isToday(day) {
                     const today = new Date();
