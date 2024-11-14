@@ -8,7 +8,7 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 public class Gemini {
-    private static final String API_KEY = "AIzaSyCbcUxm4_h_46DxVPnZW13H8-qCU0BEIF4";
+    private static final String API_KEY = "";
 
     public static String getCompletion(String prompt) throws Exception {
         // Estruturando o corpo da requisição
