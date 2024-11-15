@@ -10,7 +10,6 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
-import java.io.OutputStream;
 
 @WebServlet("/GerarRespostaServlet")
 public class GerarRespostaServlet extends HttpServlet {
@@ -20,12 +19,12 @@ public class GerarRespostaServlet extends HttpServlet {
         // Recupera os dados do formulário
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
-        String mensagem = request.getParameter("mensagem");
+        String mensagem = request.getParameter("mensagem").replaceAll("[\\n\\r]+", " ");
 
         String respostaGemini = "";
         try {
             // Envia a mensagem para o Gemini e obtém a resposta
-            respostaGemini = Gemini.getCompletion(mensagem);
+            respostaGemini = Gemini.getCompletion(mensagem).replaceAll("[\\n\\r]+", " ");
         } catch (Exception e) {
             respostaGemini = "Erro ao obter resposta do Gemini: " + e.getMessage();
         }
@@ -45,11 +44,9 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.setLeading(20f);
                 contentStream.newLineAtOffset(50, 700);
 
-                // Adiciona os dados do formulário ao PDF
+                // Adiciona os dados do usuário ao PDF
                 contentStream.showText("Dados do Usuário");
                 contentStream.newLine();
-                contentStream.newLineAtOffset(0, -20); // Ajuste de posição para uma nova linha
-
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
                 contentStream.showText("Nome: " + nome);
                 contentStream.newLine();
@@ -57,12 +54,12 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.newLine();
                 contentStream.showText("Mensagem: " + mensagem);
                 contentStream.newLine();
+                contentStream.newLine();
 
-                // Adiciona a resposta do Gemini ao PDF
-                contentStream.newLineAtOffset(0, -40); // Ajusta a posição
+                // Adiciona a resposta do Gemini ao PDF com quebra de linha automática
                 contentStream.showText("Resposta do Gemini:");
                 contentStream.newLine();
-                contentStream.showText(respostaGemini);
+                addWrappedText(contentStream, respostaGemini, 80);
 
                 contentStream.endText();
             }
@@ -71,6 +68,27 @@ public class GerarRespostaServlet extends HttpServlet {
             document.save(response.getOutputStream());
         } catch (IOException e) {
             throw new ServletException("Erro ao gerar o PDF: " + e.getMessage());
+        }
+    }
+
+    // Método auxiliar para adicionar texto com quebras de linha automáticas no PDF
+    private void addWrappedText(PDPageContentStream contentStream, String text, int maxLineLength) throws IOException {
+        String[] words = text.split(" ");
+        StringBuilder line = new StringBuilder();
+
+        for (String word : words) {
+            if (line.length() + word.length() > maxLineLength) {
+                contentStream.showText(line.toString().replaceAll("[\\n\\r]+", " "));
+                contentStream.newLine();
+                line = new StringBuilder();
+            }
+            line.append(word).append(" ");
+        }
+
+        // Adiciona a última linha restante
+        if (line.length() > 0) {
+            contentStream.showText(line.toString().replaceAll("[\\n\\r]+", " "));
+            contentStream.newLine();
         }
     }
 }

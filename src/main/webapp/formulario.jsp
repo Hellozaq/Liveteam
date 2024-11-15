@@ -10,7 +10,8 @@
 </head>
     <body>
          <%@ include file="WEB-INF/jspf/header.jspf" %>
-         <h1>Preencha o Formulário</h1>
+         <div class="form-container">
+         <h2>Preencha o Formulário</h2>
          
             <form action="GerarRespostaServlet" method="post">
                 
@@ -25,7 +26,7 @@
 
                 <button type="submit">Gerar PDF com Resposta</button>
             </form>
-         
+         </div>
          
          <%@ include file="WEB-INF/jspf/footer.jspf" %>
     </body>

@@ -6,9 +6,38 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import java.security.cert.X509Certificate;
 
 public class Gemini {
-    private static final String API_KEY = "";
+
+    private static final String API_KEY = "AIzaSyB19JsIDVfwnh5piLUBqxy6tgn_sGzmXLw";
+
+    // Fake SSL HttpClient
+    private static final HttpClient httpClient = createHttpClient();
+
+    private static HttpClient createHttpClient() {
+        try {
+            TrustManager[] trustAllCerts = new TrustManager[]{
+                new X509TrustManager() {
+                    public X509Certificate[] getAcceptedIssuers() { return null; }
+                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
+                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
+                }
+            };
+
+            SSLContext sslContext = SSLContext.getInstance("SSL");
+            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
+
+            return HttpClient.newBuilder()
+                .sslContext(sslContext)
+                .build();
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao configurar HttpClient: " + e.getMessage());
+        }
+    }
 
     public static String getCompletion(String prompt) throws Exception {
         // Estruturando o corpo da requisição
@@ -18,8 +47,7 @@ public class Gemini {
         data.put("contents", new JSONArray()
                 .put(new JSONObject().put("parts", partsArray)));
 
-        // Configuração do cliente e requisição HTTP
-        HttpClient client = HttpClient.newHttpClient();
+        // Configuração da requisição HTTP usando o HttpClient configurado com SSL
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(new URI("https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + API_KEY))
                 .header("Content-Type", "application/json")
@@ -27,7 +55,7 @@ public class Gemini {
                 .build();
 
         // Envio da requisição e tratamento da resposta
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() != 200) {
             throw new RuntimeException("Erro na requisição: " + response.statusCode() + " - " + response.body());
         } else {
