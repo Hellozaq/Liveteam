@@ -13,35 +13,7 @@ import java.security.cert.X509Certificate;
 
 public class Gemini {
 
-<<<<<<< HEAD
     private static final String API_KEY = "";
-=======
-    private static final String API_KEY = "AIzaSyB19JsIDVfwnh5piLUBqxy6tgn_sGzmXLw";
-
-    // Fake SSL HttpClient
-    private static final HttpClient httpClient = createHttpClient();
-
-    private static HttpClient createHttpClient() {
-        try {
-            TrustManager[] trustAllCerts = new TrustManager[]{
-                new X509TrustManager() {
-                    public X509Certificate[] getAcceptedIssuers() { return null; }
-                    public void checkClientTrusted(X509Certificate[] certs, String authType) {}
-                    public void checkServerTrusted(X509Certificate[] certs, String authType) {}
-                }
-            };
-
-            SSLContext sslContext = SSLContext.getInstance("SSL");
-            sslContext.init(null, trustAllCerts, new java.security.SecureRandom());
-
-            return HttpClient.newBuilder()
-                .sslContext(sslContext)
-                .build();
-        } catch (Exception e) {
-            throw new RuntimeException("Erro ao configurar HttpClient: " + e.getMessage());
-        }
-    }
->>>>>>> b3ac4180a39d08cdd012d74d424b3274f09c4142
 
     // Fake SSL HttpClient
     private static final HttpClient httpClient = createHttpClient();
