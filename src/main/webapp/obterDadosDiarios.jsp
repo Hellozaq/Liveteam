@@ -1,48 +1,58 @@
-<%@ page import="java.sql.*" %>
-<%@ page import="org.json.JSONObject" %>
-<%@ page import="com.liveteam.database.DatabaseConnection" %>
+<%@ page contentType="application/json;charset=UTF-8" language="java" %>
+<%@ page import="java.sql.*, org.json.JSONObject, org.json.JSONArray" %>
 <%
-    int dia = Integer.parseInt(request.getParameter("dia"));
-    int mes = Integer.parseInt(request.getParameter("mes"));
-    int ano = Integer.parseInt(request.getParameter("ano"));
+    String dia = request.getParameter("dia");
+    String mes = request.getParameter("mes");
+    String ano = request.getParameter("ano");
+    
+    System.out.println("Dia: " + dia);
+    System.out.println("Mês: " + mes);
+    System.out.println("Ano: " + ano);
 
     Connection conn = null;
-    PreparedStatement pstmt = null;
+    PreparedStatement ps = null;
     ResultSet rs = null;
-    JSONObject dailyData = new JSONObject();
 
     try {
-        // Usa a classe DatabaseConnection para obter a conex�o
-        conn = DatabaseConnection.getConnection();
+        // Obter a conexão do banco de dados usando a classe DatabaseConnection
+        conn = com.liveteam.database.DatabaseConnection.getConnection();
 
+        // Usando PreparedStatement para evitar injeção de SQL
         String sql = "SELECT * FROM dados_diarios WHERE dia = ? AND mes = ? AND ano = ?";
-        pstmt = conn.prepareStatement(sql);
-        pstmt.setInt(1, dia);
-        pstmt.setInt(2, mes);
-        pstmt.setInt(3, ano);
+        ps = conn.prepareStatement(sql);
+        ps.setInt(1, Integer.parseInt(dia));  // Definindo o valor do parâmetro dia
+        ps.setInt(2, Integer.parseInt(mes));  // Definindo o valor do parâmetro mes
+        ps.setInt(3, Integer.parseInt(ano));  // Definindo o valor do parâmetro ano
+        rs = ps.executeQuery();
 
-        rs = pstmt.executeQuery();
+        JSONArray dailyDataArray = new JSONArray();
 
-        if (rs.next()) {
+        while (rs.next()) {
+            JSONObject dailyData = new JSONObject();
+            
+            // Alimentação
             JSONObject alimentacao = new JSONObject();
             alimentacao.put("cafeDaManha", rs.getString("cafe_da_manha"));
             alimentacao.put("almoco", rs.getString("almoco"));
             alimentacao.put("jantar", rs.getString("jantar"));
             alimentacao.put("lanches", rs.getString("lanches"));
             alimentacao.put("observacoes", rs.getString("observacoes_alimentacao"));
-
+            
+            // Líquidos
             JSONObject liquidos = new JSONObject();
             liquidos.put("agua", rs.getString("agua"));
             liquidos.put("outros", rs.getString("outros_liquidos"));
             liquidos.put("observacoes", rs.getString("observacoes_liquidos"));
-
+            
+            // Exercícios
             JSONObject exercicios = new JSONObject();
             exercicios.put("tipoTreino", rs.getString("tipo_treino"));
-            exercicios.put("duracao", rs.getString("duracao_treino"));
-            exercicios.put("intensidade", rs.getString("intensidade_treino"));
-            exercicios.put("detalhes", rs.getString("detalhes_exercicio"));
-            exercicios.put("observacoes", rs.getString("observacoes_exercicio"));
-
+            exercicios.put("duracao", rs.getString("duracao"));
+            exercicios.put("intensidade", rs.getString("intensidade"));
+            exercicios.put("detalhes", rs.getString("detalhes"));
+            exercicios.put("observacoes", rs.getString("observacoes_exercicios"));
+            
+            // Avaliação
             JSONObject avaliacao = new JSONObject();
             avaliacao.put("fome", rs.getString("nivel_fome"));
             avaliacao.put("energia", rs.getString("nivel_energia"));
@@ -53,16 +63,24 @@
             dailyData.put("liquidos", liquidos);
             dailyData.put("exercicios", exercicios);
             dailyData.put("avaliacao", avaliacao);
+
+            dailyDataArray.put(dailyData);
         }
+
+        // Escrever a resposta no formato JSON
+        response.setContentType("application/json");
+        response.getWriter().write(dailyDataArray.toString());
     } catch (Exception e) {
         e.printStackTrace();
+        response.getWriter().write("[]");  // Retorna um array vazio em caso de erro
     } finally {
-        // Fecha o ResultSet, PreparedStatement e Connection ap�s o uso
-        if (rs != null) try { rs.close(); } catch (SQLException e) { e.printStackTrace(); }
-        if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
-        DatabaseConnection.closeConnection();  // Fecha a conex�o via m�todo centralizado
+        try {
+            // Fechar todos os recursos de forma segura
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            // Não é necessário fechar a conexão manualmente, pois a classe DatabaseConnection cuida disso
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
-
-    response.setContentType("application/json");
-    response.getWriter().print(dailyData.toString());
 %>
