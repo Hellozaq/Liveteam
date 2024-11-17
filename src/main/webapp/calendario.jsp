@@ -110,7 +110,7 @@ const app = Vue.createApp({
         return {
             currentMonth: new Date().getMonth(),
             currentYear: new Date().getFullYear(),
-            selectedDay: null, // Armazena o dia selecionado
+            selectdDay: null, // Armazena o dia selecionado
             dailyInfo: null,   // Informação diária vinda do banco
             calendarDays: [],  // Dias do calendário (a serem preenchidos)
         };
