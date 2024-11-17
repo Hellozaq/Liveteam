@@ -11,7 +11,7 @@
     <meta charset="UTF-8">
     <title>Calendário Interativo</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-TX8t27EcRE3e/ihU7zmQCTmo/sBieD/cH7i7fa/WPvB9E2W5/qOGeTAfF0lC5HEt" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/calendario-page.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">  
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
@@ -49,12 +49,10 @@
                 </tbody>
             </table>
         </div>
-
-        <!-- Se um dia for selecionado, exibe esta seção -->
+        
         <div v-if="selectedDay" class="day-info mt-4">
             <h3>Informações para o dia {{ selectedDay.date }}/{{ currentMonth + 1 }}/{{ currentYear }}</h3>
             
-            <!-- Exibe as informações de alimentação -->
             <div v-if="dailyInfo && dailyInfo.alimentacao" class="info-section">
                 <h4>Alimentação</h4>
                 <ul>
@@ -66,7 +64,6 @@
                 </ul>
             </div>
 
-            <!-- Exibe as informações de líquidos -->
             <div v-if="dailyInfo && dailyInfo.liquidos" class="info-section">
                 <h4>Líquidos</h4>
                 <ul>
@@ -76,7 +73,6 @@
                 </ul>
             </div>
 
-            <!-- Exibe as informações de exercícios -->
             <div v-if="dailyInfo && dailyInfo.exercicios" class="info-section">
                 <h4>Exercícios</h4>
                 <ul>
@@ -88,7 +84,6 @@
                 </ul>
             </div>
 
-            <!-- Exibe as informações de avaliação -->
             <div v-if="dailyInfo && dailyInfo.avaliacao" class="info-section">
                 <h4>Avaliação</h4>
                 <ul>
@@ -99,7 +94,6 @@
                 </ul>
             </div>
 
-            <!-- Caso não haja informações, exibe a mensagem -->
             <p v-else>Não há atualizações para o dia selecionado.</p>
         </div>
     </div>
@@ -110,9 +104,9 @@ const app = Vue.createApp({
         return {
             currentMonth: new Date().getMonth(),
             currentYear: new Date().getFullYear(),
-            selectdDay: null, // Armazena o dia selecionado
-            dailyInfo: null,   // Informação diária vinda do banco
-            calendarDays: [],  // Dias do calendário (a serem preenchidos)
+            selectedDay: null, // Corrigido
+            dailyInfo: null,
+            calendarDays: []
         };
     },
     computed: {
@@ -126,49 +120,28 @@ const app = Vue.createApp({
     },
     methods: {
         selectDay(day) {
-            console.log('Dia selecionado:', day); // Verificar o objeto day completo
             if (!day.isOtherMonth && day.date) {
+                console.log('Dia selecionado:', day); 
                 this.selectedDay = day;
-                this.dailyInfo = null; // Limpa informações anteriores
-
-                // Verificar se day é um Proxy e acessar corretamente a propriedade date
-                const diaSelecionado = day.date;
-                const mesSelecionado = this.currentMonth + 1; // Mês atual (1 a 12)
-                const anoSelecionado = this.currentYear;      // Ano atual
-
-                console.log(`Dia selecionado: ${diaSelecionado}`);
-                console.log(`Mês selecionado: ${mesSelecionado}`);
-                console.log(`Ano selecionado: ${anoSelecionado}`);
-
-                // Montando a URL para buscar os dados do dia selecionado
-                const url = `/Liveteam/obterDadosDiarios.jsp?dia=${diaSelecionado}&mes=${mesSelecionado}&ano=${anoSelecionado}`;
+                const url = "/Liveteam/obterDadosDiarios.jsp?dia=${day.date}&mes=${this.currentMonth + 1}&ano=${this.currentYear}";
                 console.log(`URL de requisição: ${url}`);
-
-                // Requisição para buscar as informações diárias
                 fetch(url)
                     .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
-                            throw new Error("Erro ao buscar dados do servidor.");
-                        }
+                        if (!response.ok) throw new Error(`Erro na resposta: ${response.status}`);
+                        return response.json();
                     })
                     .then(data => {
-                        if (data.length > 0) {
-                            this.dailyInfo = data;
-                        } else {
-                            this.dailyInfo = null;
-                        }
+                        console.log("Dados recebidos:", data);
+                        this.dailyInfo = data.length > 0 ? data : null;
                     })
                     .catch(error => {
-                        console.error("Erro ao buscar dados do dia:", error);
+                        console.error("Erro no fetch:", error);
                         this.dailyInfo = null;
                     });
             } else {
                 console.error("O dia selecionado está vazio ou é de outro mês");
             }
         },
-
         prevMonth() {
             this.currentMonth--;
             if (this.currentMonth < 0) {
@@ -187,22 +160,22 @@ const app = Vue.createApp({
         },
         isToday(day) {
             const today = new Date();
-            return day.date === today.getDate() && this.currentMonth === today.getMonth() && this.currentYear === today.getFullYear();
+            return (
+                day.date &&
+                day.date === today.getDate() &&
+                this.currentMonth === today.getMonth() &&
+                this.currentYear === today.getFullYear()
+            );
         },
         generateCalendar() {
             const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
             const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
             const totalDaysInMonth = lastDayOfMonth.getDate();
-
             let calendar = [];
             let week = [];
-
-            // Preencher com dias do mês anterior, se necessário
-            for (let i = 1; i < firstDayOfMonth.getDay(); i++) {
+            for (let i = 0; i < firstDayOfMonth.getDay(); i++) {
                 week.push({ date: '', isOtherMonth: true });
             }
-
-            // Preencher com os dias do mês atual
             for (let day = 1; day <= totalDaysInMonth; day++) {
                 week.push({ date: day, isOtherMonth: false });
                 if (week.length === 7) {
@@ -210,13 +183,10 @@ const app = Vue.createApp({
                     week = [];
                 }
             }
-
-            // Preencher com dias do mês seguinte, se necessário
             while (week.length < 7) {
                 week.push({ date: '', isOtherMonth: true });
             }
             if (week.length > 0) calendar.push(week);
-
             this.calendarDays = calendar;
         }
     },
@@ -225,7 +195,6 @@ const app = Vue.createApp({
     }
 });
 app.mount("#app");
-
     </script>
 </body>
 </html>
