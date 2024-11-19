@@ -1,10 +1,10 @@
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
-<%@ page import="java.sql.*, org.json.JSONObject, org.json.JSONArray" %>
+<%@ page import="java.sql.*, org.json.JSONObject, org.json.JSONArray, java.util.Properties, java.io.InputStream" %>
 <%
     String dia = request.getParameter("dia");
     String mes = request.getParameter("mes");
     String ano = request.getParameter("ano");
-    
+
     System.out.println("Dia: " + dia);
     System.out.println("Mês: " + mes);
     System.out.println("Ano: " + ano);
@@ -14,8 +14,24 @@
     ResultSet rs = null;
 
     try {
-        // Obter a conexão do banco de dados usando a classe DatabaseConnection
-        conn = com.liveteam.database.DatabaseConnection.getConnection();
+        // Carregar propriedades do arquivo db.properties
+        Properties props = new Properties();
+        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties");
+        if (input == null) {
+            throw new Exception("Arquivo db.properties não encontrado.");
+        }
+        props.load(input);
+
+        String url = props.getProperty("db.url");
+        String username = props.getProperty("db.username");
+        String password = props.getProperty("db.password");
+        String driver = props.getProperty("db.driver");
+
+        // Registrar o driver
+        Class.forName(driver);
+
+        // Estabelecer conexão
+        conn = DriverManager.getConnection(url, username, password);
 
         // Usando PreparedStatement para evitar injeção de SQL
         String sql = "SELECT * FROM dados_diarios WHERE dia = ? AND mes = ? AND ano = ?";
@@ -29,7 +45,7 @@
 
         while (rs.next()) {
             JSONObject dailyData = new JSONObject();
-            
+
             // Alimentação
             JSONObject alimentacao = new JSONObject();
             alimentacao.put("cafeDaManha", rs.getString("cafe_da_manha"));
@@ -37,13 +53,13 @@
             alimentacao.put("jantar", rs.getString("jantar"));
             alimentacao.put("lanches", rs.getString("lanches"));
             alimentacao.put("observacoes", rs.getString("observacoes_alimentacao"));
-            
+
             // Líquidos
             JSONObject liquidos = new JSONObject();
             liquidos.put("agua", rs.getString("agua"));
             liquidos.put("outros", rs.getString("outros_liquidos"));
             liquidos.put("observacoes", rs.getString("observacoes_liquidos"));
-            
+
             // Exercícios
             JSONObject exercicios = new JSONObject();
             exercicios.put("tipoTreino", rs.getString("tipo_treino"));
@@ -51,7 +67,7 @@
             exercicios.put("intensidade", rs.getString("intensidade"));
             exercicios.put("detalhes", rs.getString("detalhes"));
             exercicios.put("observacoes", rs.getString("observacoes_exercicios"));
-            
+
             // Avaliação
             JSONObject avaliacao = new JSONObject();
             avaliacao.put("fome", rs.getString("nivel_fome"));
@@ -78,7 +94,7 @@
             // Fechar todos os recursos de forma segura
             if (rs != null) rs.close();
             if (ps != null) ps.close();
-            // Não é necessário fechar a conexão manualmente, pois a classe DatabaseConnection cuida disso
+            if (conn != null) conn.close();  // Fecha a conexão ao banco
         } catch (SQLException e) {
             e.printStackTrace();
         }
