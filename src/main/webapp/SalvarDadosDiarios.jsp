@@ -1,6 +1,7 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="org.json.JSONObject" %>
-<%@ page import="com.liveteam.database.DatabaseConnection" %>
+<%@ page import="java.util.Properties" %>
+<%@ page import="java.io.InputStream" %>
 <%
     JSONObject responseJson = new JSONObject();
 
@@ -48,7 +49,7 @@
         return;
     }
 
-    // Tratar campos opcionais: substitui valores `null` por `NULL` para o banco ou valores padrão
+    // Tratar campos opcionais
     observacoesAlimentacao = (observacoesAlimentacao == null || observacoesAlimentacao.trim().isEmpty()) ? null : observacoesAlimentacao;
     observacoesLiquidos = (observacoesLiquidos == null || observacoesLiquidos.trim().isEmpty()) ? null : observacoesLiquidos;
     detalhesExercicio = (detalhesExercicio == null || detalhesExercicio.trim().isEmpty()) ? null : detalhesExercicio;
@@ -60,7 +61,24 @@
     PreparedStatement pstmt = null;
 
     try {
-        conn = DatabaseConnection.getConnection();
+        // Carregar propriedades do arquivo db.properties
+        Properties props = new Properties();
+        InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties");
+        if (input == null) {
+            throw new Exception("Arquivo db.properties não encontrado.");
+        }
+        props.load(input);
+
+        String url = props.getProperty("db.url");
+        String username = props.getProperty("db.username");
+        String password = props.getProperty("db.password");
+        String driver = props.getProperty("db.driver");
+
+        // Registrar o driver
+        Class.forName(driver);
+
+        // Estabelecer conexão
+        conn = DriverManager.getConnection(url, username, password);
 
         if (conn == null || conn.isClosed()) {
             responseJson.put("status", "error");
@@ -117,7 +135,7 @@
         responseJson.put("message", "Erro inesperado: " + e.getMessage());
     } finally {
         if (pstmt != null) try { pstmt.close(); } catch (SQLException e) { e.printStackTrace(); }
-        DatabaseConnection.closeConnection();
+        if (conn != null) try { conn.close(); } catch (SQLException e) { e.printStackTrace(); }
     }
 
     // Retornar a resposta em JSON
