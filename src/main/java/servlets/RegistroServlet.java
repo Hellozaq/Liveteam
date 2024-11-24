@@ -23,6 +23,12 @@ public class RegistroServlet extends HttpServlet {
         String email = request.getParameter("email");
         String senha = request.getParameter("senha1");
 
+        // Verifica se os parâmetros obrigatórios estão presentes
+        if (nome == null || email == null || senha == null || nome.isEmpty() || email.isEmpty() || senha.isEmpty()) {
+            response.sendRedirect("registro.jsp?error=missing");
+            return;
+        }
+
         // Conexão com o banco de dados e inserção do usuário
         try (Connection connection = DatabaseConnection.getConnection();
              PreparedStatement ps = connection.prepareStatement("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)")) {
@@ -36,7 +42,7 @@ public class RegistroServlet extends HttpServlet {
             if (result > 0) {
                 response.sendRedirect("login.jsp"); // Redireciona para a página de login
             } else {
-                response.sendRedirect("registro.jsp?error=database"); // Redireciona em caso de erro
+                response.sendRedirect("registro.jsp?error=database"); // Redireciona em caso de erro no banco de dados
             }
 
         } catch (SQLException e) {
