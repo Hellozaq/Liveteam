@@ -22,6 +22,7 @@ public class Tabelas {
             // Criação da tabela de dados diários
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS dados_diarios (" +
                     "id SERIAL PRIMARY KEY, " +
+                    "id_usuario INT NOT NULL, " +  // Adicionando o id_usuario
                     "dia INT NOT NULL, " +
                     "mes INT NOT NULL, " +
                     "ano INT NOT NULL, " +
@@ -46,8 +47,8 @@ public class Tabelas {
                     "nivel_energia VARCHAR(255), " +
                     "qualidade_sono VARCHAR(255), " +
                     "observacoes_avaliacao TEXT, " +
-                    // Restrições
-                    "UNIQUE (dia, mes, ano))");
+                    // Definindo chave estrangeira
+                    "FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE)");
 
             System.out.println("Tabela 'dados_diarios' criada com sucesso!");
 
