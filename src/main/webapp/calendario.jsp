@@ -48,7 +48,7 @@
                     <tr v-for="(week, index) in calendarDays" :key="index" class="calendario-week">
                         <td v-for="(day, idx) in week" :key="idx" class="calendario-day" 
                             :class="{'current-day rounded-pill': isToday(day), 'inactive': day.isOtherMonth}">
-                            <form action="teste.jsp" method="GET">
+                            <form action="exibicaoDadosDiarios.jsp" method="GET">
                                 <input type="hidden" name="dia" :value="day.date">
                                 <input type="hidden" name="mes" :value="currentMonth + 1">
                                 <input type="hidden" name="ano" :value="currentYear">
