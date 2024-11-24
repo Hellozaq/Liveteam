@@ -21,6 +21,12 @@
         
     </head>
     <body>
+        <% 
+            if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+                response.sendRedirect("login.jsp");
+                return;
+            }
+        %>
         <div><%@include file="WEB-INF/jspf/header.jspf" %></div>
         
         <h1 class="faq-h1">Perguntas Frequentes</h1>

@@ -3,6 +3,12 @@
 <%@ page import="java.util.Properties" %>
 <%@ page import="java.io.InputStream" %>
 <%
+    
+    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
     JSONObject responseJson = new JSONObject();
 
     // Receber os parâmetros enviados via requisição
