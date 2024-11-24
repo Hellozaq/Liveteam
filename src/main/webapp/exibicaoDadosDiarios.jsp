@@ -76,37 +76,37 @@
             ps.setInt(4, idUsuario);  // Definindo o valor do parâmetro id (posicionamento correto)
             rs = ps.executeQuery();
 
-            if (rs.next()) {
-                // Alimentação
-                alimentacao = "Café da manhã: " + rs.getString("cafe_da_manha") + "<br>" +
-                              "Almoço: " + rs.getString("almoco") + "<br>" +
-                              "Jantar: " + rs.getString("jantar") + "<br>" +
-                              "Lanches: " + rs.getString("lanches") + "<br>" +
-                              "Observações: " + rs.getString("observacoes_alimentacao");
+                    if (rs.next()) {
+            // Alimentação
+            alimentacao = "Café da manhã: " + (rs.getString("cafe_da_manha") != null ? rs.getString("cafe_da_manha") : "nenhum") + "<br>" +
+                          "Almoço: " + (rs.getString("almoco") != null ? rs.getString("almoco") : "nenhum") + "<br>" +
+                          "Jantar: " + (rs.getString("jantar") != null ? rs.getString("jantar") : "nenhum") + "<br>" +
+                          "Lanches: " + (rs.getString("lanches") != null ? rs.getString("lanches") : "nenhum") + "<br>" +
+                          "Observações: " + (rs.getString("observacoes_alimentacao") != null ? rs.getString("observacoes_alimentacao") : "nenhum");
 
-                // Líquidos
-                liquidos = "Água: " + rs.getString("agua") + "<br>" +
-                           "Outros líquidos: " + rs.getString("outros_liquidos") + "<br>" +
-                           "Observações: " + rs.getString("observacoes_liquidos");
+            // Líquidos
+            liquidos = "Água: " + (rs.getString("agua") != null ? rs.getString("agua") : "nenhum") + "<br>" +
+                       "Outros líquidos: " + (rs.getString("outros_liquidos") != null ? rs.getString("outros_liquidos") : "nenhum") + "<br>" +
+                       "Observações: " + (rs.getString("observacoes_liquidos") != null ? rs.getString("observacoes_liquidos") : "nenhum");
 
-                // Exercícios
-                exercicios = "Tipo de treino: " + rs.getString("tipo_treino") + "<br>" +
-                             "Duração: " + rs.getString("duracao_treino") + "<br>" +
-                             "Intensidade: " + rs.getString("intensidade_treino") + "<br>" +
-                             "Detalhes: " + rs.getString("detalhes_exercicio") + "<br>" +
-                             "Observações: " + rs.getString("observacoes_exercicio");
+            // Exercícios
+            exercicios = "Tipo de treino: " + (rs.getString("tipo_treino") != null ? rs.getString("tipo_treino") : "nenhum") + "<br>" +
+                         "Duração: " + (rs.getString("duracao_treino") != null ? rs.getString("duracao_treino") : "nenhum") + "<br>" +
+                         "Intensidade: " + (rs.getString("intensidade_treino") != null ? rs.getString("intensidade_treino") : "nenhum") + "<br>" +
+                         "Detalhes: " + (rs.getString("detalhes_exercicio") != null ? rs.getString("detalhes_exercicio") : "nenhum") + "<br>" +
+                         "Observações: " + (rs.getString("observacoes_exercicio") != null ? rs.getString("observacoes_exercicio") : "nenhum");
 
-                // Avaliação
-                avaliacao = "Fome: " + rs.getString("nivel_fome") + "<br>" +
-                            "Energia: " + rs.getString("nivel_energia") + "<br>" +
-                            "Sono: " + rs.getString("qualidade_sono") + "<br>" +
-                            "Observações: " + rs.getString("observacoes_avaliacao");
-            } else {
-                alimentacao = "Nenhum dado encontrado.";
-                liquidos = "Nenhum dado encontrado.";
-                exercicios = "Nenhum dado encontrado.";
-                avaliacao = "Nenhum dado encontrado.";
-            }
+            // Avaliação
+            avaliacao = "Fome: " + (rs.getString("nivel_fome") != null ? rs.getString("nivel_fome") : "nenhum") + "<br>" +
+                        "Energia: " + (rs.getString("nivel_energia") != null ? rs.getString("nivel_energia") : "nenhum") + "<br>" +
+                        "Sono: " + (rs.getString("qualidade_sono") != null ? rs.getString("qualidade_sono") : "nenhum") + "<br>" +
+                        "Observações: " + (rs.getString("observacoes_avaliacao") != null ? rs.getString("observacoes_avaliacao") : "nenhum");
+        } else {
+            alimentacao = "Nenhum dado encontrado.";
+            liquidos = "Nenhum dado encontrado.";
+            exercicios = "Nenhum dado encontrado.";
+            avaliacao = "Nenhum dado encontrado.";
+        }
         } catch (SQLException | ClassNotFoundException e) {
             alimentacao = "Erro ao buscar dados: " + e.getMessage();
             liquidos = "Erro ao buscar dados.";
