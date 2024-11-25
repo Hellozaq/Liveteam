@@ -1,6 +1,11 @@
 <%@ page contentType="application/json;charset=UTF-8" language="java" %>
 <%@ page import="java.sql.*, org.json.JSONObject, org.json.JSONArray, java.util.Properties, java.io.InputStream" %>
+
 <%
+if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
     String dia = request.getParameter("dia");
     String mes = request.getParameter("mes");
     String ano = request.getParameter("ano");
@@ -63,10 +68,10 @@
             // Exercícios
             JSONObject exercicios = new JSONObject();
             exercicios.put("tipoTreino", rs.getString("tipo_treino"));
-            exercicios.put("duracao", rs.getString("duracao"));
-            exercicios.put("intensidade", rs.getString("intensidade"));
-            exercicios.put("detalhes", rs.getString("detalhes"));
-            exercicios.put("observacoes", rs.getString("observacoes_exercicios"));
+            exercicios.put("duracao", rs.getString("duracao_treino"));
+            exercicios.put("intensidade", rs.getString("intensidade_treino"));
+            exercicios.put("detalhes", rs.getString("detalhes_exercicio"));
+            exercicios.put("observacoes", rs.getString("observacoes_exercicio"));
 
             // Avaliação
             JSONObject avaliacao = new JSONObject();
@@ -88,7 +93,7 @@
         response.getWriter().write(dailyDataArray.toString());
     } catch (Exception e) {
         e.printStackTrace();
-        response.getWriter().write("[]");  // Retorna um array vazio em caso de erro
+        response.getWriter().write("[erro]");  // Retorna um array vazio em caso de erro
     } finally {
         try {
             // Fechar todos os recursos de forma segura

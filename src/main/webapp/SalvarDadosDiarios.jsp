@@ -3,7 +3,24 @@
 <%@ page import="java.util.Properties" %>
 <%@ page import="java.io.InputStream" %>
 <%
+    
+    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+
     JSONObject responseJson = new JSONObject();
+
+    // Recuperar o ID do usuário logado da sessão
+    Integer idUsuario = (Integer) session.getAttribute("idUsuario");
+
+    if (idUsuario == null) {
+        responseJson.put("status", "error");
+        responseJson.put("message", "ID de usuário não encontrado.");
+        response.setContentType("application/json");
+        response.getWriter().print(responseJson.toString());
+        return;
+    }
 
     // Receber os parâmetros enviados via requisição
     String cafeDaManha = request.getParameter("cafe_da_manha");
@@ -84,36 +101,37 @@
             responseJson.put("status", "error");
             responseJson.put("message", "Falha ao conectar ao banco de dados.");
         } else {
-            // Inserir os dados na tabela
+            // Inserir os dados na tabela, agora incluindo o ID do usuário
             String sql = "INSERT INTO dados_diarios (" +
-                    "dia, mes, ano, " +
+                    "id_usuario, dia, mes, ano, " +
                     "cafe_da_manha, almoco, jantar, lanches, observacoes_alimentacao, " +
                     "agua, outros_liquidos, observacoes_liquidos, " +
                     "tipo_treino, duracao_treino, intensidade_treino, detalhes_exercicio, observacoes_exercicio, " +
                     "nivel_fome, nivel_energia, qualidade_sono, observacoes_avaliacao" +
                     ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            
+
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, dia);
-            pstmt.setInt(2, mes);
-            pstmt.setInt(3, ano);
-            pstmt.setString(4, cafeDaManha);
-            pstmt.setString(5, almoco);
-            pstmt.setString(6, jantar);
-            pstmt.setString(7, lanches);
-            pstmt.setString(8, observacoesAlimentacao);
-            pstmt.setString(9, agua);
-            pstmt.setString(10, outrosLiquidos);
-            pstmt.setString(11, observacoesLiquidos);
-            pstmt.setString(12, tipoTreino);
-            pstmt.setString(13, duracaoTreino);
-            pstmt.setString(14, intensidadeTreino);
-            pstmt.setString(15, detalhesExercicio);
-            pstmt.setString(16, observacoesExercicio);
-            pstmt.setString(17, nivelFome);
-            pstmt.setString(18, nivelEnergia);
-            pstmt.setString(19, qualidadeSono);
-            pstmt.setString(20, observacoesAvaliacao);
+            pstmt.setInt(1, idUsuario); // Agora incluímos o ID do usuário
+            pstmt.setInt(2, dia);
+            pstmt.setInt(3, mes);
+            pstmt.setInt(4, ano);
+            pstmt.setString(5, cafeDaManha);
+            pstmt.setString(6, almoco);
+            pstmt.setString(7, jantar);
+            pstmt.setString(8, lanches);
+            pstmt.setString(9, observacoesAlimentacao);
+            pstmt.setString(10, agua);
+            pstmt.setString(11, outrosLiquidos);
+            pstmt.setString(12, observacoesLiquidos);
+            pstmt.setString(13, tipoTreino);
+            pstmt.setString(14, duracaoTreino);
+            pstmt.setString(15, intensidadeTreino);
+            pstmt.setString(16, detalhesExercicio);
+            pstmt.setString(17, observacoesExercicio);
+            pstmt.setString(18, nivelFome);
+            pstmt.setString(19, nivelEnergia);
+            pstmt.setString(20, qualidadeSono);
+            pstmt.setString(21, observacoesAvaliacao);
 
             int rowsInserted = pstmt.executeUpdate();
 

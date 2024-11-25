@@ -16,12 +16,24 @@
       <li class="nav-item">
         <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/faleConosco.jsp">Fale Conosco</a>
       </li>
+            <% 
+        // Adicionando links apenas para usuários logados
+        String usuarioLogado = (String) session.getAttribute("usuarioLogado");
+        if (usuarioLogado != null) { 
+      %>
+      <li class="nav-item">
+        <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/calendario.jsp">Calendário</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link text-white fw-bold link-hover" href="${pageContext.request.contextPath}/formularioDiario.jsp">Formulário Diário</a>
+      </li>
+      <% } %>
     </ul>
+
 
     <!-- Verificação da sessão para login/logout -->
     <div class="user-options text-white fw-bold">
        <%
-        String usuarioLogado = (String) session.getAttribute("usuarioLogado");
         
         if (usuarioLogado != null) {
       %>

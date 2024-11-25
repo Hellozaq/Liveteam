@@ -10,7 +10,12 @@
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
 </head>
 <body>
-    
+    <% 
+    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+        response.sendRedirect("login.jsp");
+        return;
+    }
+%>
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <%
         // Obtendo a data atual
