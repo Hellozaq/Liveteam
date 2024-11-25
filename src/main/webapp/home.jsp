@@ -1,11 +1,6 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<% 
-    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-%>
+
 <html lang="pt-BR">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
