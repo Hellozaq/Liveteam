@@ -1,10 +1,13 @@
 package servlets;
 
-import com.liveteam.database.DatabaseConnection;
+import org.mindrot.jbcrypt.BCrypt;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.Properties;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,7 +20,7 @@ public class RegistroServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         // Obtendo os parâmetros do formulário
         String nome = request.getParameter("nome");
         String email = request.getParameter("email");
@@ -29,25 +32,58 @@ public class RegistroServlet extends HttpServlet {
             return;
         }
 
-        // Conexão com o banco de dados e inserção do usuário
-        try (Connection connection = DatabaseConnection.getConnection();
-             PreparedStatement ps = connection.prepareStatement("INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)")) {
+        // Gerar o hash da senha com BCrypt
+        String senhaCriptografada = BCrypt.hashpw(senha, BCrypt.gensalt());
 
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            // Carregar propriedades do arquivo db.properties
+            Properties props = new Properties();
+            InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties");
+            if (input == null) {
+                throw new Exception("Arquivo db.properties não encontrado.");
+            }
+            props.load(input);
+
+            String url = props.getProperty("db.url");
+            String username = props.getProperty("db.username");
+            String password = props.getProperty("db.password");
+            String driver = props.getProperty("db.driver");
+
+            // Registrar o driver
+            Class.forName(driver);
+
+            // Conectar ao banco
+            conn = DriverManager.getConnection(url, username, password);
+
+            // Inserir novo usuário
+            String sql = "INSERT INTO usuario (nome, email, senha) VALUES (?, ?, ?)";
+            ps = conn.prepareStatement(sql);
             ps.setString(1, nome);
             ps.setString(2, email);
-            ps.setString(3, senha); // Em produção, recomenda-se armazenar a senha com hashing
+            ps.setString(3, senhaCriptografada);
 
             // Executar a inserção
             int result = ps.executeUpdate();
             if (result > 0) {
-                response.sendRedirect("login.jsp"); // Redireciona para a página de login
+                response.sendRedirect("login.jsp"); // Redireciona para login após sucesso
             } else {
-                response.sendRedirect("registro.jsp?error=database"); // Redireciona em caso de erro no banco de dados
+                response.sendRedirect("registro.jsp?error=database"); // Redireciona em caso de falha
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
-            response.sendRedirect("registro.jsp?error=exception"); // Redireciona em caso de exceção
+        } catch (Exception e) {
+            e.printStackTrace(); // Exibe detalhes do erro no console
+            response.sendRedirect("registro.jsp?error=exception&message=" + e.getMessage());
+        } finally {
+            // Fechar recursos
+            try {
+                if (ps != null) ps.close();
+                if (conn != null && !conn.isClosed()) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -59,6 +95,6 @@ public class RegistroServlet extends HttpServlet {
 
     @Override
     public String getServletInfo() {
-        return "Servlet para registro de usuários.";
+        return "Servlet para registro de usuários com senha criptografada.";
     }
 }

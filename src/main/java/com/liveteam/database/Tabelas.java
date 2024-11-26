@@ -9,14 +9,14 @@ public class Tabelas {
     public static void main(String[] args) {
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement()) {
-
+            
             // Criação da tabela de usuários
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS usuario (" +
                     "id SERIAL PRIMARY KEY, " +
                     "nome VARCHAR(50) NOT NULL, " +
                     "email VARCHAR(100) NOT NULL UNIQUE, " +
-                    "senha VARCHAR(50) NOT NULL)");
-
+                    "senha VARCHAR(255) NOT NULL)");
+            
             System.out.println("Tabela 'usuario' criada com sucesso!");
 
             // Criação da tabela de dados diários

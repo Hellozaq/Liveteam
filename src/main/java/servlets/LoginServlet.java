@@ -8,6 +8,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Properties;
+import org.mindrot.jbcrypt.BCrypt;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -17,14 +18,22 @@ import jakarta.servlet.http.HttpSession;
 
 @WebServlet(name = "LoginServlet", urlPatterns = {"/LoginServlet"})
 public class LoginServlet extends HttpServlet {
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
 
-        // Obter parâmetros do formulário
+        // Capturar parâmetros do usuário
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
+
+        // Validação de inputs
+        if (email == null || email.trim().isEmpty() || senha == null || senha.trim().isEmpty()) {
+            response.sendRedirect("login.jsp?error=empty");
+            return;
+        }
+
+        // Normalizar email (remover espaços e converter para minúsculas)
+        email = email.trim().toLowerCase();
 
         Connection conn = null;
         PreparedStatement ps = null;
@@ -47,67 +56,43 @@ public class LoginServlet extends HttpServlet {
             // Registrar o driver
             Class.forName(driver);
 
-            // Estabelecer conexão
+            // Conectar ao banco
             conn = DriverManager.getConnection(url, username, password);
 
-            // Preparar a consulta SQL
+            // Consulta SQL
             String sql = "SELECT nome, id, senha FROM usuario WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
 
-            // Executar a consulta e obter o resultado
+            // Executar a consulta
             rs = ps.executeQuery();
 
-            // Verificar se o usuário foi encontrado
             if (rs.next()) {
-                // Recupera a senha armazenada no banco de dados
                 String senhaBanco = rs.getString("senha");
 
-                // Verificar se a senha fornecida corresponde à armazenada no banco
-                if (senha.equals(senhaBanco)) {
-                    // Se a senha estiver correta, recupera os dados do usuário
+                // Comparar a senha fornecida com o hash no banco
+                if (BCrypt.checkpw(senha, senhaBanco)) {
                     String nomeUsuario = rs.getString("nome");
                     String idUsuario = rs.getString("id");
 
-                    // Criar a sessão do usuário e armazenar as informações
+                    // Criar uma nova sessão
                     HttpSession session = request.getSession();
-                    session.invalidate();  // Garantir que a sessão anterior seja invalidada
-                    session = request.getSession(true);  // Criar uma nova sessão
+                    session.setAttribute("usuarioLogado", nomeUsuario);
+                    session.setAttribute("idUsuario", idUsuario);
 
-                    session.setAttribute("usuarioLogado", nomeUsuario);  // Armazena o nome do usuário na sessão
-                    session.setAttribute("idUsuario", idUsuario);        // Armazena o id do usuário na sessão
-
-                    // Redirecionar para a página inicial após login bem-sucedido
                     response.sendRedirect("home.jsp");
                 } else {
                     // Senha incorreta
-                    System.out.println("Senha incorreta.");
+                    System.out.println("Senha incorreta para o email: " + email);
                     response.sendRedirect("login.jsp?error=invalid");
                 }
             } else {
                 // Usuário não encontrado
-                System.out.println("Usuário não encontrado.");
+                System.out.println("Usuário não encontrado: " + email);
                 response.sendRedirect("login.jsp?error=invalid");
             }
 
-        } catch (SQLException e) {
-            // Tratar SQLException
-            System.err.println("Erro ao conectar ou executar a query no banco de dados:");
-            e.printStackTrace();
-            response.sendRedirect("login.jsp?error=exception");
-        } catch (ClassNotFoundException e) {
-            // Tratar ClassNotFoundException
-            System.err.println("Erro ao carregar o driver JDBC:");
-            e.printStackTrace();
-            response.sendRedirect("login.jsp?error=exception");
-        } catch (IOException e) {
-            // Tratar IOException
-            System.err.println("Erro ao ler propriedades do banco de dados:");
-            e.printStackTrace();
-            response.sendRedirect("login.jsp?error=exception");
         } catch (Exception e) {
-            // Tratar exceções gerais
-            System.err.println("Erro inesperado: " + e.getMessage());
             e.printStackTrace();
             response.sendRedirect("login.jsp?error=exception");
         } finally {
@@ -125,7 +110,6 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        // Redireciona para a página de login quando acessado via GET
         response.sendRedirect("login.jsp");
     }
 
