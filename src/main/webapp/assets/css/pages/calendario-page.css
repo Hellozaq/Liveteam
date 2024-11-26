@@ -1,119 +1,108 @@
-body {
-    font-family: Arial, sans-serif;
-    margin: 0; 
-    display: block;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f4f4f4;
-}
-
-.app-container {
-    display: block;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    min-height: 100vh;
-}
-
+/* Estilos para o container principal do calendário */
 .calendario-container {
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 20px;
-    width: 80%;
-    text-align: center;
-    font-size: 30px;
-    position: relative;
+    max-width: 600px;
     margin: auto;
-    margin-top: 2%;
-    margin-bottom: 2%;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
 }
 
+/* Estilos para o cabeçalho do calendário */
 .calendario-header {
     display: flex;
-    justify-content: center;  /* Alinhamento central para o cabeçalho */
+    justify-content: space-between;
     align-items: center;
+    margin-bottom: 10px;
 }
 
 .nav-btn {
-    background: none;
+    background-color: #007bff;
+    color: #fff;
     border: none;
-    font-size: 36px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    padding: 5px;
-    color: #333;
-    margin: 0;
-}
-.nav-btn:hover {
-    color: #A0D683; /* Alterar a cor do texto do botão ao passar o mouse */
-    background-color: transparent; /* Exemplo de cor de fundo no hover */
-}
-.calendario-title {
-    font-size: 36px;
-    font-weight: bold;
-    margin: 0;
 }
 
+.nav-btn:hover {
+    background-color: #0056b3;
+}
+
+.calendario-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #333;
+    text-align: center;
+}
+
+/* Estilos para a tabela do calendário */
 .calendario-table {
     width: 100%;
     border-collapse: collapse;
-    table-layout: fixed;
+    margin-top: 10px;
 }
 
-.calendario-thead {
-    background-color: #f4f4f4;
-}
-
-.calendario-th {
-    padding: 10px;
-    color: #333;
-    border: 1px solid #ddd;
-    font-weight: bold;
-}
-
-.calendario-week {
-
+.calendario-thead th {
+    font-weight: 600;
+    color: #555;
+    padding: 8px 0;
+    text-align: center;
 }
 
 .calendario-day {
-    width: 40px;
-    height: 60px;
+    height: 80px;
     text-align: center;
-    padding: 5px;
-    border: 1px solid #ddd;
-    cursor: pointer;
     vertical-align: middle;
+    font-size: 1rem;
+    font-weight: 500;
 }
 
-td.current-day {
-    background-color: #A0D683;
-    color: white;
-    width: 60px;         /* Defina a largura e altura iguais */
-    height: 60px;
-    border-radius: 50%;  /* Bordas arredondadas para fazer um círculo */
-    display: flex;
-    justify-content: center;
-    align-items: center; /* Centralizar o conteúdo */
-    margin: auto;  
+.calendario-day button {
+    font-size: 1rem;
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
 }
 
-td.inactive {
-    color: #ccc;
-    background-color: #f9f9f9;
-    cursor: default;
+.calendario-day button:hover {
+    text-decoration: underline;
 }
 
-.calendario-container::before {
-    content: '';
-    position: absolute;
-    left: -10px;
-    top: -10px;
-    right: -10px;
-    bottom: -10px;
-    background-color: white;
-    border-radius: 10px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-    z-index: -1;
+/* Estilo para o dia atual */
+.current-day {
+    background-color: #e0f7fa;
+    color: #007bff;
+    font-weight: bold;
+    border-radius: 50%;
+}
+
+/* Estilo para os dias de outros meses */
+.inactive {
+    opacity: 0.3;
+}
+
+/* Estilo de responsividade */
+@media (max-width: 768px) {
+    .calendario-title {
+        font-size: 1.2rem;
+    }
+
+    .nav-btn {
+        width: 30px;
+        height: 30px;
+        font-size: 16px;
+    }
+
+    .calendario-day {
+        height: 60px;
+        font-size: 0.9rem;
+    }
 }
