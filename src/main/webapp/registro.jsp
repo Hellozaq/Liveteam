@@ -14,27 +14,54 @@
     </head>
     <body>
         <%@ include file="WEB-INF/jspf/header.jspf" %>
-        <main>
-            <div class="form-container">
-                <h2>Crie sua conta</h2>
-                <form action="${pageContext.request.contextPath}/RegistroServlet" method="post">
-                    <label for="nome">Nome:</label>
-                    <input type="text" id="nome" name="nome" required>
+<main>
+    <div class="form-container">
+        <h2>Crie sua conta</h2>
 
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" required>
+        <!-- Exibe mensagens de erro -->
+        <%
+            String error = request.getParameter("error");
+            if (error != null) {
+                switch (error) {
+                    case "missing":
+                        out.println("<p class='error'>Por favor, preencha todos os campos.</p>");
+                        break;
+                    case "nomatch":
+                        out.println("<p class='error'>As senhas não coincidem.</p>");
+                        break;
+                    case "emailtaken":
+                        out.println("<p class='error'>E-mail já está registrado.</p>");
+                        break;
+                    case "database":
+                        out.println("<p class='error'>Erro ao registrar. Tente novamente.</p>");
+                        break;
+                    case "exception":
+                        out.println("<p class='error'>Erro no servidor. Tente mais tarde.</p>");
+                        break;
+                }
+            }
+        %>
 
-                    <label for="senha">Senha:</label>
-                    <input type="password" id="senha1" name="senha1" required>
-                    
-                    <label for="senha">Repetir a Senha:</label>
-                    <input type="password" id="senha2" name="senha2" required>
-                    
-                    <button type="submit" class="button-success">Registrar</button>
-                </form>
-                    <p>Já tem um registro? <a href="${pageContext.request.contextPath}/login.jsp">Faça login aqui.</a></p> 
-            </div>
-        </main>
+        <form action="${pageContext.request.contextPath}/RegistroServlet" method="post">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <label for="senha1">Senha:</label>
+            <input type="password" id="senha1" name="senha1" required>
+
+            <label for="senha2">Repetir a Senha:</label>
+            <input type="password" id="senha2" name="senha2" required>
+
+            <button type="submit" class="button-success">Registrar</button>
+        </form>
+
+        <p>Já tem um registro? <a href="${pageContext.request.contextPath}/login.jsp">Faça login aqui.</a></p>
+    </div>
+</main>
+
         <%@ include file="WEB-INF/jspf/footer.jspf" %>
         
         <script type="text/javascript" src="assets/script/senha.js" defer></script>
