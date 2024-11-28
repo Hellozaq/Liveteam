@@ -20,7 +20,7 @@
           <!-- Links -->
           <h6 class="text-uppercase fw-bold mb-4" style="margin-bottom: 15px;">Saiba mais</h6>
           <p><a href="${pageContext.request.contextPath}/home.jsp" class="text-reset">Início</a></p>
-          <p><a href="#" class="text-reset">Sobre nós</a></p>
+          <p><a href="${pageContext.request.contextPath}/sobreNos.jsp" class="text-reset">Sobre Nós</a></p>
           <p><a href="${pageContext.request.contextPath}/faleConosco.jsp" class="text-reset">Fale Conosco</a></p>
           <p><a href="${pageContext.request.contextPath}/faq.jsp" class="text-reset">FAQ</a></p>
         </div>
