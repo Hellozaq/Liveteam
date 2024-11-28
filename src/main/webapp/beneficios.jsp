@@ -47,7 +47,7 @@
                         },
                         {
                             title: 'Suporte e Atendimento ao Cliente',
-                            description: 'Na área administrativa, você tem acesso a suporte ao vivo, incluindo: <ul><li>Chat em tempo real para esclarecer dúvidas.</li><li>Telefone e e-mail para comunicação com a equipe de suporte.</li></ul>'
+                            description: 'Na área administrativa, você tem acesso a suporte ao vivo, incluindo: Chat em tempo real para esclarecer dúvidas. Telefone e e-mail para comunicação com a equipe de suporte.'
                         },
                         {
                             title: 'Atualização de Informações de Saúde',
