@@ -10,8 +10,20 @@
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
     <body>
-        <%@ include file="WEB-INF/jspf/header.jspf" %>
+        
+            <%
+                String status = request.getParameter("status");
+                String message = request.getParameter("message");
+            %>
 
+            <% if (status != null && message != null) { %>
+                <div class="alert alert-<%= status %>">
+                    <%= message %>
+                </div>
+            <% } %>
+            
+        <%@ include file="WEB-INF/jspf/header.jspf" %>
+        <!-- Conteúdo principal da página home.jsp aqui -->
         <!-- Vue Container -->
         <main id="home-app" class="home-page">
             <div class="global-vue">

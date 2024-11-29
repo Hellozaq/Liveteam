@@ -203,7 +203,7 @@
             </table>
         </div>
     </div>
-
+    <%@ include file="WEB-INF/jspf/footer.jspf" %>
     <script type="text/javascript">
         const app = Vue.createApp({
             data() {
