@@ -124,8 +124,8 @@
         int anoAtual = dataAtual.getYear();
     %>
     <div class=" container mt-4 form-container">
-        <h2>Inserir Informações Diárias</h2>
-        <form action="SalvarDadosDiarios.jsp" method="get" novalidate>
+        <h2>Inserir Informações do dia <%= diaAtual %>/<%= mesAtual %></h2>
+        <form action="SalvarDadosDiarios.jsp" method="post" novalidate>
             <!-- Data -->
              <!-- Data (ocultada para o usuário) -->
             <div class="form-section" style="display:none;">
@@ -198,9 +198,18 @@
                     <input type="number" id="duracao_treino" name="duracao_treino" class="form-control" min="1" required>
                 </div>
                 <div class="mb-3">
-                    <label for="intensidade_treino" class="form-label">Intensidade</label>
-                    <input type="text" id="intensidade_treino" name="intensidade_treino" class="form-control" maxlength="50" required>
+                <label for="intensidade_treino" class="form-label">Intensidade</label>
+                <div class="btn-group" role="group">
+                    <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino1" value="BAIXO" autocomplete="off" required>
+                    <label class="btn btn-dark" for="intensidade_treino1">BAIXA</label>
+
+                    <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino2" value="MEDIO" autocomplete="off" required>
+                    <label class="btn btn-warning" for="intensidade_treino2">MÉDIA</label>
+
+                    <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino3" value="ALTO" autocomplete="off" required>
+                    <label class="btn btn-danger" for="intensidade_treino3">ALTA</label>
                 </div>
+            </div>
                 <div class="mb-3">
                     <label for="detalhes_exercicio" class="form-label">Detalhes</label>
                     <textarea id="detalhes_exercicio" name="detalhes_exercicio" class="form-control" maxlength="500"></textarea>
