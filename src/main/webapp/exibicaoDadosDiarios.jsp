@@ -190,7 +190,7 @@
         <table class="table table-custom">
             <thead>
                 <tr>
-                    <th scope="col">Água</th>
+                    <th scope="col">Água (Litros)</th>
                     <th scope="col">Outros Líquidos</th>
                     <th scope="col">Observações</th>
                 </tr>
