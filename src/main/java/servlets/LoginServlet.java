@@ -21,8 +21,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
-        // Capturar parâmetros do usuário
+        
+// Capturar parâmetros do usuário
         String email = request.getParameter("email");
         String senha = request.getParameter("senha");
 
@@ -53,17 +53,15 @@ public class LoginServlet extends HttpServlet {
             String password = props.getProperty("db.password");
             String driver = props.getProperty("db.driver");
 
-            // Registrar o driver
+             // Registrar o driver
             Class.forName(driver);
-
             // Conectar ao banco
             conn = DriverManager.getConnection(url, username, password);
 
-            // Consulta SQL
+             // Consulta SQL
             String sql = "SELECT nome, id, senha FROM usuario WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
-
             // Executar a consulta
             rs = ps.executeQuery();
 
@@ -75,14 +73,17 @@ public class LoginServlet extends HttpServlet {
                     String nomeUsuario = rs.getString("nome");
                     String idUsuario = rs.getString("id");
 
-                    // Criar uma nova sessão
+                     // Criar uma nova sessão
                     HttpSession session = request.getSession();
                     session.setAttribute("usuarioLogado", nomeUsuario);
                     session.setAttribute("idUsuario", idUsuario);
+                    session.setAttribute("usuarioEmail", email);
+
+                    System.out.println("Email configurado na sessão: " + email);
 
                     response.sendRedirect("home.jsp");
                 } else {
-                    // Senha incorreta
+                     // Senha incorreta
                     System.out.println("Senha incorreta para o email: " + email);
                     response.sendRedirect("login.jsp?error=invalid");
                 }
@@ -91,7 +92,6 @@ public class LoginServlet extends HttpServlet {
                 System.out.println("Usuário não encontrado: " + email);
                 response.sendRedirect("login.jsp?error=invalid");
             }
-
         } catch (Exception e) {
             e.printStackTrace();
             response.sendRedirect("login.jsp?error=exception");
