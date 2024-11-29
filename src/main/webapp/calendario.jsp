@@ -17,7 +17,7 @@
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
     <style>
         .calendario-container {
-            max-width: 800px; /* Aumenta o tamanho do calendário */
+            max-width: 800px;
             margin: auto;
             padding: 20px;
             border-radius: 8px;
@@ -82,34 +82,28 @@
         }
 
         .calendario-day a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-            color: inherit;
-            text-decoration: none;
+            display: block; /* Faz o link ocupar toda a célula */
+            width: 100%; /* Ocupa toda a célula */
+            height: 100%; /* Ocupa toda a célula */
+            color: inherit; /* Herda a cor do texto */
+            text-decoration: none; /* Remove o sublinhado */
             font-size: 2rem;
+            text-align: center;
+            line-height: 60px; /* Ajusta a altura da linha para centralizar o número */
         }
 
         .current-day {
-            background-color: #e0f7fa;
-            color: #007bff;
+            background-color: #e0f7fa; /* Cor de fundo do dia atual */
+            color: #007bff; /* Cor do texto */
             font-weight: bold;
-            border-radius: 50%;
-            width: 40px; /* Ajusta o tamanho da bolinha */
-            height: 40px; /* Ajusta o tamanho da bolinha */
+            width: 100%;
+            height: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto; /* Centraliza a bolinha na célula */
-            position: absolute;
-        }
-
-        .calendario-day span {
-            display: block; /* Garantir que o número do dia ocupe toda a célula */
+            margin: 0 auto;
             position: relative;
-            z-index: 1; /* Garante que o número fique sobre a bolinha */
+            border-radius: 0; /* Remove o arredondamento para um quadrado */
         }
 
         .calendario-day:hover {
@@ -122,42 +116,16 @@
             pointer-events: none; /* Evita o clique em dias de outro mês */
         }
 
-
-
-        .current-day {
-            background-color: #e0f7fa;
-            color: #007bff;
-            font-weight: bold;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative; /* Para garantir que a borda inferior se posicione corretamente */
-            box-sizing: border-box; /* Evita que a borda afete o layout do conteúdo */
-        }
-
-        /* Alinha o conteúdo dentro da célula ao centro */
-        .calendario-day a {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            height: 100%;
-        }
-
         .page-description {
             text-align: center;
             margin-bottom: 20px;
             font-size: 1.2rem;
             color: #555;
         }
-        td.calendario-day.current-day{
-            margin-top: 14%;
-        }
-        .calendario-week {
-            border-bottom: 2px solid #e0e0e0; /* Adiciona uma linha entre as semanas */
-        }
 
+        .calendario-week {
+            border-bottom: 2px solid #e0e0e0;
+        }
     </style>
 </head>
 <body>
@@ -165,9 +133,8 @@
     
     <div id="app" class="app-container">
         <div class="page-description">
-            <p>Bem-vindo ao Calendário Interativo!</p>
-            <p>Use este calendário para navegar pelos dias e acessar dados específicos de cada data.</p>
-            <p>Clique em qualquer data dentro do mês atual para ver informações detalhadas.</p>
+            <p></P>
+            <p>Use este calendário para navegar pelos dias e acessar dados que registrou em cada data.</p>
         </div>
         
         <div class="calendario-container">
@@ -205,91 +172,96 @@
     </div>
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
     <script type="text/javascript">
-        const app = Vue.createApp({
-            data() {
-                return {
-                    currentMonth: new Date().getMonth(),
-                    currentYear: new Date().getFullYear(),
-                    calendarDays: []
-                };
+    const app = Vue.createApp({
+        data() {
+            return {
+                currentMonth: new Date().getMonth(),
+                currentYear: new Date().getFullYear(),
+                calendarDays: []
+            };
+        },
+        computed: {
+            currentMonthName() {
+                const months = [
+                    "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+                    "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
+                ];
+                return months[this.currentMonth];
             },
-            computed: {
-                currentMonthName() {
-                    const months = [
-                        "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
-                        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro"
-                    ];
-                    return months[this.currentMonth];
-                }
-            },
-            methods: {
-                prevMonth() {
-                    this.currentMonth--;
-                    if (this.currentMonth < 0) {
-                        this.currentMonth = 11;
-                        this.currentYear--;
-                    }
-                    this.generateCalendar();
-                },
-                nextMonth() {
-                    this.currentMonth++;
-                    if (this.currentMonth > 11) {
-                        this.currentMonth = 0;
-                        this.currentYear++;
-                    }
-                    this.generateCalendar();
-                },
-                isToday(day) {
-                    const today = new Date();
-                    return (
-                        day.date &&
-                        day.date === today.getDate() &&
-                        this.currentMonth === today.getMonth() &&
-                        this.currentYear === today.getFullYear()
-                    );
-                },
-                generateCalendar() {
-                    const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
-                    const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
-                    const totalDaysInMonth = lastDayOfMonth.getDate();
-
-                    const firstWeekday = firstDayOfMonth.getDay();
-                    const lastWeekday = lastDayOfMonth.getDay();
-
-                    let calendar = [];
-                    let week = [];
-
-                    const previousMonth = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
-                    const previousYear = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
-                    const lastDayOfPreviousMonth = new Date(previousYear, previousMonth + 1, 0).getDate();
-
-                    for (let i = firstWeekday - 1; i >= 0; i--) {
-                        week.push({ date: lastDayOfPreviousMonth - i, isOtherMonth: true });
-                    }
-
-                    for (let day = 1; day <= totalDaysInMonth; day++) {
-                        week.push({ date: day, isOtherMonth: false });
-                        if (week.length === 7) {
-                            calendar.push(week);
-                            week = [];
-                        }
-                    }
-
-                    const daysNeededFromNextMonth = 6 - lastWeekday;
-                    for (let i = 1; i <= daysNeededFromNextMonth; i++) {
-                        week.push({ date: i, isOtherMonth: true });
-                    }
-
-                    if (week.length > 0) calendar.push(week);
-
-                    this.calendarDays = calendar;
-                }
-            },
-            mounted() {
-                this.generateCalendar();
+            isCurrentMonth() {
+                const today = new Date();
+                return today.getMonth() === this.currentMonth && today.getFullYear() === this.currentYear;
             }
-        });
-        app.mount("#app");
-    </script>
+        },
+        methods: {
+            prevMonth() {
+                this.currentMonth--;
+                if (this.currentMonth < 0) {
+                    this.currentMonth = 11;
+                    this.currentYear--;
+                }
+                this.generateCalendar();
+            },
+            nextMonth() {
+                this.currentMonth++;
+                if (this.currentMonth > 11) {
+                    this.currentMonth = 0;
+                    this.currentYear++;
+                }
+                this.generateCalendar();
+            },
+            isToday(day) {
+                const today = new Date();
+                return (
+                    day.date &&
+                    day.date === today.getDate() &&
+                    this.currentMonth === today.getMonth() &&
+                    this.currentYear === today.getFullYear()
+                );
+            },
+            generateCalendar() {
+                const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
+                const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
+                const totalDaysInMonth = lastDayOfMonth.getDate();
+
+                const firstWeekday = firstDayOfMonth.getDay();
+                const lastWeekday = lastDayOfMonth.getDay();
+
+                let calendar = [];
+                let week = [];
+
+                const previousMonth = this.currentMonth === 0 ? 11 : this.currentMonth - 1;
+                const previousYear = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
+                const lastDayOfPreviousMonth = new Date(previousYear, previousMonth + 1, 0).getDate();
+
+                for (let i = firstWeekday - 1; i >= 0; i--) {
+                    week.push({ date: lastDayOfPreviousMonth - i, isOtherMonth: true });
+                }
+
+                for (let day = 1; day <= totalDaysInMonth; day++) {
+                    week.push({ date: day, isOtherMonth: false });
+                    if (week.length === 7) {
+                        calendar.push(week);
+                        week = [];
+                    }
+                }
+
+                const daysNeededFromNextMonth = 6 - lastWeekday;
+                for (let i = 1; i <= daysNeededFromNextMonth; i++) {
+                    week.push({ date: i, isOtherMonth: true });
+                }
+
+                if (week.length > 0) calendar.push(week);
+
+                this.calendarDays = calendar;
+            }
+        },
+        mounted() {
+            this.generateCalendar();
+        }
+    });
+    app.mount("#app");
+</script>
+
 </body>
 </html>
