@@ -8,104 +8,10 @@
     <title>Inserir Dados Diários</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
+    
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/formulario-diario-page.css">
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
-    <style>
-        .form-section {
-            margin-bottom: 30px;
-        }
 
-        .form-section h3 {
-            color: #198754;
-        }
-
-        .form-container form {
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .btn-primary {
-            max-width: 300px;
-            max-height: 300px;
-            margin-right: 8%;
-            font-size: 1.5rem;
-        }
-
-        .btn-group {
-            display: flex; /* Organiza os botões lado a lado */
-            flex-wrap: wrap; /* Permite quebra de linha se necessário */
-            gap: 10px; /* Espaçamento entre os botões */
-        }
-
-        /* Estilo padrão dos botões */
-        .btn {
-            background-color: #f8f9fa; /* Cor de fundo padrão */
-            border-color: #ccc; /* Cor da borda padrão */
-            color: #495057; /* Cor do texto */
-            font-weight: bold;
-            padding: 10px 15px; /* Ajusta o tamanho do botão */
-            text-align: center; /* Centraliza o texto */
-            border-radius: 5px; /* Bordas arredondadas */
-            box-shadow: none; /* Remove sombras extras */
-            transition: all 0.3s ease; /* Animação suave */
-        }
-
-        /* Estilo quando selecionado */
-        .btn-check:checked + .btn {
-            background-color: #4CAF50; /* Verde mais forte */
-            border-color: #388E3C;
-            color: white;
-            box-shadow: 0 0 10px rgba(0, 128, 0, 0.5); /* Destaque visual */
-        }
-
-        /* Efeito ao passar o mouse */
-        .btn:hover {
-            background-color: #e9ecef;
-            border-color: #b0b0b0;
-        }
-
-        /* Estilo para níveis de avaliação */
-        .btn-check:checked + .btn-dark {
-            background-color: #1c1c1c; /* Nível 1 */
-            border-color: #121212;
-            color: white;
-        }
-
-        .btn-check:checked + .btn-danger {
-            background-color: #ff4d4d; /* Nível 2 */
-            border-color: #e60000;
-            color: white;
-        }
-
-        .btn-check:checked + .btn-warning {
-            background-color: #ffb74d; /* Nível 4 */
-            border-color: #f57c00;
-            color: white;
-        }
-
-        .btn-check:checked + .btn-info {
-            background-color: #29b6f6; /* Nível 6 */
-            border-color: #0288d1;
-            color: white;
-        }
-
-        .btn-check:checked + .btn-success {
-            background-color: #66bb6a; /* Nível 8 */
-            border-color: #388e3c;
-            color: white;
-        }
-
-        /* Adaptação para mobile */
-        @media (max-width: 768px) {
-            .btn-group {
-                flex-direction: column; /* Botões em coluna no mobile */
-                align-items: stretch; /* Ocupam toda a largura */
-            }
-            .btn {
-                width: 100%; /* Cada botão ocupa 100% da largura disponível */
-                text-align: center;
-            }
-        }
-    </style>
 
 </head>
 <body>
@@ -149,15 +55,15 @@
                 <h3>Alimentação</h3>
                 <div class="mb-3">
                     <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
-                    <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500"></textarea>
+                    <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="almoco" class="form-label">Almoço</label>
-                    <textarea id="almoco" name="almoco" class="form-control" maxlength="500"></textarea>
+                    <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="jantar" class="form-label">Jantar</label>
-                    <textarea id="jantar" name="jantar" class="form-control" maxlength="500"></textarea>
+                    <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
                 </div>
                 <div class="mb-3">
                     <label for="lanches" class="form-label">Lanches</label>
@@ -299,6 +205,46 @@
                 </div>
         </form>
     </div>
+        <div class="modal fade" id="modalMensagem" tabindex="-1" aria-labelledby="modalMensagemLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="modalMensagemLabel">Mensagem</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    Preencha todos os campos e check-box obrigatórios corretamente antes de enviar o formulário.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
 </body>
+<script>
+    const formularioDiario = document.querySelector('form[action="SalvarDadosDiarios.jsp"]');
+
+    formularioDiario.addEventListener('submit', function(event) {
+        let isValid = true;
+
+        // Verificar campos obrigatórios
+        const requiredFields = formularioDiario.querySelectorAll('[required]');
+        requiredFields.forEach(field => {
+            if (!field.value || (field.type === 'radio' && ![...document.getElementsByName(field.name)].some(radio => radio.checked))) {
+                isValid = false;
+                field.classList.add('is-invalid');
+            } else {
+                field.classList.remove('is-invalid');
+            }
+        });
+
+        if (!isValid) {
+            event.preventDefault();
+            new bootstrap.Modal(document.getElementById('modalMensagem')).show();
+        }
+    });
+</script>
+
 </html>

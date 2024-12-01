@@ -15,8 +15,10 @@
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/calendario-page.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">  
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
+
+</head>
     <style>
-        .calendario-container {
+            .calendario-container {
             max-width: 800px;
             margin: auto;
             padding: 20px;
@@ -127,7 +129,6 @@
             border-bottom: 2px solid #e0e0e0;
         }
     </style>
-</head>
 <body>
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     

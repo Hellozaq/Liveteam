@@ -14,37 +14,11 @@
 <head>
     <meta charset="UTF-8">
     <title>Dados do Dia</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/exibir-dados-page.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        /* Estilos customizados */
-        .data-container {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+    
+    <%@ include file="WEB-INF/jspf/html-head.jspf" %> 
 
-        .data-title {
-            color: #2d6a4f;
-        }
-
-        .table-custom {
-            background-color: #f1fdf2;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
-
-        .table-custom th {
-            background-color: #4caf50;
-            color: white;
-            text-align: center;
-        }
-
-        .table-custom td {
-            text-align: center;
-            padding: 10px;
-        }
-    </style>
 </head>
 <body>
 

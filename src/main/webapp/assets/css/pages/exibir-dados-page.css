@@ -1,0 +1,32 @@
+/*
+Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
+*/
+/* Estilos customizados */
+        .data-container {
+            background-color: #ffffff;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .data-title {
+            color: #2d6a4f;
+        }
+
+        .table-custom {
+            background-color: #f1fdf2;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+
+        .table-custom th {
+            background-color: #4caf50 !important;
+            color: white !important;
+            text-align: center !important;
+        }
+
+        .table-custom td {
+            text-align: center;
+            padding: 10px;
+        }

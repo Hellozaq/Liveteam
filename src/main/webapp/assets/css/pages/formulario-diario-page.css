@@ -1,0 +1,95 @@
+.form-section {
+    margin-bottom: 30px !important;
+}
+
+.form-section h3 {
+    color: #198754 !important;
+}
+
+.form-container form {
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+.btn-primary {
+    max-width: 300px !important;
+    max-height: 300px !important;
+    margin-right: 8% !important;
+    font-size: 1.5rem !important;
+}
+
+.btn-group {
+    display: flex !important; /* Organiza os botões lado a lado */
+    flex-wrap: wrap !important; /* Permite quebra de linha se necessário */
+    gap: 10px !important; /* Espaçamento entre os botões */
+}
+
+/* Estilo padrão dos botões */
+.btn {
+    background-color: #f8f9fa !important; /* Cor de fundo padrão */
+    border-color: #ccc !important; /* Cor da borda padrão */
+    color: #495057 !important; /* Cor do texto */
+    font-weight: bold !important;
+    padding: 10px 15px !important; /* Ajusta o tamanho do botão */
+    text-align: center !important; /* Centraliza o texto */
+    border-radius: 5px !important; /* Bordas arredondadas */
+    box-shadow: none !important; /* Remove sombras extras */
+    transition: all 0.3s ease !important; /* Animação suave */
+}
+
+/* Estilo quando selecionado */
+.btn-check:checked + .btn {
+    background-color: #4CAF50 !important; /* Verde mais forte */
+    border-color: #388E3C !important;
+    color: white !important;
+    box-shadow: 0 0 10px rgba(0, 128, 0, 0.5) !important; /* Destaque visual */
+}
+
+/* Efeito ao passar o mouse */
+.btn:hover {
+    background-color: #e9ecef !important;
+    border-color: #b0b0b0 !important;
+}
+
+/* Estilo para níveis de avaliação */
+.btn-check:checked + .btn-dark {
+    background-color: #1c1c1c !important; /* Nível 1 */
+    border-color: #121212 !important;
+    color: white !important;
+}
+
+.btn-check:checked + .btn-danger {
+    background-color: #ff4d4d !important; /* Nível 2 */
+    border-color: #e60000 !important;
+    color: white !important;
+}
+
+.btn-check:checked + .btn-warning {
+    background-color: #ffb74d !important; /* Nível 4 */
+    border-color: #f57c00 !important;
+    color: white !important;
+}
+
+.btn-check:checked + .btn-info {
+    background-color: #29b6f6 !important; /* Nível 6 */
+    border-color: #0288d1 !important;
+    color: white !important;
+}
+
+.btn-check:checked + .btn-success {
+    background-color: #66bb6a !important; /* Nível 8 */
+    border-color: #388e3c !important;
+    color: white !important;
+}
+
+/* Adaptação para mobile */
+@media (max-width: 768px) {
+    .btn-group {
+        flex-direction: column !important; /* Botões em coluna no mobile */
+        align-items: stretch !important; /* Ocupam toda a largura */
+    }
+    .btn {
+        width: 100% !important; /* Cada botão ocupa 100% da largura disponível */
+        text-align: center !important;
+    }
+}
