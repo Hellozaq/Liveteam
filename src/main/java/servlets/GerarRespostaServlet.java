@@ -10,16 +10,72 @@ import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigDecimal;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.Properties;
 
 @WebServlet("/GerarRespostaServlet")
 public class GerarRespostaServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // Recupera os dados do formulário
-        String nome = request.getParameter("nome");
-        String email = request.getParameter("email");
-        String mensagem = request.getParameter("mensagem").replaceAll("[\\n\\r]+", " ");
+        gerarPdf(request, response);
+    }
+
+    @Override
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        gerarPdf(request, response);
+    }
+
+    private void gerarPdf(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // Recupera os dados enviados pelo formulário
+        String idade = request.getParameter("idade");
+        String sexo = request.getParameter("sexo");
+        String alturaCm = request.getParameter("altura_cm");
+        String pesoKg = request.getParameter("peso_kg");
+        String objetivoPrincipal = request.getParameter("objetivo_principal");
+        String frequenciaSemanalTreino = request.getParameter("frequencia_semanal_treino");
+        String duracaoMediaTreino = request.getParameter("duracao_media_treino_minutos");
+        String tipoAtividadeFisica = request.getParameter("tipo_atividade_fisica");
+        String objetivosTreino = request.getParameter("objetivos_treino");
+        String nacionalidade = request.getParameter("nacionalidade");
+        String residenciaAtual = request.getParameter("residencia_atual");
+        String alimentosFavoritos = request.getParameter("alimentos_favoritos");
+        String alimentosQueEvita = request.getParameter("alimentos_que_evita");
+        String alimentosParaIncluirExcluir = request.getParameter("alimentos_para_incluir_excluir");
+        String usaSuplementos = request.getParameter("usa_suplementos");
+        String suplementosUsados = request.getParameter("suplementos_usados");
+        String tempoPorTreino = request.getParameter("tempo_por_treino_minutos");
+        String cafeDaManha = request.getParameter("cafe_da_manha");
+        String almoco = request.getParameter("almoco");
+        String jantar = request.getParameter("jantar");
+
+        // Monta a mensagem a ser enviada para o Gemini com os dados do formulário
+        String mensagem = "Por favor, crie um plano de dieta e treino com base nas seguintes informações:\n\n" +
+                "Idade: " + idade + "\n" + 
+                "Sexo: " + sexo + "\n" +
+                "Altura (cm): " + alturaCm + "\n" +
+                "Peso (kg): " + pesoKg + "\n" +
+                "Objetivo Principal: " + objetivoPrincipal + "\n" +
+                "Frequência Semanal de Treino: " + frequenciaSemanalTreino + "\n" +
+                "Duração Média do Treino: " + duracaoMediaTreino + "\n" +
+                "Tipo de Atividade Física: " + tipoAtividadeFisica + "\n" +
+                "Objetivos do Treino: " + objetivosTreino + "\n" +
+                "Nacionalidade: " + nacionalidade + "\n" +
+                "Residência Atual: " + residenciaAtual + "\n" +
+                "Alimentos Favoritos: " + alimentosFavoritos + "\n" +
+                "Alimentos que Evita: " + alimentosQueEvita + "\n" +
+                "Alimentos para Incluir/Excluir: " + alimentosParaIncluirExcluir + "\n" +
+                "Usa Suplementos: " + usaSuplementos + "\n" +
+                "Suplementos Usados: " + suplementosUsados + "\n" +
+                "Tempo de Treino por Sessão: " + tempoPorTreino + "\n" +
+                "Café da Manhã: " + cafeDaManha + "\n" +
+                "Almoço: " + almoco + "\n" +
+                "Jantar: " + jantar;
 
         String respostaGemini = "";
         try {
@@ -29,9 +85,71 @@ public class GerarRespostaServlet extends HttpServlet {
             respostaGemini = "Erro ao obter resposta do Gemini: " + e.getMessage();
         }
 
+        // Conexão com o banco de dados
+        Connection conn = null;
+        PreparedStatement ps = null;
+
+        try {
+            // Carrega as propriedades do banco de dados
+            Properties props = loadDbProperties();
+            String url = props.getProperty("db.url");
+            String username = props.getProperty("db.username");
+            String password = props.getProperty("db.password");
+
+            // Estabelece a conexão com o banco
+            conn = DriverManager.getConnection(url, username, password);
+
+            // SQL de inserção
+            String sql = "INSERT INTO plano_dieta_treino (" +
+                    "idade, sexo, altura_cm, peso_kg, objetivo_principal, frequencia_semanal_treino, " +
+                    "duracao_media_treino_minutos, tipo_atividade_fisica, objetivos_treino, nacionalidade, " +
+                    "residencia_atual, alimentos_favoritos, alimentos_que_evita, alimentos_para_incluir_excluir, " +
+                    "usa_suplementos, suplementos_usados, tempo_por_treino_minutos, cafe_da_manha, almoco, jantar) " +
+                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            // Prepara a query para execução
+            ps = conn.prepareStatement(sql);
+
+            // Preenche os parâmetros da query com os dados do formulário
+           ps.setInt(1, Integer.parseInt(idade));  // Adiciona a idade
+           ps.setString(2, sexo);
+           ps.setBigDecimal(3, new BigDecimal(alturaCm));
+           ps.setBigDecimal(4, new BigDecimal(pesoKg));
+           ps.setString(5, objetivoPrincipal);
+           ps.setInt(6, Integer.parseInt(frequenciaSemanalTreino));
+           ps.setInt(7, Integer.parseInt(duracaoMediaTreino));
+           ps.setString(8, tipoAtividadeFisica);
+           ps.setString(9, objetivosTreino);
+           ps.setString(10, nacionalidade);
+           ps.setString(11, residenciaAtual);
+           ps.setString(12, alimentosFavoritos);
+           ps.setString(13, alimentosQueEvita);
+           ps.setString(14, alimentosParaIncluirExcluir);
+           ps.setBoolean(15, Boolean.parseBoolean(usaSuplementos));
+           ps.setString(16, suplementosUsados);
+           ps.setInt(17, Integer.parseInt(tempoPorTreino));
+           ps.setString(18, cafeDaManha);
+           ps.setString(19, almoco);
+           ps.setString(20, jantar);
+
+            // Executa a inserção no banco de dados
+            ps.executeUpdate();
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro de SQL: " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) ps.close();
+                if (conn != null) conn.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
         // Configura a resposta para download do PDF
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition", "attachment; filename=\"resposta.pdf\"");
+        response.setHeader("Content-Disposition", "attachment; filename=\"plano_dieta_treino.pdf\"");
 
         // Cria o documento PDF
         try (PDDocument document = new PDDocument()) {
@@ -45,50 +163,57 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.newLineAtOffset(50, 700);
 
                 // Adiciona os dados do usuário ao PDF
-                contentStream.showText("Dados do Usuário");
+                contentStream.showText("Plano de Dieta e Treino");
                 contentStream.newLine();
                 contentStream.setFont(PDType1Font.HELVETICA, 12);
-                contentStream.showText("Nome: " + nome);
+                contentStream.showText("Sexo: " + sexo);
                 contentStream.newLine();
-                contentStream.showText("Email: " + email);
+                contentStream.showText("Altura (cm): " + alturaCm);
                 contentStream.newLine();
-                contentStream.showText("Mensagem: " + mensagem);
+                contentStream.showText("Peso (kg): " + pesoKg);
                 contentStream.newLine();
+                contentStream.showText("Objetivo Principal: " + objetivoPrincipal);
                 contentStream.newLine();
-
-                // Adiciona a resposta do Gemini ao PDF com quebra de linha automática
-                contentStream.showText("Resposta do Gemini:");
+                contentStream.showText("Frequência Semanal de Treino: " + frequenciaSemanalTreino);
                 contentStream.newLine();
-                addWrappedText(contentStream, respostaGemini, 80);
-
+                contentStream.showText("Duração Média do Treino: " + duracaoMediaTreino);
+                contentStream.newLine();
+                contentStream.showText("Tipo de Atividade Física: " + tipoAtividadeFisica);
+                contentStream.newLine();
+                contentStream.showText("Objetivos do Treino: " + objetivosTreino);
+                contentStream.newLine();
+                contentStream.showText("Nacionalidade: " + nacionalidade);
+                contentStream.newLine();
+                contentStream.showText("Residência Atual: " + residenciaAtual);
+                contentStream.newLine();
+                contentStream.showText("Alimentos Favoritos: " + alimentosFavoritos);
+                contentStream.newLine();
+                contentStream.showText("Alimentos que Evita: " + alimentosQueEvita);
+                contentStream.newLine();
+                contentStream.showText("Alimentos para Incluir/Excluir: " + alimentosParaIncluirExcluir);
+                contentStream.newLine();
+                contentStream.showText("Usa Suplementos: " + usaSuplementos);
+                contentStream.newLine();
+                contentStream.showText("Suplementos Usados: " + suplementosUsados);
+                contentStream.newLine();
+                contentStream.showText("Tempo de Treino por Sessão: " + tempoPorTreino);
+                contentStream.newLine();
+                contentStream.showText("Resposta: " + respostaGemini);
                 contentStream.endText();
             }
 
-            // Salva o PDF na resposta do Servlet
             document.save(response.getOutputStream());
         } catch (IOException e) {
-            throw new ServletException("Erro ao gerar o PDF: " + e.getMessage());
+            e.printStackTrace();
+            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao gerar PDF: " + e.getMessage());
         }
     }
 
-    // Método auxiliar para adicionar texto com quebras de linha automáticas no PDF
-    private void addWrappedText(PDPageContentStream contentStream, String text, int maxLineLength) throws IOException {
-        String[] words = text.split(" ");
-        StringBuilder line = new StringBuilder();
-
-        for (String word : words) {
-            if (line.length() + word.length() > maxLineLength) {
-                contentStream.showText(line.toString().replaceAll("[\\n\\r]+", " "));
-                contentStream.newLine();
-                line = new StringBuilder();
-            }
-            line.append(word).append(" ");
+    private Properties loadDbProperties() throws IOException {
+        Properties props = new Properties();
+        try (InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties")) {
+            props.load(input);
         }
-
-        // Adiciona a última linha restante
-        if (line.length() > 0) {
-            contentStream.showText(line.toString().replaceAll("[\\n\\r]+", " "));
-            contentStream.newLine();
-        }
+        return props;
     }
 }
