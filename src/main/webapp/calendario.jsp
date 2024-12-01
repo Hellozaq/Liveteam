@@ -1,8 +1,9 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <% 
+    // Verificação de sessão para garantir que o usuário esteja logado
     if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
-        response.sendRedirect("login.jsp");
+        response.sendRedirect("login.jsp"); // Redireciona para a página de login se o usuário não estiver logado
         return;  
     }
 %>
@@ -10,140 +11,170 @@
 <head>
     <meta charset="UTF-8">
     <title>Calendário Interativo</title>
+    
+    <!-- Inclusão da biblioteca Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
+    
+    <!-- Inclusão do Bootstrap para estilização -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Estilos personalizados para a página -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/calendario-page.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">  
+    
+    <!-- Inclusão do cabeçalho comum da página -->
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
-
 </head>
-    <style>
-            .calendario-container {
-            max-width: 800px;
-            margin: auto;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            background-color: #f9f9f9;
-        }
 
-        .calendario-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
+<!-- Estilos personalizados da página -->
+<style>
+    /* Estilos para o contêiner do calendário */
+    .calendario-container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f9f9f9;
+    }
 
-        .nav-btn {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            font-size: 18px;
-            font-weight: bold;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-        }
+    /* Estilos para o cabeçalho do calendário */
+    .calendario-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+    }
 
-        .nav-btn:hover {
-            background-color: #0056b3;
-        }
+    /* Botões de navegação */
+    .nav-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+    }
 
-        .calendario-title {
-            font-size: 2rem;
-            font-weight: 600;
-            color: #333;
-            text-align: center;
-        }
+    /* Hover para o botão de navegação */
+    .nav-btn:hover {
+        background-color: #0056b3;
+    }
 
-        .calendario-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 10px;
-        }
+    /* Título do calendário */
+    .calendario-title {
+        font-size: 2rem;
+        font-weight: 600;
+        color: #333;
+        text-align: center;
+    }
 
-        .calendario-thead th {
-            font-weight: 600;
-            color: #555;
-            padding: 12px;
-            text-align: center;
-        }
+    /* Estilos para a tabela do calendário */
+    .calendario-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 10px;
+    }
 
-        .calendario-day {
-            text-align: center;
-            vertical-align: middle;
-            font-size: 2rem;
-            font-weight: 500;
-            padding: 20px;
-            transition: background-color 0.3s;
-            position: relative;
-        }
+    /* Estilos para os dias da semana no cabeçalho da tabela */
+    .calendario-thead th {
+        font-weight: 600;
+        color: #555;
+        padding: 12px;
+        text-align: center;
+    }
 
-        .calendario-day a {
-            display: block; /* Faz o link ocupar toda a célula */
-            width: 100%; /* Ocupa toda a célula */
-            height: 100%; /* Ocupa toda a célula */
-            color: inherit; /* Herda a cor do texto */
-            text-decoration: none; /* Remove o sublinhado */
-            font-size: 2rem;
-            text-align: center;
-            line-height: 60px; /* Ajusta a altura da linha para centralizar o número */
-        }
+    /* Estilos para cada célula do dia no calendário */
+    .calendario-day {
+        text-align: center;
+        vertical-align: middle;
+        font-size: 2rem;
+        font-weight: 500;
+        padding: 20px;
+        transition: background-color 0.3s;
+        position: relative;
+    }
 
-        .current-day {
-            background-color: #e0f7fa; /* Cor de fundo do dia atual */
-            color: #007bff; /* Cor do texto */
-            font-weight: bold;
-            width: 100%;
-            height: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            position: relative;
-            border-radius: 0; /* Remove o arredondamento para um quadrado */
-        }
+    /* Estilos para o link do dia */
+    .calendario-day a {
+        display: block;
+        width: 100%;
+        height: 100%;
+        color: inherit;
+        text-decoration: none;
+        font-size: 2rem;
+        text-align: center;
+        line-height: 60px;
+    }
 
-        .calendario-day:hover {
-            background-color: #f0f8ff;
-        }
+    /* Estilos para o dia atual */
+    .current-day {
+        background-color: #e0f7fa;
+        color: #007bff;
+        font-weight: bold;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto;
+        position: relative;
+        border-radius: 0;
+    }
 
-        .inactive {
-            color: #bbb;
-            opacity: 0.5;
-            pointer-events: none; /* Evita o clique em dias de outro mês */
-        }
+    /* Hover para os dias do calendário */
+    .calendario-day:hover {
+        background-color: #f0f8ff;
+    }
 
-        .page-description {
-            text-align: center;
-            margin-bottom: 20px;
-            font-size: 1.2rem;
-            color: #555;
-        }
+    /* Estilos para os dias do outro mês */
+    .inactive {
+        color: #bbb;
+        opacity: 0.5;
+        pointer-events: none; /* Evita cliques nos dias de outro mês */
+    }
 
-        .calendario-week {
-            border-bottom: 2px solid #e0e0e0;
-        }
-    </style>
+    /* Estilo para a descrição da página */
+    .page-description {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 1.2rem;
+        color: #555;
+    }
+
+    /* Estilo para as semanas do calendário */
+    .calendario-week {
+        border-bottom: 2px solid #e0e0e0;
+    }
+</style>
+
 <body>
+    <!-- Inclusão do cabeçalho comum da página -->
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     
+    <!-- Aplicação Vue.js -->
     <div id="app" class="app-container">
+        <!-- Descrição da página -->
         <div class="page-description">
-            <p></P>
             <p>Use este calendário para navegar pelos dias e acessar dados que registrou em cada data.</p>
         </div>
         
+        <!-- Contêiner do calendário -->
         <div class="calendario-container">
+            <!-- Cabeçalho do calendário (com botões de navegação e título) -->
             <div class="calendario-header">
                 <button @click="prevMonth" class="nav-btn">❮</button>
                 <h2 class="calendario-title">{{ currentMonthName }} {{ currentYear }}</h2>
                 <button @click="nextMonth" class="nav-btn">❯</button>
             </div>
+
+            <!-- Tabela com os dias do mês -->
             <table class="calendario-table">
                 <thead class="calendario-thead">
                     <tr class="calendario-tr">
@@ -157,7 +188,9 @@
                     </tr>
                 </thead>
                 <tbody class="calendario-tbody">
+                    <!-- Loop para exibir as semanas -->
                     <tr v-for="(week, index) in calendarDays" :key="index" class="calendario-week">
+                        <!-- Loop para exibir os dias da semana -->
                         <td v-for="(day, idx) in week" :key="idx" class="calendario-day" 
                             :class="{'current-day': isToday(day), 'inactive': day.isOtherMonth}">
                             <a v-if="day.date && !day.isOtherMonth" 
@@ -171,17 +204,22 @@
             </table>
         </div>
     </div>
+
+    <!-- Inclusão do rodapé comum da página -->
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
+
+    <!-- Script Vue.js para a funcionalidade do calendário -->
     <script type="text/javascript">
     const app = Vue.createApp({
         data() {
             return {
                 currentMonth: new Date().getMonth(),
                 currentYear: new Date().getFullYear(),
-                calendarDays: []
+                calendarDays: [] // Array para armazenar os dias do calendário
             };
         },
         computed: {
+            // Computed property para o nome do mês atual
             currentMonthName() {
                 const months = [
                     "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
@@ -189,12 +227,14 @@
                 ];
                 return months[this.currentMonth];
             },
+            // Computed property para verificar se o mês atual é o mês corrente
             isCurrentMonth() {
                 const today = new Date();
                 return today.getMonth() === this.currentMonth && today.getFullYear() === this.currentYear;
             }
         },
         methods: {
+            // Método para ir para o mês anterior
             prevMonth() {
                 this.currentMonth--;
                 if (this.currentMonth < 0) {
@@ -203,6 +243,7 @@
                 }
                 this.generateCalendar();
             },
+            // Método para ir para o próximo mês
             nextMonth() {
                 this.currentMonth++;
                 if (this.currentMonth > 11) {
@@ -211,6 +252,7 @@
                 }
                 this.generateCalendar();
             },
+            // Método para verificar se o dia é o atual
             isToday(day) {
                 const today = new Date();
                 return (
@@ -220,6 +262,7 @@
                     this.currentYear === today.getFullYear()
                 );
             },
+            // Método para gerar o calendário
             generateCalendar() {
                 const firstDayOfMonth = new Date(this.currentYear, this.currentMonth, 1);
                 const lastDayOfMonth = new Date(this.currentYear, this.currentMonth + 1, 0);
@@ -235,10 +278,12 @@
                 const previousYear = this.currentMonth === 0 ? this.currentYear - 1 : this.currentYear;
                 const lastDayOfPreviousMonth = new Date(previousYear, previousMonth + 1, 0).getDate();
 
+                // Preencher dias do mês anterior
                 for (let i = firstWeekday - 1; i >= 0; i--) {
                     week.push({ date: lastDayOfPreviousMonth - i, isOtherMonth: true });
                 }
 
+                // Preencher os dias do mês atual
                 for (let day = 1; day <= totalDaysInMonth; day++) {
                     week.push({ date: day, isOtherMonth: false });
                     if (week.length === 7) {
@@ -247,6 +292,7 @@
                     }
                 }
 
+                // Preencher dias do próximo mês
                 const daysNeededFromNextMonth = 6 - lastWeekday;
                 for (let i = 1; i <= daysNeededFromNextMonth; i++) {
                     week.push({ date: i, isOtherMonth: true });
@@ -258,11 +304,11 @@
             }
         },
         mounted() {
-            this.generateCalendar();
+            this.generateCalendar(); // Gerar o calendário ao carregar a página
         }
     });
     app.mount("#app");
-</script>
+    </script>
 
 </body>
 </html>
