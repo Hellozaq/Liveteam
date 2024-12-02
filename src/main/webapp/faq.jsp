@@ -95,12 +95,6 @@
         </style>
     </head>
     <body class="faq-container">
-        <% 
-            if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
-                response.sendRedirect("login.jsp");
-                return;
-            }
-        %>
         
         <!-- Inclusão do header -->
         <div class="faq-header-container"><%@include file="WEB-INF/jspf/header.jspf" %></div>

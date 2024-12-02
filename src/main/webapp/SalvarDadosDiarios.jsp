@@ -2,6 +2,9 @@
 <%@ page import="org.json.JSONObject" %>
 <%@ page import="java.util.Properties" %>
 <%@ page import="java.io.InputStream" %>
+
+<%@ page contentType="text/html; charset=UTF-8" %>
+<%@ page pageEncoding="UTF-8" %>
 <%
     if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
         response.sendRedirect("login.jsp");
@@ -13,13 +16,13 @@
 
     if (idUsuarioObj == null) {
         responseJson.put("status", "error");
-        responseJson.put("message", "ID de usu·rio n„o encontrado.");
+        responseJson.put("message", "ID de usu√°rio n√£o encontrado.");
         response.setContentType("application/json");
         response.getWriter().print(responseJson.toString());
         return;
     }
 
-    // Converte o valor para Integer, se necess·rio
+    // Converte o valor para Integer, se necess√°rio
     Integer idUsuario = null;
 
     if (idUsuarioObj instanceof String) {
@@ -27,24 +30,24 @@
             idUsuario = Integer.valueOf((String) idUsuarioObj);  // Converte a String para Integer
         } catch (NumberFormatException e) {
             responseJson.put("status", "error");
-            responseJson.put("message", "ID de usu·rio inv·lido.");
+            responseJson.put("message", "ID de usu√°rio inv√°lido.");
             response.setContentType("application/json");
             response.getWriter().print(responseJson.toString());
             return;
         }
     } else if (idUsuarioObj instanceof Integer) {
-        idUsuario = (Integer) idUsuarioObj;  // Caso j· seja Integer, sÛ faz o cast
+        idUsuario = (Integer) idUsuarioObj;  // Caso j√° seja Integer, s√≥ faz o cast
     }
 
     if (idUsuario == null) {
         responseJson.put("status", "error");
-        responseJson.put("message", "ID de usu·rio inv·lido.");
+        responseJson.put("message", "ID de usu√°rio inv√°lido.");
         response.setContentType("application/json");
         response.getWriter().print(responseJson.toString());
         return;
     }
 
-    // Receber os par‚metros enviados via requisiÁ„o
+    // Receber os par√¢metros enviados via requisi√ß√£o
     String cafeDaManha = request.getParameter("cafe_da_manha");
     String almoco = request.getParameter("almoco");
     String jantar = request.getParameter("jantar");
@@ -66,10 +69,10 @@
     String mesStr = request.getParameter("mes");
     String anoStr = request.getParameter("ano");
 
-    // ValidaÁ„o inicial dos par‚metros obrigatÛrios
+    // Valida√ß√£o inicial dos par√¢metros obrigat√≥rios
     if (diaStr == null || mesStr == null || anoStr == null || diaStr.trim().isEmpty() || mesStr.trim().isEmpty() || anoStr.trim().isEmpty()) {
         responseJson.put("status", "error");
-        responseJson.put("message", "Par‚metros de data (dia, mÍs e ano) s„o obrigatÛrios.");
+        responseJson.put("message", "Par√¢metros de data (dia, m√™s e ano) s√£o obrigat√≥rios.");
         response.setContentType("application/json");
         response.getWriter().print(responseJson.toString());
         return;
@@ -82,7 +85,7 @@
         ano = Integer.parseInt(anoStr);
     } catch (NumberFormatException e) {
         responseJson.put("status", "error");
-        responseJson.put("message", "Par‚metros de data inv·lidos.");
+        responseJson.put("message", "Par√¢metros de data inv√°lidos.");
         response.setContentType("application/json");
         response.getWriter().print(responseJson.toString());
         return;
@@ -95,7 +98,7 @@
     observacoesExercicio = (observacoesExercicio == null || observacoesExercicio.trim().isEmpty()) ? null : observacoesExercicio;
     observacoesAvaliacao = (observacoesAvaliacao == null || observacoesAvaliacao.trim().isEmpty()) ? null : observacoesAvaliacao;
 
-    // Conex„o com o banco de dados
+    // Conex√£o com o banco de dados
     Connection conn = null;
     PreparedStatement pstmt = null;
     ResultSet rs = null;
@@ -105,7 +108,7 @@
         Properties props = new Properties();
         InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties");
         if (input == null) {
-            throw new Exception("Arquivo db.properties n„o encontrado.");
+            throw new Exception("Arquivo db.properties n√£o encontrado.");
         }
         props.load(input);
 
@@ -117,14 +120,14 @@
         // Registrar o driver
         Class.forName(driver);
 
-        // Estabelecer conex„o
+        // Estabelecer conex√£o
         conn = DriverManager.getConnection(url, username, password);
 
         if (conn == null || conn.isClosed()) {
             responseJson.put("status", "error");
             responseJson.put("message", "Falha ao conectar ao banco de dados.");
         } else {
-            // Verificar se j· existem dados para o dia, mÍs, ano e idUsuario
+            // Verificar se j√° existem dados para o dia, m√™s, ano e idUsuario
             String checkSql = "SELECT COUNT(*) FROM dados_diarios WHERE id_usuario = ? AND dia = ? AND mes = ? AND ano = ?";
             pstmt = conn.prepareStatement(checkSql);
             pstmt.setInt(1, idUsuario);
@@ -137,12 +140,12 @@
             int count = rs.getInt(1);
 
             if (count > 0) {
-                // Se j· houver dados para esse dia, redireciona com um aviso
+                // Se j√° houver dados para esse dia, redireciona com um aviso
                 response.sendRedirect("home.jsp?status=warning&message=Existe%20um%20registro%20para%20essa%20data.");
                 return;
             }
 
-            // Inserir os dados na tabela, agora incluindo o ID do usu·rio
+            // Inserir os dados na tabela, agora incluindo o ID do usu√°rio
             String sql = "INSERT INTO dados_diarios (" +
                     "id_usuario, dia, mes, ano, " +
                     "cafe_da_manha, almoco, jantar, lanches, observacoes_alimentacao, " +
@@ -152,7 +155,7 @@
                     ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
             pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, idUsuario); // Agora incluÌmos o ID do usu·rio
+            pstmt.setInt(1, idUsuario); // Agora inclu√≠mos o ID do usu√°rio
             pstmt.setInt(2, dia);
             pstmt.setInt(3, mes);
             pstmt.setInt(4, ano);
@@ -177,7 +180,7 @@
             int rowsInserted = pstmt.executeUpdate();
 
             if (rowsInserted > 0) {
-                // Redireciona para a p·gina home.jsp com uma mensagem de sucesso via query string
+                // Redireciona para a p√°gina home.jsp com uma mensagem de sucesso via query string
                 response.sendRedirect("home.jsp?status=success&message=Dados%20salvos%20com%20sucesso!");
             } else {
                 responseJson.put("status", "error");
@@ -189,7 +192,7 @@
     } catch (SQLException e) {
         e.printStackTrace();
         responseJson.put("status", "error");
-        responseJson.put("message", "Erro ao executar a operaÁ„o no banco: " + e.getMessage());
+        responseJson.put("message", "Erro ao executar a opera√ß√£o no banco: " + e.getMessage());
     } catch (Exception e) {
         e.printStackTrace();
         responseJson.put("status", "error");
