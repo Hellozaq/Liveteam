@@ -75,7 +75,63 @@ public class GerarRespostaServlet extends HttpServlet {
                 "Tempo de Treino por Sessão: " + tempoPorTreino + "\n" +
                 "Café da Manhã: " + cafeDaManha + "\n" +
                 "Almoço: " + almoco + "\n" +
-                "Jantar: " + jantar;
+                "Jantar: " + jantar +
+                        "e com base no seguinte prompt de resposta '\n" +
+                "Cálculo da Taxa de Metabolismo Basal (TMB)\n" +
+                "•	Sexo: [Masculino / Feminino]\n" +
+                "•	Idade: [Idade em anos]\n" +
+                "•	Altura: [Altura em cm]\n" +
+                "•	Peso: [Peso em kg]\n" +
+                "•	Nível de Atividade Física: [Leve / Moderado / Intenso]\n" +
+                "Cálculo da TMB (fórmula de Harris-Benedict para Homens ou Mulheres):\n" +
+                "•	Homens: TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)TMB = 66,5 + (13,75 \\times Peso) + (5,003 \\times Altura) - (6,75 \\times Idade)TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)\n" +
+                "•	Mulheres: TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)TMB = 655 + (9,563 \\times Peso) + (1,850 \\times Altura) - (4,676 \\times Idade)TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)\n" +
+                "Necessidades Calóricas Diárias:\n" +
+                "(Se aplicável, multiplique a TMB pelo fator de atividade para estimar a quantidade de calorias diárias necessárias.)\n" +
+                "\n" +
+                "Plano de Dieta\n" +
+                "Objetivos de Dieta: [Preencher conforme objetivo]\n" +
+                "•	Calorias Totais: [Número de calorias sugeridas para o objetivo]\n" +
+                "Distribuição de Macronutrientes:\n" +
+                "•	Proteínas: [Percentual ou gramas]\n" +
+                "•	Carboidratos: [Percentual ou gramas]\n" +
+                "•	Gorduras: [Percentual ou gramas]\n" +
+                "\n" +
+                "Exemplo de Cardápio (Com Calorias de Cada Refeição e Alimento )\n" +
+                "Café da manhã:\n" +
+                "•	[Alimento 1] [Quantidade e calorias]\n" +
+                "•	[Alimento 2] [Quantidade e calorias]\n" +
+                "•	[Alimento 3] [Quantidade e calorias]\n" +
+                "Total do Café da Manhã: [Total de calorias]\n" +
+                "\n" +
+                "Almoço:\n" +
+                "•	[Alimento 1] [Quantidade e calorias]\n" +
+                "•	[Alimento 2] [Quantidade e calorias]\n" +
+                "•	[Alimento 3] [Quantidade e calorias]\n" +
+                "Total do Almoço: [Total de calorias]\n" +
+                "\n" +
+                "Lanche da Tarde:\n" +
+                "•	[Alimento 1] [Quantidade e calorias]\n" +
+                "•	[Alimento 2] [Quantidade e calorias]\n" +
+                "Total do Lanche da Tarde: [Total de calorias]\n" +
+                "\n" +
+                "Jantar:\n" +
+                "•	[Alimento 1] [Quantidade e calorias]\n" +
+                "•	[Alimento 2] [Quantidade e calorias]\n" +
+                "•	[Alimento 3] [Quantidade e calorias]\n" +
+                "Total do Jantar: [Total de calorias]\n" +
+                "\n" +
+                "Total de Calorias do Dia: [Total de calorias do dia]\n" +
+                "\n" +
+                "Plano de Treino (Musculação)\n" +
+                "Objetivo: [Preencher com objetivo do treino]\n" +
+                "Estrutura do Treino (Baseado na quantia de dias indicada)\n" +
+                "\n" +
+                "Conclusão:\n" +
+                "Com base nas informações preenchidas, este plano de dieta e treino foi "
+                + "ajustado para [objetivo principal], com detalhamento de calorias por refeição e alimento, "
+                + "e com uma estratégia de treino adequada para atingir seus objetivos.\n" +
+                "'";
 
         String respostaGemini = "";
         try {
@@ -161,7 +217,8 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 contentStream.setLeading(20f);
                 contentStream.newLineAtOffset(50, 700);
-
+                //Limpa caracteres invalidos
+                 String cleanText = respostaGemini.replaceAll("[\\p{Cntrl}&&[^\n\r]]", " ").replaceAll("\\s+", " ");
                 // Adiciona os dados do usuário ao PDF
                 contentStream.showText("Plano de Dieta e Treino");
                 contentStream.newLine();
@@ -198,8 +255,9 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.newLine();
                 contentStream.showText("Tempo de Treino por Sessão: " + tempoPorTreino);
                 contentStream.newLine();
-                contentStream.showText("Resposta: " + respostaGemini);
-                contentStream.endText();
+                contentStream.newLine();
+               
+                contentStream.showText(cleanText);
             }
 
             document.save(response.getOutputStream());
