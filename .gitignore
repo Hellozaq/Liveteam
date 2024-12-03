@@ -44,3 +44,4 @@ Thumbs.db
 db.properties
 
 .env
+/nbproject/

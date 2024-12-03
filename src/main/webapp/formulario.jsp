@@ -141,7 +141,7 @@
                     <textarea id="alimentos_favoritos" name="alimentos_favoritos" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="alimentos_que_evita" class="form-label">Alimentos que Evita</label>
+                    <label for="alimentos_que_evita" class="form-label">Alimentos que Evita/ Restrições Alimentares</label>
                     <textarea id="alimentos_que_evita" name="alimentos_que_evita" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">

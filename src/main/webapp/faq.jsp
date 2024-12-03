@@ -19,10 +19,11 @@
             
             .faq-header {
                 text-align: center;
-                color: #006400; /* Verde mais escuro */
+                color: #A0D683; /* Verde mais escuro */
                 padding-top: 20px;
                 font-size: 36px;
                 font-weight: bold;
+                
             }
 
             .faq-section-title {
