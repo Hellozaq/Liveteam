@@ -7,8 +7,9 @@ import jakarta.servlet.http.HttpServletResponse;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
-import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.pdfbox.pdmodel.font.PDType0Font;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -76,7 +77,7 @@ public class GerarRespostaServlet extends HttpServlet {
                 "Café da Manhã: " + cafeDaManha + "\n" +
                 "Almoço: " + almoco + "\n" +
                 "Jantar: " + jantar +
-                        "e com base no seguinte prompt de resposta '\n" +
+                "e com base no seguinte prompt de resposta '\n" +
                 "Cálculo da Taxa de Metabolismo Basal (TMB)\n" +
                 "•	Sexo: [Masculino / Feminino]\n" +
                 "•	Idade: [Idade em anos]\n" +
@@ -84,8 +85,8 @@ public class GerarRespostaServlet extends HttpServlet {
                 "•	Peso: [Peso em kg]\n" +
                 "•	Nível de Atividade Física: [Leve / Moderado / Intenso]\n" +
                 "Cálculo da TMB (fórmula de Harris-Benedict para Homens ou Mulheres):\n" +
-                "•	Homens: TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)TMB = 66,5 + (13,75 \\times Peso) + (5,003 \\times Altura) - (6,75 \\times Idade)TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)\n" +
-                "•	Mulheres: TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)TMB = 655 + (9,563 \\times Peso) + (1,850 \\times Altura) - (4,676 \\times Idade)TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)\n" +
+                "•	Homens: TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)\n" +
+                "•	Mulheres: TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)\n" +
                 "Necessidades Calóricas Diárias:\n" +
                 "(Se aplicável, multiplique a TMB pelo fator de atividade para estimar a quantidade de calorias diárias necessárias.)\n" +
                 "\n" +
@@ -136,7 +137,7 @@ public class GerarRespostaServlet extends HttpServlet {
         String respostaGemini = "";
         try {
             // Envia a mensagem para o Gemini e obtém a resposta
-            respostaGemini = Gemini.getCompletion(mensagem).replaceAll("[\\n\\r]+", " ");
+            respostaGemini = Gemini.getCompletion(mensagem, "").replaceAll("[\\n\\r]+", " ");
         } catch (Exception e) {
             respostaGemini = "Erro ao obter resposta do Gemini: " + e.getMessage();
         }
@@ -155,51 +156,26 @@ public class GerarRespostaServlet extends HttpServlet {
             // Estabelece a conexão com o banco
             conn = DriverManager.getConnection(url, username, password);
 
-            // SQL de inserção
-            String sql = "INSERT INTO plano_dieta_treino (" +
-                    "idade, sexo, altura_cm, peso_kg, objetivo_principal, frequencia_semanal_treino, " +
-                    "duracao_media_treino_minutos, tipo_atividade_fisica, objetivos_treino, nacionalidade, " +
-                    "residencia_atual, alimentos_favoritos, alimentos_que_evita, alimentos_para_incluir_excluir, " +
-                    "usa_suplementos, suplementos_usados, tempo_por_treino_minutos, cafe_da_manha, almoco, jantar) " +
-                    "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-
-            // Prepara a query para execução
+            String sql = "INSERT INTO respostas_gemini (resposta) VALUES (?)";
             ps = conn.prepareStatement(sql);
-
-            // Preenche os parâmetros da query com os dados do formulário
-           ps.setInt(1, Integer.parseInt(idade));  // Adiciona a idade
-           ps.setString(2, sexo);
-           ps.setBigDecimal(3, new BigDecimal(alturaCm));
-           ps.setBigDecimal(4, new BigDecimal(pesoKg));
-           ps.setString(5, objetivoPrincipal);
-           ps.setInt(6, Integer.parseInt(frequenciaSemanalTreino));
-           ps.setInt(7, Integer.parseInt(duracaoMediaTreino));
-           ps.setString(8, tipoAtividadeFisica);
-           ps.setString(9, objetivosTreino);
-           ps.setString(10, nacionalidade);
-           ps.setString(11, residenciaAtual);
-           ps.setString(12, alimentosFavoritos);
-           ps.setString(13, alimentosQueEvita);
-           ps.setString(14, alimentosParaIncluirExcluir);
-           ps.setBoolean(15, Boolean.parseBoolean(usaSuplementos));
-           ps.setString(16, suplementosUsados);
-           ps.setInt(17, Integer.parseInt(tempoPorTreino));
-           ps.setString(18, cafeDaManha);
-           ps.setString(19, almoco);
-           ps.setString(20, jantar);
-
-            // Executa a inserção no banco de dados
+            ps.setString(1, respostaGemini);
             ps.executeUpdate();
-
         } catch (SQLException e) {
             e.printStackTrace();
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro de SQL: " + e.getMessage());
         } finally {
-            try {
-                if (ps != null) ps.close();
-                if (conn != null) conn.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
+            if (ps != null) {
+                try {
+                    ps.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
             }
         }
 
@@ -214,15 +190,16 @@ public class GerarRespostaServlet extends HttpServlet {
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 contentStream.beginText();
-                contentStream.setFont(PDType1Font.HELVETICA_BOLD, 16);
                 contentStream.setLeading(20f);
                 contentStream.newLineAtOffset(50, 700);
-                //Limpa caracteres invalidos
-                 String cleanText = respostaGemini.replaceAll("[\\p{Cntrl}&&[^\n\r]]", " ").replaceAll("\\s+", " ");
-                // Adiciona os dados do usuário ao PDF
+
+                // Carregar a fonte Arial
+                PDType0Font arialFont = PDType0Font.load(document, new File("C:/Windows/Fonts/arial.ttf"));  // Caminho do TTF
+
+                contentStream.setFont(arialFont, 16);
                 contentStream.showText("Plano de Dieta e Treino");
                 contentStream.newLine();
-                contentStream.setFont(PDType1Font.HELVETICA, 12);
+                contentStream.setFont(arialFont, 12);
                 contentStream.showText("Sexo: " + sexo);
                 contentStream.newLine();
                 contentStream.showText("Altura (cm): " + alturaCm);
@@ -256,8 +233,7 @@ public class GerarRespostaServlet extends HttpServlet {
                 contentStream.showText("Tempo de Treino por Sessão: " + tempoPorTreino);
                 contentStream.newLine();
                 contentStream.newLine();
-               
-                contentStream.showText(cleanText);
+                contentStream.showText(respostaGemini);  // Resposta do Gemini
             }
 
             document.save(response.getOutputStream());
@@ -267,10 +243,14 @@ public class GerarRespostaServlet extends HttpServlet {
         }
     }
 
-    private Properties loadDbProperties() throws IOException {
+    private Properties loadDbProperties() {
         Properties props = new Properties();
-        try (InputStream input = getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties")) {
-            props.load(input);
+        try (InputStream input = getServletContext().getResourceAsStream("/WEB-INF/database.properties")) {
+            if (input != null) {
+                props.load(input);
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
         }
         return props;
     }
