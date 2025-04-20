@@ -10,7 +10,14 @@
         <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     </head>
     <body>
-        
+        <% 
+            // Verificação de sessão para garantir que o usuário esteja logado
+            if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+                response.sendRedirect("login.jsp"); // Redireciona para a página de login se o usuário não estiver logado
+                return;  
+            }
+        %>
+
             <%
                 String status = request.getParameter("status");
                 String message = request.getParameter("message");

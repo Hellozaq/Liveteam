@@ -76,7 +76,9 @@
 
         <!-- Botão para administradores -->
         <% if ("administrador".equalsIgnoreCase(roleUsuario)) { %>
-            <a href="admin.jsp" class="btn btn-warning mt-3">Ir para o Painel de Administração</a>
+            <div class="mt-3">
+                <a href="admin.jsp" class="btn btn-warning">Ir para o Painel de Administração</a>
+            </div>
         <% } %>
 
         <!-- Modal redefinição de senha -->
