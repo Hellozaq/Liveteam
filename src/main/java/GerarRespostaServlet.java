@@ -137,7 +137,7 @@ public class GerarRespostaServlet extends HttpServlet {
         String respostaGemini = "";
         try {
             // Envia a mensagem para o Gemini e obtém a resposta
-            respostaGemini = Gemini.getCompletion(mensagem, "").replaceAll("[\\n\\r]+", " ");
+            respostaGemini = Gemini.getCompletion(mensagem).replaceAll("[\\n\\r]+", " ");
         } catch (Exception e) {
             respostaGemini = "Erro ao obter resposta do Gemini: " + e.getMessage();
         }

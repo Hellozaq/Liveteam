@@ -59,7 +59,7 @@ public class LoginServlet extends HttpServlet {
             conn = DriverManager.getConnection(url, username, password);
 
              // Consulta SQL
-            String sql = "SELECT nome, id, senha FROM usuario WHERE email = ?";
+            String sql = "SELECT nome, id, senha, role FROM usuario WHERE email = ?";
             ps = conn.prepareStatement(sql);
             ps.setString(1, email);
             // Executar a consulta
@@ -72,12 +72,14 @@ public class LoginServlet extends HttpServlet {
                 if (BCrypt.checkpw(senha, senhaBanco)) {
                     String nomeUsuario = rs.getString("nome");
                     String idUsuario = rs.getString("id");
+                    String roleUsuario = rs.getString("role");
 
                      // Criar uma nova sessão
                     HttpSession session = request.getSession();
                     session.setAttribute("usuarioLogado", nomeUsuario);
                     session.setAttribute("idUsuario", idUsuario);
                     session.setAttribute("usuarioEmail", email);
+                    session.setAttribute("usuarioRole", roleUsuario);
 
                     System.out.println("Email configurado na sessão: " + email);
 
