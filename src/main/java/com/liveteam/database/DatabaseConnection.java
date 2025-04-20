@@ -82,35 +82,52 @@ public class DatabaseConnection {
     /**
      * Retorna todos os usuários (sem expor senhas).
      */
-    public static List<User> getAllUsers() throws SQLException {
-        List<User> users = new ArrayList<>();
-        String sql = "SELECT id, nome, role FROM usuario";
+        public static List<User> getAllUsers() throws SQLException {
+            List<User> users = new ArrayList<>();
+            String sql = "SELECT id, nome, role, email FROM usuario";  // <— email incluído
 
-        try (PreparedStatement ps = getConnection().prepareStatement(sql);
-             ResultSet rs = ps.executeQuery()) {
+            try (PreparedStatement ps = getConnection().prepareStatement(sql);
+                 ResultSet rs = ps.executeQuery()) {
 
-            while (rs.next()) {
-                users.add(new User(
-                    rs.getInt("id"),
-                    rs.getString("nome"),
-                    rs.getString("role")
-                ));
+                while (rs.next()) {
+                    users.add(new User(
+                        rs.getInt("id"),
+                        rs.getString("nome"),
+                        rs.getString("role"),
+                        rs.getString("email")         // <— email lido do ResultSet
+                    ));
+                }
+            }
+            return users;
+        }
+
+         /**
+     * Atualiza informações do usuário.
+     */
+        public static void updateUser(int userId, String nome, String email, String senhaPlain, String role) throws SQLException {
+            StringBuilder sql = new StringBuilder("UPDATE usuario SET nome = ?, email = ?, ");
+            boolean updateSenha = (senhaPlain != null && !senhaPlain.isEmpty());
+
+            if (updateSenha) {
+                sql.append("senha = ?, ");
+            }
+
+            sql.append("role = ? WHERE id = ?");
+
+            try (PreparedStatement ps = getConnection().prepareStatement(sql.toString())) {
+                int i = 1;
+                ps.setString(i++, nome);
+                ps.setString(i++, email);
+                if (updateSenha) {
+                    String hashed = BCrypt.hashpw(senhaPlain, BCrypt.gensalt());
+                    ps.setString(i++, hashed);
+                }
+                ps.setString(i++, role);
+                ps.setInt(i, userId);
+
+                ps.executeUpdate();
             }
         }
-        return users;
-    }
-
-    /**
-     * Atualiza o role de um usuário.
-     */
-    public static void updateUserRole(int userId, String newRole) throws SQLException {
-        String sql = "UPDATE usuario SET role = ? WHERE id = ?";
-        try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
-            ps.setString(1, newRole);
-            ps.setInt(2, userId);
-            ps.executeUpdate();
-        }
-    }
 
     /**
      * Busca o papel (role) de um usuário pelo e‑mail.
@@ -148,15 +165,17 @@ public class DatabaseConnection {
     /**
      * Representa um usuário sem expor a senha.
      */
-    public static class User {
+        public static class User {
         public final int id;
         public final String nome;
         public final String role;
+        public final String email;
 
-        public User(int id, String nome, String role) {
+        public User(int id, String nome, String role, String email) {
             this.id   = id;
             this.nome = nome;
             this.role = role;
+            this.email = email;
         }
     }
 }

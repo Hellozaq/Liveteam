@@ -5,6 +5,12 @@
   padding: 0;
 }
 
+table td form {
+  display: inline-block;
+  margin: 0; /* opcional, para garantir que não haja margin indentada */
+  width: auto; /* não permita que o form se estenda por toda a célula */
+}
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f6f8;
@@ -227,3 +233,6 @@ tr:hover {
   cursor: not-allowed;
   box-shadow: none;
 }
+
+
+

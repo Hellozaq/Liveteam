@@ -71,8 +71,8 @@ public class AdminServlet extends HttpServlet {
                     handleAdd(request, response);
                     return;
 
-                case "updateUserRole":
-                    handleUpdateRole(request, response);
+                case "updateUser":               
+                    handleUpdateUser(request, response);
                     return;
 
                 default:
@@ -126,27 +126,32 @@ public class AdminServlet extends HttpServlet {
         response.sendRedirect("admin.jsp");
     }
 
-    private void handleUpdateRole(HttpServletRequest request, HttpServletResponse response)
+    private void handleUpdateUser(HttpServletRequest request, HttpServletResponse response)
             throws SQLException, IOException, ServletException {
-        String idParam  = request.getParameter("userId");
-        String newRole  = request.getParameter("newRole");
+        String idParam = request.getParameter("userId");
+        String nome    = request.getParameter("nome");
+        String email   = request.getParameter("email");
+        String senha   = request.getParameter("senha"); // pode ser vazio (sem alteração)
+        String role    = request.getParameter("role");
 
         if (idParam == null || idParam.isEmpty() ||
-            newRole == null || newRole.isEmpty()) {
+            nome == null || nome.isEmpty() ||
+            email == null || email.isEmpty() ||
+            role == null || role.isEmpty()) {
 
-            request.setAttribute("errorMsg", "Campos para atualização não preenchidos.");
+            request.setAttribute("errorMsg", "Todos os campos, exceto senha, são obrigatórios.");
             request.getRequestDispatcher("/admin.jsp").forward(request, response);
             return;
         }
 
-        if (!"usuario".equals(newRole) && !"administrador".equals(newRole)) {
+        if (!"usuario".equals(role) && !"administrador".equals(role)) {
             request.setAttribute("errorMsg", "Role inválida.");
             request.getRequestDispatcher("/admin.jsp").forward(request, response);
             return;
         }
 
         int userId = Integer.parseInt(idParam);
-        DatabaseConnection.updateUserRole(userId, newRole);
+        DatabaseConnection.updateUser(userId, nome, email, senha, role);
         response.sendRedirect("admin.jsp");
     }
 }
