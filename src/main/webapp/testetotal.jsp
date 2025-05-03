@@ -23,10 +23,11 @@
 <body>
     <h2>Envie uma imagem para análise</h2>
     <form id="uploadForm" enctype="multipart/form-data">
-        <input type="file" name="image" accept="image/*" required>
-        <button type="button" onclick="uploadImage()">Enviar</button>
+        <input type="file" name="image" accept="image/*" onchange="uploadImage()" required>
     </form>
     <h2>Resultado:</h2>
     <textarea id="result" rows="5" cols="50"></textarea>
+    
+
 </body>
 </html>

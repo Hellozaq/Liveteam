@@ -75,6 +75,12 @@
             <version>3.23.0</version> <!-- Verifique a versão mais recente em https://mvnrepository.com/artifact/com.google.cloud/google-cloud-aiplatform -->
         </dependency>
         
+        <dependency>
+        <groupId>jakarta.servlet</groupId>
+            <artifactId>jakarta.servlet-api</artifactId>
+            <version>6.0.0</version> <!-- Use a versão mais recente compatível com seu servidor -->
+        <scope>provided</scope>
+        </dependency>
             <!-- Biblioteca JSON para manipulação de JSON -->
     <dependency>
         <groupId>org.json</groupId>

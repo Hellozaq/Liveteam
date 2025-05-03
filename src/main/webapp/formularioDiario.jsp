@@ -31,7 +31,7 @@
     %>
     <div class=" container mt-4 form-container">
         <h2>Inserir Informações do dia <%= diaAtual %>/<%= mesAtual %></h2>
-        <form action="SalvarDadosDiarios.jsp" method="post" novalidate>
+        <form action="SalvarDadosDiarios.jsp" method="post" id ="formDiario" novalidate>
             <!-- Data -->
              <!-- Data (ocultada para o usuário) -->
             <div class="form-section" style="display:none;">
@@ -54,20 +54,56 @@
             <div class="form-section col-md-3">
                 <h3>Alimentação</h3>
                 <div class="mb-3">
+                    
                     <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
                     <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
+                    
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('cafe_da_manha')" required hidden>            
+                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                    </form>
+                    
                 </div>
                 <div class="mb-3">
+                    
                     <label for="almoco" class="form-label">Almoço</label>
                     <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
+
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('almoco')" required hidden>            
+                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                    </form>
+                    
                 </div>
                 <div class="mb-3">
+                    
                     <label for="jantar" class="form-label">Jantar</label>
                     <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
+                    
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('jantar')" required hidden>            
+                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                    </form>
+                    
                 </div>
                 <div class="mb-3">
+                    
                     <label for="lanches" class="form-label">Lanches</label>
                     <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
+                    
+                    <form id="uploadForm" enctype="multipart/form-data">
+                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('lanches')" required hidden>            
+                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
+                            <i class="fas fa-camera"></i>
+                        </label>
+                    </form>
+                    
                 </div>
                 <div class="mb-3">
                     <label for="observacoes_alimentacao" class="form-label">Observações</label>
@@ -245,6 +281,22 @@
             new bootstrap.Modal(document.getElementById('modalMensagem')).show();
         }
     });
+    
+    function uploadImage( textAreaId) {
+            let formData = new FormData(document.getElementById("formDiario"));
+            
+            fetch("ImageAnalysisServlet", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById(textAreaId).value = data.response;
+            })
+            .catch(error => {
+                document.getElementById(textAreaId).value = "Erro ao processar a imagem.";
+            });
+        }
 </script>
 
 </html>
