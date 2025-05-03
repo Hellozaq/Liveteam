@@ -36,7 +36,7 @@
              <!-- Data (ocultada para o usuário) -->
             <div class="form-section" style="display:none;">
                 <h3>Data</h3>
-                <div class="mb-3">
+                <div class="mb-3">  
                     <label for="dia" class="form-label">Dia</label>
                     <input type="number" id="dia" name="dia" class="form-control" value="<%= diaAtual %>" readonly>
                 </div>
@@ -50,61 +50,87 @@
                 </div>
             </div>
             <!-- Alimentação -->
-            <fiv class="row">
+            <div class="row">
             <div class="form-section col-md-3">
                 <h3>Alimentação</h3>
-                <div class="mb-3">
-                    
-                    <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
-                    <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
-                    
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('cafe_da_manha')" required hidden>            
-                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                    </form>
-                    
-                </div>
-                <div class="mb-3">
-                    
-                    <label for="almoco" class="form-label">Almoço</label>
-                    <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
+                <!-- Exemplo para Café da Manhã -->
+                    <div class="mb-3">
+                        <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
+                        <div class="row g-2 align-items-center">
+                            <!-- Textarea -->
+                            <div class="col-8">
+                                <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
+                            </div>
+                            <!-- Botão de Upload -->
+                            <div class="col-4 d-flex justify-content-center">
+                                <form id="uploadFormCafe" enctype="multipart/form-data">
+                                    <input type="file" id="imageUploadCafe" name="image" accept="image/*" 
+                                           onchange="uploadImage('cafe_da_manha')" required hidden>
+                                    <label for="imageUploadCafe" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
 
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('almoco')" required hidden>            
-                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                    </form>
-                    
-                </div>
-                <div class="mb-3">
-                    
-                    <label for="jantar" class="form-label">Jantar</label>
-                    <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
-                    
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('jantar')" required hidden>            
-                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                    </form>
-                    
-                </div>
-                <div class="mb-3">
-                    
-                    <label for="lanches" class="form-label">Lanches</label>
-                    <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
-                    
-                    <form id="uploadForm" enctype="multipart/form-data">
-                        <input type="file" id="imageUploadJantar" name="image" accept="image/*" onchange="uploadImage('lanches')" required hidden>            
-                        <label for="imageUploadJantar" class="btn btn-outline-secondary">
-                            <i class="fas fa-camera"></i>
-                        </label>
-                    </form>
-                    
-                </div>
+                    <!-- Exemplo para Almoço -->
+                    <div class="mb-3">
+                        <label for="almoco" class="form-label">Almoço</label>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-8">
+                                <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center">
+                                
+                                <form id="uploadFormAlmoco" enctype="multipart/form-data">
+                                    <input type="file" id="imageUploadAlmoco" name="image" accept="image/*" 
+                                           onchange="uploadImage('almoco')" required hidden>
+                                    <label for="imageUploadAlmoco" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exemplo para Jantar -->
+                    <div class="mb-3">
+                        <label for="jantar" class="form-label">Jantar</label>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-8">
+                                <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center">
+                                <form id="uploadFormJantar" enctype="multipart/form-data">
+                                    <input type="file" id="imageUploadJantar" name="image" accept="image/*" 
+                                           onchange="uploadImage('jantar')" required hidden>
+                                    <label for="imageUploadJantar" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Exemplo para Lanches -->
+                    <div class="mb-3">
+                        <label for="lanches" class="form-label">Lanches</label>
+                        <div class="row g-2 align-items-center">
+                            <div class="col-8">
+                                <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
+                            </div>
+                            <div class="col-4 d-flex justify-content-center">
+                                <form id="uploadFormLanches" enctype="multipart/form-data">
+                                    <input type="file" id="imageUploadLanches" name="image" accept="image/*" 
+                                           onchange="uploadImage('lanches')" hidden>
+                                    <label for="imageUploadLanches" class="btn btn-outline-secondary w-100">
+                                        <i class="fas fa-camera"></i>
+                                    </label>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 <div class="mb-3">
                     <label for="observacoes_alimentacao" class="form-label">Observações</label>
                     <textarea id="observacoes_alimentacao" name="observacoes_alimentacao" class="form-control" maxlength="500"></textarea>
