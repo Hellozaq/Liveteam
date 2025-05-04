@@ -30,7 +30,7 @@
     <div class="container mt-4 form-container">
         <h2>Inserir Informações do dia <%= diaAtual %>/<%= mesAtual %></h2>
         
-        <form action="SalvarDadosDiarios.jsp" method="post" id="formDiario" novalidate enctype="multipart/form-data">
+        <form action="salvar-dados" method="post" id="formDiario" novalidate enctype="multipart/form-data">
             <!-- Data (oculta) -->
             <div class="form-section" style="display:none;">
                 <div class="row">
