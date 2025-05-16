@@ -85,28 +85,28 @@ public class DatabaseConnection {
      * Retorna todos os usuários com paginação (sem expor senhas).
      * @param limit
      * @param offset
+     * @param sortBy
+     * @param order
      * @return 
      * @throws java.sql.SQLException
      */
         public static List<User> getAllUsers(int limit, int offset, String sortBy, String order) throws SQLException {
             List<User> users = new ArrayList<>();
-            StringBuilder sql = new StringBuilder("SELECT id, nome, role, email FROM usuario");
 
-            if (sortBy != null && !sortBy.isEmpty()) {
-                sql.append(" ORDER BY ").append(sortBy);
-                if (order != null && order.equalsIgnoreCase("desc")) {
-                    sql.append(" DESC");
-                } else {
-                    sql.append(" ASC"); // Por padrão, ordena ascendente
-                }
+           System.out.println("sortBy = " + sortBy);
+            System.out.println("order = " + order);
+            if (sortBy == null || sortBy.trim().isEmpty()) {
+                sortBy = "id";
+            }
+            if (order == null || (!order.equalsIgnoreCase("asc") && !order.equalsIgnoreCase("desc"))) {
+                order = "asc";
             }
 
-            sql.append(" LIMIT ? OFFSET ?");
+            String sql = "SELECT id, nome, role, email FROM usuario ORDER BY " + sortBy + " " + order + " LIMIT ? OFFSET ?";
 
-            String finalSql = sql.toString();
-            System.out.println("SQL: " + finalSql); // Para depuração
+            System.out.println("SQL: " + sql); // Para debug
 
-            try (PreparedStatement ps = getConnection().prepareStatement(finalSql)) {
+            try (PreparedStatement ps = getConnection().prepareStatement(sql)) {
                 ps.setInt(1, limit);
                 ps.setInt(2, offset);
                 try (ResultSet rs = ps.executeQuery()) {
@@ -122,6 +122,7 @@ public class DatabaseConnection {
             }
             return users;
         }
+
 
         // Sobrecarga para a chamada original sem ordenação
         public static List<User> getAllUsers(int limit, int offset) throws SQLException {

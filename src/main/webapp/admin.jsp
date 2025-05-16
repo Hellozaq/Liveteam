@@ -19,15 +19,20 @@
     int totalPaginas = 0;
     String mensagemErro = (String) request.getAttribute("errorMsg");
 
+    // Captura os parâmetros de ordenação
+    String sortBy = request.getParameter("sortBy");
+    String order = request.getParameter("order");
+
     try {
-        usuarios = DatabaseConnection.getAllUsers(usuariosPorPagina, offset);
+        // Chama o método getAllUsers passando os parâmetros de ordenação
+        usuarios = DatabaseConnection.getAllUsers(usuariosPorPagina, offset, sortBy, order);
         totalUsuarios = DatabaseConnection.getTotalUserCount();
         totalPaginas = (int) Math.ceil((double) totalUsuarios / usuariosPorPagina);
     } catch (SQLException e) {
         e.printStackTrace();
         mensagemErro = "Erro ao carregar usuários.";
     }
-    
+
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -107,9 +112,8 @@
 <div class="container">
     <button onclick="voltar()" class="button"><i class="fas fa-chevron-left"></i></button>
     <h1 class="main-heading">Gerenciamento de Usuários</h1>
-    
-     
-    
+
+
     <div class="nav">
         <button onclick="showSection('userManagement')" class="button"><i class="fas fa-users"></i></button>
         <button onclick="showSection('addUserForm')" class="button"><i class="fas fa-user-plus"></i></button>
@@ -178,7 +182,7 @@
                                     data-role="<%=usuario.role%>">
                                 <i class="fas fa-user-edit"></i>
                             </button>
-                        
+
                             <form action="${pageContext.request.contextPath}/admin" method="post">
                                 <input type="hidden" name="action" value="deleteUser">
                                 <input type="hidden" name="userId" value="<%= usuario.id %>">
@@ -217,7 +221,7 @@
                 %>
 
                 <% if (mostrarInicio) { %>
-                    <button onclick="window.location.href='<%= request.getContextPath() %>/admin?page=1'">
+                    <button onclick="window.location.href='<%= request.getContextPath() %>/admin?page=1<%= (sortBy != null ? "&sortBy=" + sortBy : "") %><%= (order != null ? "&order=" + order : "") %>'">
                         1
                     </button>
                     <% if (inicio > 2) { %>
@@ -227,7 +231,7 @@
 
                 <% for (int i = inicio; i <= fim; i++) { %>
                     <button class="<%= (i == paginaAtual) ? "ativo" : "" %>"
-                            onclick="window.location.href='<%= request.getContextPath() %>/admin?page=<%= i %>'">
+                            onclick="window.location.href='<%= request.getContextPath() %>/admin?page=<%= i %><%= (sortBy != null ? "&sortBy=" + sortBy : "") %><%= (order != null ? "&order=" + order : "") %>'">
                         <%= i %>
                     </button>
                 <% } %>
@@ -236,7 +240,7 @@
                     <% if (fim < totalPaginas - 1) { %>
                         <span>...</span>
                     <% } %>
-                    <button onclick="window.location.href='<%= request.getContextPath() %>/admin?page=<%= totalPaginas %>'">
+                    <button onclick="window.location.href='<%= request.getContextPath() %>/admin?page=<%= totalPaginas %><%= (sortBy != null ? "&sortBy=" + sortBy : "") %><%= (order != null ? "&order=" + order : "") %>'">
                         <%= totalPaginas %>
                     </button>
                 <% } %>
@@ -290,7 +294,7 @@
     function voltar(){
         window.location.href = '${pageContext.request.contextPath}/perfil.jsp';
     }
-    
+
         // Lógica de confirmação para exclusão
     document.querySelectorAll('form[action$="/admin"]').forEach(form => {
         if (form.querySelector('input[name="action"][value="deleteUser"]')) {
