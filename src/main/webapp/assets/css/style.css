@@ -7,7 +7,10 @@
 @import url('utilitarios/effects.css');
 @import url('form/formularios.css');
 @import url('pages/home-page.css');
+@import url('pages/admin.css');
+@import url('pages/formulario-diario-page.css');
 @import url('pages/inicio-page.css');
+@import url('pages/auth-page.css');
 
 
 

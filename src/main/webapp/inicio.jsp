@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/utilitarios/buttons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/utilitarios/effects.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/inicio-page.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/auth-page.css">
     <!-- PHOSPHOR ICONS CDN -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     <script src="${pageContext.request.contextPath}/assets/script/effects.js" defer></script>
@@ -34,19 +35,19 @@
         <!-- HERO SECTION -->
         <section class="inicio-page card-tilt parallax-bg reveal-on-scroll" style="margin-bottom: 2rem;">
             <h1 style="margin-bottom: 1.2rem; animation: fadeInHeading 1s;">
-              <i class="ph ph-rocket-launch" style="color:var(--secondary);margin-right:8px;"></i>
+              <i class="ph ph-rocket-launch" style="font-size:4rem;color:var(--primary);margin-right:8px;"></i>
               Bem-vindo à Nossa Plataforma
             </h1>
             <p style="font-size:1.16rem; margin-bottom: 1rem;">
-                <i class="ph ph-lightbulb"></i>
+                <i class="ph ph-lightbulb" style="font-size: 2rem;color:var(--primary);margin-right:8px;"></i>
                 Na nossa plataforma, oferecemos ferramentas inovadoras para nutricionistas, permitindo que eles melhorem o atendimento aos pacientes e otimizem suas rotinas.
             </p>
             <p style="font-size:1.08rem; margin-bottom: 1.8rem;">
-                <i class="ph ph-list-checks"></i>
+                <i class="ph ph-list-checks" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                 Explore funcionalidades que incluem criação de planos alimentares personalizados, relatórios detalhados e integração com plataformas de saúde. Tudo isso para facilitar sua rotina e maximizar o atendimento de qualidade.
             </p>
             <form action="${pageContext.request.contextPath}/registro.jsp" method="get">
-              <button type="submit" class="button button-neutral">
+              <button type="submit" class="button button-primary">
                 <i class="ph ph-arrow-right"></i>
                 <span style="vertical-align: middle; font-weight: 600;">Comece Agora</span>
               </button>

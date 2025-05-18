@@ -1,22 +1,22 @@
-<%-- 
-    Document   : registro
-    Created on : 15 de out. de 2024, 16:11:40
-    Author     : hugod
---%>
-
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
-<html>
-    <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <title>Registro</title>
-        <%@ include file="WEB-INF/jspf/html-head.jspf" %>
-    </head>
-    <body>
-        <%@ include file="WEB-INF/jspf/header.jspf" %>
-<main>
-    <div class="form-container">
-        <h2>Crie sua conta</h2>
+<html lang="pt-BR">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Registro</title>
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/auth-page.css">
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
+    <%@ include file="WEB-INF/jspf/html-head.jspf" %>
+  </head>
+  <body style="background: var(--surface);">
+    <%@ include file="WEB-INF/jspf/header.jspf" %>
+    <main>
+      <section class="inicio-page card-tilt reveal-on-scroll" style="max-width:420px;margin:48px auto;">
+        <h2>
+          <i class="ph ph-user-plus"></i>
+          Crie sua conta
+        </h2>
 
         <!-- Exibe mensagens de erro -->
         <%
@@ -24,19 +24,19 @@
             if (error != null) {
                 switch (error) {
                     case "missing":
-                        out.println("<p class='error'>Por favor, preencha todos os campos.</p>");
+                        out.println("<p style='color:#ff5252;font-weight:600;'>Por favor, preencha todos os campos.</p>");
                         break;
                     case "nomatch":
-                        out.println("<p class='error'>As senhas não coincidem.</p>");
+                        out.println("<p style='color:#ff5252;font-weight:600;'>As senhas não coincidem.</p>");
                         break;
                     case "emailtaken":
-                        out.println("<p class='error'>E-mail já está registrado.</p>");
+                        out.println("<p style='color:#ff5252;font-weight:600;'>E-mail já está registrado.</p>");
                         break;
                     case "database":
-                        out.println("<p class='error'>Erro ao registrar. Tente novamente.</p>");
+                        out.println("<p style='color:#ff5252;font-weight:600;'>Erro ao registrar. Tente novamente.</p>");
                         break;
                     case "exception":
-                        out.println("<p class='error'>Erro no servidor. Tente mais tarde.</p>");
+                        out.println("<p style='color:#ff5252;font-weight:600;'>Erro no servidor. Tente mais tarde.</p>");
                         break;
                 }
             }
@@ -55,15 +55,13 @@
             <label for="senha2">Repetir a Senha:</label>
             <input type="password" id="senha2" name="senha2" required>
 
-            <button type="submit" class="button-success">Registrar</button>
+            <button type="submit" class="button button-primary">Registrar</button>
         </form>
 
-        <p>Já tem um registro? <a href="${pageContext.request.contextPath}/login.jsp">Faça login aqui.</a></p>
-    </div>
-</main>
-
-        <%@ include file="WEB-INF/jspf/footer.jspf" %>
-        
-        <script type="text/javascript" src="assets/script/senha.js" defer></script>
-    </body>
+        <p style="margin-top:1.5rem;">Já tem um registro? <a href="${pageContext.request.contextPath}/login.jsp">Faça login aqui.</a></p>
+      </section>
+    </main>
+    <%@ include file="WEB-INF/jspf/footer.jspf" %>
+    <script type="text/javascript" src="assets/script/senha.js" defer></script>
+  </body>
 </html>

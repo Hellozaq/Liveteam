@@ -1,0 +1,82 @@
+/* Auth Page Custom Styles - for login, register, forgot, reset */
+
+.inicio-page input[type="text"],
+.inicio-page input[type="email"],
+.inicio-page input[type="password"] {
+  background: #23272b;
+  color: var(--text, #f7f7f7);
+  border: 1px solid var(--primary, #A0D683);
+  border-radius: 7px;
+  margin-bottom: 18px;
+  font-size: 1.12rem;
+}
+
+.inicio-page label {
+  color: #C5FFB1;           /* Brighter green. Try #C5FFB1 or #C9F7A8 for high contrast */
+  font-weight: 700;
+  text-shadow: 0 1px 8px rgba(160,214,131,0.18), 0 0px 2px #181c1f;
+  letter-spacing: 0.01em;
+}
+
+.inicio-page .button-primary {
+  background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%);
+  color: #23272b;
+  font-weight: 700;
+  font-size: 1.1rem;
+  border-radius: 7px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  transition: background 0.3s, color 0.3s;
+  border: none;
+  box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.15);
+}
+
+.inicio-page .button-primary:hover,
+.inicio-page .button-primary:focus {
+  background: linear-gradient(90deg, #7DD23B 0%, #A0D683 100%);
+  color: #181c1f;
+  filter: brightness(0.98);
+}
+
+.inicio-page a {
+  color: var(--secondary, #8b5cf6);
+  transition: color 0.2s;
+}
+
+.inicio-page a:hover {
+  color: var(--primary, #A0D683);
+  text-decoration: underline;
+}
+
+.inicio-page h2 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  color: var(--primary, #A0D683);
+  background: linear-gradient(90deg, var(--primary, #A0D683) 70%, var(--secondary, #8b5cf6) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin-bottom: 1.5rem;
+  text-align: center;
+  animation: fadeInHeading 1.1s var(--transition, cubic-bezier(.77,0,.175,1)) both;
+}
+
+.inicio-page .ph {
+  color: var(--secondary, #8b5cf6);
+  font-size: 2.2rem;
+  vertical-align: middle;
+  margin-right: 12px;
+}
+
+.inicio-page {
+  box-shadow: 0 8px 40px 0 rgba(160, 214, 131, 0.10), 0 1.5px 3px 0 rgba(139, 92, 246, 0.09);
+}
+
+/* Optional: responsive fix for small screens */
+@media (max-width: 600px) {
+  .inicio-page {
+    max-width: 96vw !important;
+    margin: 10vw auto !important;
+    padding: 2rem 1rem;
+  }
+}
