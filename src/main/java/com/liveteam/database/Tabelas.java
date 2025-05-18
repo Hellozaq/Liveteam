@@ -12,11 +12,11 @@ public class Tabelas {
 
             // Criação da tabela de usuários
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS usuario (" +
-        "    id SERIAL PRIMARY KEY, " +
-        "    nome VARCHAR(50) NOT NULL, " +
-        "    email VARCHAR(100) NOT NULL UNIQUE, " +
-        "    senha VARCHAR(255) NOT NULL, " +
-        "    role VARCHAR(20) NOT NULL DEFAULT 'usuario')"  
+                "id SERIAL PRIMARY KEY, " +
+                "nome VARCHAR(50) NOT NULL, " +
+                "email VARCHAR(100) NOT NULL UNIQUE, " +
+                "senha VARCHAR(255) NOT NULL, " +
+                "role VARCHAR(20) NOT NULL DEFAULT 'usuario')"  
             );
 
             System.out.println("Tabela 'usuario' criada com sucesso!");
@@ -89,6 +89,15 @@ public class Tabelas {
                     "data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
 
             System.out.println("Tabela 'plano_dieta_treino' criada com sucesso!");
+
+            // Criação da tabela de tokens de redefinição de senha
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS password_reset_tokens (" +
+                    "user_id INT REFERENCES usuario(id) ON DELETE CASCADE, " +
+                    "token VARCHAR(128) PRIMARY KEY, " +
+                    "expires_at TIMESTAMP NOT NULL" +
+                    ")");
+
+            System.out.println("Tabela 'password_reset_tokens' criada com sucesso!");
 
         } catch (SQLException e) {
             System.err.println("Erro ao executar comandos SQL: " + e.getMessage());

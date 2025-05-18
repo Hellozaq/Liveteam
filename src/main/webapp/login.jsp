@@ -17,6 +17,15 @@
         <main>
             <div class="form-container">
                 <h2>Entrar</h2>
+                <% 
+                    String success = request.getParameter("success");
+                    String error = request.getParameter("error");
+                    if ("reset".equals(success)) {
+                %>
+                    <p style="color:green;">Senha redefinida com sucesso. Faça login com sua nova senha.</p>
+                <% } else if ("invalid".equals(error)) { %>
+                    <p style="color:red;">Email ou senha inválidos.</p>
+                <% } %>
                 <form action="${pageContext.request.contextPath}/LoginServlet" method="post">
                     <label for="email">Email:</label>
                     <input type="email" id="email" name="email" required>
@@ -26,10 +35,14 @@
 
                     <button type="submit" class="button-primary">Entrar</button>
                 </form>
-                    <p>Não tem um registro? <a href="${pageContext.request.contextPath}/registro.jsp">Faça seu registro aqui.</a></p> 
+                <p>
+                    Não tem um registro? <a href="${pageContext.request.contextPath}/registro.jsp">Faça seu registro aqui.</a>
+                </p>
+                <p>
+                    Esqueceu sua senha? <a href="${pageContext.request.contextPath}/forgotPassword.jsp">Redefina aqui.</a>
+                </p>
             </div>
         </main>
         <%@ include file="WEB-INF/jspf/footer.jspf" %>
-
     </body>
 </html>
