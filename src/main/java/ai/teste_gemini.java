@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 public class teste_gemini {
 
-    private static final String API_KEY = "AIzaSyDLmPzZINauO8pFeU1ygfSqQbLpP60jlE4"; // Substitua pela sua chave de API
+    private static final String API_KEY = ""; // Substitua pela sua chave de API
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + API_KEY;
 
     // Função para redimensionar a imagem
