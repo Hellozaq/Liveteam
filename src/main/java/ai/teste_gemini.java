@@ -20,7 +20,7 @@ import org.json.JSONObject;
 
 public class teste_gemini {
 
-    private static final String API_KEY = ""; // Substitua pela sua chave de API
+    private static final String API_KEY = "AIzaSyDLmPzZINauO8pFeU1ygfSqQbLpP60jlE4"; // Substitua pela sua chave de API
     private static final String API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=" + API_KEY;
 
     // Função para redimensionar a imagem
@@ -101,7 +101,7 @@ public class teste_gemini {
 
     public static void main(String[] args) {
         try {
-            String prompt = "Descreva os alimentos encontrados na imagem";
+            String prompt = "Descreva os alimentos encontrados na imagem no formato JSON com os campos 'nome' (string) e 'detalhes' (string).";
             String inputImagePath = "C:\\Users\\piero\\OneDrive\\Imagens\\prato comida.jpg";
             String resizedImagePath = "C:\\Users\\piero\\OneDrive\\Imagens\\prato comida.jpg";
 

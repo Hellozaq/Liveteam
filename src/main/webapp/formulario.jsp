@@ -73,7 +73,7 @@
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <div class="container mt-4 form-container">
         <h2>Formulário</h2>
-        <form id="formulario" method="post" action="${pageContext.request.contextPath}/GerarRespostaServlet" novalidate>
+        <form id="formulario" method="post" action="${pageContext.request.contextPath}/ExibirDietaServlet" novalidate>
             <!-- Dados Pessoais -->
             <div class="form-section">
                 <h3>Dados Pessoais</h3>

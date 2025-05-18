@@ -8,11 +8,12 @@ import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.pdmodel.PDPage;
 import org.apache.pdfbox.pdmodel.PDPageContentStream;
 import org.apache.pdfbox.pdmodel.font.PDType0Font;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -55,91 +56,86 @@ public class GerarRespostaServlet extends HttpServlet {
         String almoco = request.getParameter("almoco");
         String jantar = request.getParameter("jantar");
 
-        // Monta a mensagem a ser enviada para o Gemini com os dados do formulário
-        String mensagem = "Por favor, crie um plano de dieta e treino com base nas seguintes informações:\n\n" +
-                "Idade: " + idade + "\n" + 
-                "Sexo: " + sexo + "\n" +
-                "Altura (cm): " + alturaCm + "\n" +
-                "Peso (kg): " + pesoKg + "\n" +
-                "Objetivo Principal: " + objetivoPrincipal + "\n" +
-                "Frequência Semanal de Treino: " + frequenciaSemanalTreino + "\n" +
-                "Duração Média do Treino: " + duracaoMediaTreino + "\n" +
-                "Tipo de Atividade Física: " + tipoAtividadeFisica + "\n" +
-                "Objetivos do Treino: " + objetivosTreino + "\n" +
-                "Nacionalidade: " + nacionalidade + "\n" +
-                "Residência Atual: " + residenciaAtual + "\n" +
-                "Alimentos Favoritos: " + alimentosFavoritos + "\n" +
-                "Alimentos que Evita: " + alimentosQueEvita + "\n" +
-                "Alimentos para Incluir/Excluir: " + alimentosParaIncluirExcluir + "\n" +
-                "Usa Suplementos: " + usaSuplementos + "\n" +
-                "Suplementos Usados: " + suplementosUsados + "\n" +
-                "Tempo de Treino por Sessão: " + tempoPorTreino + "\n" +
-                "Café da Manhã: " + cafeDaManha + "\n" +
-                "Almoço: " + almoco + "\n" +
-                "Jantar: " + jantar +
-                "e com base no seguinte prompt de resposta '\n" +
-                "Cálculo da Taxa de Metabolismo Basal (TMB)\n" +
-                "•	Sexo: [Masculino / Feminino]\n" +
-                "•	Idade: [Idade em anos]\n" +
-                "•	Altura: [Altura em cm]\n" +
-                "•	Peso: [Peso em kg]\n" +
-                "•	Nível de Atividade Física: [Leve / Moderado / Intenso]\n" +
-                "Cálculo da TMB (fórmula de Harris-Benedict para Homens ou Mulheres):\n" +
-                "•	Homens: TMB=66,5+(13,75×Peso)+(5,003×Altura)−(6,75×Idade)\n" +
-                "•	Mulheres: TMB=655+(9,563×Peso)+(1,850×Altura)−(4,676×Idade)\n" +
-                "Necessidades Calóricas Diárias:\n" +
-                "(Se aplicável, multiplique a TMB pelo fator de atividade para estimar a quantidade de calorias diárias necessárias.)\n" +
-                "\n" +
-                "Plano de Dieta\n" +
-                "Objetivos de Dieta: [Preencher conforme objetivo]\n" +
-                "•	Calorias Totais: [Número de calorias sugeridas para o objetivo]\n" +
-                "Distribuição de Macronutrientes:\n" +
-                "•	Proteínas: [Percentual ou gramas]\n" +
-                "•	Carboidratos: [Percentual ou gramas]\n" +
-                "•	Gorduras: [Percentual ou gramas]\n" +
-                "\n" +
-                "Exemplo de Cardápio (Com Calorias de Cada Refeição e Alimento )\n" +
-                "Café da manhã:\n" +
-                "•	[Alimento 1] [Quantidade e calorias]\n" +
-                "•	[Alimento 2] [Quantidade e calorias]\n" +
-                "•	[Alimento 3] [Quantidade e calorias]\n" +
-                "Total do Café da Manhã: [Total de calorias]\n" +
-                "\n" +
-                "Almoço:\n" +
-                "•	[Alimento 1] [Quantidade e calorias]\n" +
-                "•	[Alimento 2] [Quantidade e calorias]\n" +
-                "•	[Alimento 3] [Quantidade e calorias]\n" +
-                "Total do Almoço: [Total de calorias]\n" +
-                "\n" +
-                "Lanche da Tarde:\n" +
-                "•	[Alimento 1] [Quantidade e calorias]\n" +
-                "•	[Alimento 2] [Quantidade e calorias]\n" +
-                "Total do Lanche da Tarde: [Total de calorias]\n" +
-                "\n" +
-                "Jantar:\n" +
-                "•	[Alimento 1] [Quantidade e calorias]\n" +
-                "•	[Alimento 2] [Quantidade e calorias]\n" +
-                "•	[Alimento 3] [Quantidade e calorias]\n" +
-                "Total do Jantar: [Total de calorias]\n" +
-                "\n" +
-                "Total de Calorias do Dia: [Total de calorias do dia]\n" +
-                "\n" +
-                "Plano de Treino (Musculação)\n" +
-                "Objetivo: [Preencher com objetivo do treino]\n" +
-                "Estrutura do Treino (Baseado na quantia de dias indicada)\n" +
-                "\n" +
-                "Conclusão:\n" +
-                "Com base nas informações preenchidas, este plano de dieta e treino foi "
-                + "ajustado para [objetivo principal], com detalhamento de calorias por refeição e alimento, "
-                + "e com uma estratégia de treino adequada para atingir seus objetivos.\n" +
-                "'";
+        // Monta a mensagem a ser enviada para o Gemini com os dados do formulário e instrução para JSON
+        String mensagem = "Por favor, crie um plano de dieta e treino com base nas seguintes informações, " +
+                "retornando a resposta em formato JSON:\n\n" +
+                "{\n" +
+                "  \"metabolismo_basal\": {\n" +
+                "    \"sexo\": \"" + sexo + "\",\n" +
+                "    \"idade\": \"" + idade + "\",\n" +
+                "    \"altura_cm\": \"" + alturaCm + "\",\n" +
+                "    \"peso_kg\": \"" + pesoKg + "\",\n" +
+                "    \"nivel_atividade\": \"[Leve / Moderado / Intenso]\",\n" +
+                "    \"tmb_homens\": \"[Cálculo TMB Homens]\",\n" +
+                "    \"tmb_mulheres\": \"[Cálculo TMB Mulheres]\",\n" +
+                "    \"calorias_diarias\": \"[Calorias Diárias Estimadas]\"\n" +
+                "  },\n" +
+                "  \"plano_dieta\": {\n" +
+                "    \"objetivo\": \"" + objetivoPrincipal + "\",\n" +
+                "    \"calorias_totais\": \"[Número]\",\n" +
+                "    \"macronutrientes\": {\n" +
+                "      \"proteinas\": \"[Percentual ou gramas]\",\n" +
+                "      \"carboidratos\": \"[Percentual ou gramas]\",\n" +
+                "      \"gorduras\": \"[Percentual ou gramas]\"\n" +
+                "    },\n" +
+                "    \"refeicoes\": {\n" +
+                "      \"cafe_da_manha\": \"" + cafeDaManha + "\",\n" +
+                "      \"almoco\": \"" + almoco + "\",\n" +
+                "      \"lanche_tarde\": \"[Sugestões]\",\n" +
+                "      \"jantar\": \"" + jantar + "\"\n" +
+                "    },\n" +
+                "    \"observacoes\": \"[Observações sobre a dieta]\"\n" +
+                "  },\n" +
+                "  \"plano_treino\": {\n" +
+                "    \"objetivo\": \"" + objetivosTreino + "\",\n" +
+                "    \"frequencia\": \"" + frequenciaSemanalTreino + "\",\n" +
+                "    \"duracao_media\": \"" + duracaoMediaTreino + "\",\n" +
+                "    \"tempo_sessao\": \"" + tempoPorTreino + "\",\n" +
+                "    \"tipo_atividade\": \"" + tipoAtividadeFisica + "\",\n" +
+                "    \"estrutura\": \"[Estrutura do treino]\",\n" +
+                "    \"observacoes\": \"[Observações sobre o treino]\"\n" +
+                "  },\n" +
+                "  \"informacoes_usuario\": {\n" +
+                "    \"nacionalidade\": \"" + nacionalidade + "\",\n" +
+                "    \"residencia\": \"" + residenciaAtual + "\",\n" +
+                "    \"alimentos_favoritos\": \"" + alimentosFavoritos + "\",\n" +
+                "    \"alimentos_evita\": \"" + alimentosQueEvita + "\",\n" +
+                "    \"alimentos_incluir_excluir\": \"" + alimentosParaIncluirExcluir + "\",\n" +
+                "    \"suplementos_usa\": \"" + usaSuplementos + "\",\n" +
+                "    \"suplementos_usados\": \"" + suplementosUsados + "\"\n" +
+                "  },\n" +
+                "  \"conclusao\": \"[Conclusão e recomendações finais]\"\n" +
+                "}";
 
         String respostaGemini = "";
+        JSONObject respostaJson = null;
         try {
             // Envia a mensagem para o Gemini e obtém a resposta
-            respostaGemini = Gemini.getCompletion(mensagem).replaceAll("[\\n\\r]+", " ");
+            respostaGemini = Gemini.getCompletion(mensagem);
+
+            // Tenta analisar a resposta como JSONObject
+            respostaGemini = respostaGemini.trim();
+            if (respostaGemini.startsWith("{")) {
+                respostaJson = new JSONObject(respostaGemini);
+            } else if (respostaGemini.startsWith("[")) {
+                // Se a resposta for um JSONArray
+                System.err.println("Resposta do Gemini é um JSONArray, adaptando para extrair informações...");
+                JSONArray respostaArrayJson = new JSONArray(respostaGemini);
+                if (respostaArrayJson.length() > 0) {
+                    // Assumindo que o primeiro elemento do array é o objeto desejado
+                    respostaJson = respostaArrayJson.getJSONObject(0);
+                } else {
+                    System.err.println("JSONArray da resposta do Gemini está vazio.");
+                    respostaGemini = "Resposta do Gemini (JSONArray vazio): " + respostaGemini;
+                }
+            } else {
+                System.err.println("Resposta do Gemini não começou com '{' ou '[': " + respostaGemini);
+                // Se não for um JSON válido, use a resposta bruta para o PDF
+            }
+
         } catch (Exception e) {
             respostaGemini = "Erro ao obter resposta do Gemini: " + e.getMessage();
+            e.printStackTrace();
         }
 
         // Conexão com o banco de dados
@@ -147,13 +143,11 @@ public class GerarRespostaServlet extends HttpServlet {
         PreparedStatement ps = null;
 
         try {
-            // Carrega as propriedades do banco de dados
             Properties props = loadDbProperties();
             String url = props.getProperty("db.url");
             String username = props.getProperty("db.username");
             String password = props.getProperty("db.password");
 
-            // Estabelece a conexão com o banco
             conn = DriverManager.getConnection(url, username, password);
 
             String sql = "INSERT INTO respostas_gemini (resposta) VALUES (?)";
@@ -190,50 +184,24 @@ public class GerarRespostaServlet extends HttpServlet {
 
             try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
                 contentStream.beginText();
-                contentStream.setLeading(20f);
-                contentStream.newLineAtOffset(50, 700);
+                contentStream.setLeading(15f);
+                contentStream.newLineAtOffset(50, 750);
 
-                // Carregar a fonte Arial
-                PDType0Font arialFont = PDType0Font.load(document, new File("C:/Windows/Fonts/arial.ttf"));  // Caminho do TTF
+                PDType0Font arialFont = PDType0Font.load(document, new File("C:/Windows/Fonts/arial.ttf"));
+                contentStream.setFont(arialFont, 10);
 
-                contentStream.setFont(arialFont, 16);
                 contentStream.showText("Plano de Dieta e Treino");
                 contentStream.newLine();
-                contentStream.setFont(arialFont, 12);
-                contentStream.showText("Sexo: " + sexo);
                 contentStream.newLine();
-                contentStream.showText("Altura (cm): " + alturaCm);
-                contentStream.newLine();
-                contentStream.showText("Peso (kg): " + pesoKg);
-                contentStream.newLine();
-                contentStream.showText("Objetivo Principal: " + objetivoPrincipal);
-                contentStream.newLine();
-                contentStream.showText("Frequência Semanal de Treino: " + frequenciaSemanalTreino);
-                contentStream.newLine();
-                contentStream.showText("Duração Média do Treino: " + duracaoMediaTreino);
-                contentStream.newLine();
-                contentStream.showText("Tipo de Atividade Física: " + tipoAtividadeFisica);
-                contentStream.newLine();
-                contentStream.showText("Objetivos do Treino: " + objetivosTreino);
-                contentStream.newLine();
-                contentStream.showText("Nacionalidade: " + nacionalidade);
-                contentStream.newLine();
-                contentStream.showText("Residência Atual: " + residenciaAtual);
-                contentStream.newLine();
-                contentStream.showText("Alimentos Favoritos: " + alimentosFavoritos);
-                contentStream.newLine();
-                contentStream.showText("Alimentos que Evita: " + alimentosQueEvita);
-                contentStream.newLine();
-                contentStream.showText("Alimentos para Incluir/Excluir: " + alimentosParaIncluirExcluir);
-                contentStream.newLine();
-                contentStream.showText("Usa Suplementos: " + usaSuplementos);
-                contentStream.newLine();
-                contentStream.showText("Suplementos Usados: " + suplementosUsados);
-                contentStream.newLine();
-                contentStream.showText("Tempo de Treino por Sessão: " + tempoPorTreino);
-                contentStream.newLine();
-                contentStream.newLine();
-                contentStream.showText(respostaGemini);  // Resposta do Gemini
+
+                if (respostaJson != null) {
+                    // Exibe os dados do JSON no PDF
+                    exibirJsonNoPdf(contentStream, respostaJson);
+                } else {
+                    contentStream.showText("Resposta do Gemini (não formatada como JSON esperado):\n" + respostaGemini);
+                }
+
+                contentStream.endText();
             }
 
             document.save(response.getOutputStream());
@@ -242,6 +210,41 @@ public class GerarRespostaServlet extends HttpServlet {
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erro ao gerar PDF: " + e.getMessage());
         }
     }
+
+    private void exibirJsonNoPdf(PDPageContentStream contentStream, JSONObject jsonObject) throws IOException {
+        for (String key : jsonObject.keySet()) {
+            Object value = jsonObject.get(key);
+            contentStream.showText(key + ": ");
+            if (value instanceof JSONObject) {
+                contentStream.newLine();
+                contentStream.newLineAtOffset(20, 0);
+                exibirJsonNoPdf(contentStream, (JSONObject) value);
+                contentStream.newLineAtOffset(-20, 0);
+            } else if (value instanceof JSONArray) {
+                contentStream.newLine();
+                contentStream.newLineAtOffset(20, 0);
+                JSONArray jsonArray = (JSONArray) value;
+                for (int i = 0; i < jsonArray.length(); i++) {
+                    Object arrayValue = jsonArray.get(i);
+                    contentStream.showText("- Item " + (i + 1) + ": ");
+                    if (arrayValue instanceof JSONObject) {
+                        contentStream.newLine();
+                        contentStream.newLineAtOffset(20, 0);
+                        exibirJsonNoPdf(contentStream, (JSONObject) arrayValue);
+                        contentStream.newLineAtOffset(-20, 0);
+                    } else {
+                        contentStream.showText(arrayValue.toString());
+                        contentStream.newLine();
+                    }
+                }
+                contentStream.newLineAtOffset(-20, 0);
+            } else {
+                contentStream.showText(value.toString());
+                contentStream.newLine();
+            }
+        }
+    }
+
 
     private Properties loadDbProperties() {
         Properties props = new Properties();
