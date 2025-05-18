@@ -1,0 +1,79 @@
+:root {
+  /* Brand & Accent Colors */
+  --primary: #A0D683;
+  --primary-dark: #7fc359;
+  --secondary: #8b5cf6;
+  --accent: #4caf50;
+  --accent-light: #e3fcec;
+  --error: #dc3545;
+  --warning: #ffb74d;
+  --info: #29b6f6;
+
+  /* Neutrals */
+  --background: #f0f4f8;
+  --background-alt: #f9f9f9;
+  --surface: #fff;
+  --surface-alt: #f2f2f2;
+  --surface-dark: #242424;
+  --muted: #b0bfc7;
+  --border: #e0e6ed;
+  --shadow: 0 2px 4px rgba(0,0,0,0.10);
+
+  /* Text */
+  --text: #333;
+  --text-heading: #2c3e50;
+  --text-light: #fff;
+  --text-muted: #555;
+
+  /* UI */
+  --radius: 8px;
+  --radius-lg: 14px;
+  --transition: cubic-bezier(.4,0,.2,1);
+
+  /* Button Gradients */
+  --button-gradient: linear-gradient(90deg, var(--primary) 80%, var(--secondary) 100%);
+  --button-gradient-hover: linear-gradient(90deg, var(--secondary) 60%, var(--primary) 100%);
+}
+
+/* --- Dark theme: manual + prefers-color-scheme, prioritizing [data-theme-dark] --- */
+[data-theme-dark] {
+  --background: #181a1b;
+  --background-alt: #222;
+  --surface: #232629;
+  --surface-alt: #181818;
+  --surface-dark: #171616;
+  --text: #BDBDBD;
+  --text-heading: #e0ffe0;
+  --text-light: #fff;
+  --text-muted: #b0bfc7;
+  --border: #333;
+  --shadow: 0 6px 24px rgba(160,214,131,0.13);
+
+  --button-gradient: linear-gradient(90deg, var(--primary-dark) 80%, var(--secondary) 100%);
+  --button-gradient-hover: linear-gradient(90deg, var(--secondary) 60%, var(--primary-dark) 100%);
+}
+
+/* Optionally, also respect user's system pref if [data-theme-dark] not set */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme-dark]) {
+    --background: #181a1b;
+    --background-alt: #222;
+    --surface: #232629;
+    --surface-alt: #181818;
+    --surface-dark: #171616;
+    --text: #BDBDBD;
+    --text-heading: #e0ffe0;
+    --text-light: #fff;
+    --text-muted: #b0bfc7;
+    --border: #333;
+    --shadow: 0 6px 24px rgba(160,214,131,0.13);
+
+    --button-gradient: linear-gradient(90deg, var(--primary-dark) 80%, var(--secondary) 100%);
+    --button-gradient-hover: linear-gradient(90deg, var(--secondary) 60%, var(--primary-dark) 100%);
+  }
+}
+
+/* Smooth transition for background and text on theme change */
+html, body, [data-theme-dark] {
+  transition: background 0.4s var(--transition), color 0.3s var(--transition);
+}

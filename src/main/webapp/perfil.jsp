@@ -65,7 +65,7 @@
         }
     %>
 
-    <main class="contact-page container my-5">
+    <main class="inicio-page container my-5">
         <h1>Perfil do Usuário</h1>
         <h2>Bem-vindo, <%= nomeUsuario %>!</h2>
         <p><strong>Email:</strong> <%= emailUsuario %></p>

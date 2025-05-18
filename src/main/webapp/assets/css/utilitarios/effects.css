@@ -1,0 +1,67 @@
+@import url('../global/theme.css');
+
+/* Card base */
+.card {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+  padding: 1.5rem 2rem;
+  margin-bottom: 1.4rem;
+  transition: box-shadow 0.2s var(--transition), transform 0.16s var(--transition);
+  position: relative;
+}
+
+/* Card tilt micro-interaction (JS adds .tilted) */
+.card-tilt { will-change: transform, box-shadow; }
+.card-tilt.tilted {
+  box-shadow: 0 8px 32px 0 rgba(160, 214, 131, 0.16), 0 1.5px 3px 0 rgba(139, 92, 246, 0.09);
+}
+
+/* Parallax backgrounds -- add class .parallax-bg to any section */
+.parallax-bg {
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  background-image: linear-gradient(120deg, var(--background-alt) 60%, var(--accent-light) 100%);
+  background-attachment: fixed;
+  background-position: center center;
+  background-size: cover;
+}
+.parallax-bg::before {
+  content: "";
+  position: absolute;
+  top: -20%;
+  left: 50%;
+  width: 140vw;
+  height: 90vh;
+  background: radial-gradient(ellipse at center, #a0d68320 0%, #f9f9f900 70%);
+  transform: translateX(-50%) scale(1.2);
+  will-change: transform;
+  z-index: -1;
+  animation: parallaxMove 10s infinite alternate ease-in-out;
+}
+@keyframes parallaxMove {
+  from { transform: translateX(-50%) scale(1.18); }
+  to   { transform: translateX(-48%) scale(1.22); }
+}
+
+/* Section reveal on scroll */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(60px) scale(0.98);
+  transition: opacity 0.88s var(--transition), transform 0.78s var(--transition);
+  will-change: opacity, transform;
+}
+.reveal-on-scroll.visible {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+}
+
+/* Floating animation for icons/images */
+.floating {
+  animation: floatY 2.5s ease-in-out infinite alternate;
+}
+@keyframes floatY {
+  from { transform: translateY(0);}
+  to   { transform: translateY(-18px);}
+}
