@@ -8,28 +8,15 @@
     <!-- Modern theme and utility CSS -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/theme.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/global.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/utilitarios/buttons.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/buttons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/utilitarios/effects.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/inicio-page.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/auth-page.css">
     <!-- PHOSPHOR ICONS CDN -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     <script src="${pageContext.request.contextPath}/assets/script/effects.js" defer></script>
-    <style>
-      :root {
-        --surface: #181c1f;
-        --surface-alt: #23272b;
-        --primary: #A0D683;
-        --secondary: #8B5CF6;
-        --accent: #F9D923;
-        --text: #f7f7f7;
-        --radius: 14px;
-        --shadow: 0 2px 16px #0006;
-        --transition: cubic-bezier(.77,0,.175,1);
-      }
-    </style>
 </head>
-<body>
+<body data-theme-dark>
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <main>
         <!-- HERO SECTION -->
