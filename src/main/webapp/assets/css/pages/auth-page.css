@@ -76,6 +76,19 @@
   box-shadow: 0 8px 40px 0 rgba(160, 214, 131, 0.10), 0 1.5px 3px 0 rgba(139, 92, 246, 0.09);
 }
 
+input[type="text"]:focus,
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+    border-color: #8B5CF6 !important;
+    box-shadow: 0 0 0 2px #8B5CF655;
+    outline: none;
+    background: #23272b;
+    color: #f7f7f7;
+    transition: border-color 0.3s, box-shadow 0.3s, background 0.3s;
+}
 
 /* Optional: responsive fix for small screens */
 @media (max-width: 600px) {

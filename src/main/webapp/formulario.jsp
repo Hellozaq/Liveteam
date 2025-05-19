@@ -7,58 +7,155 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
     <style>
+        body {
+            background: #181c1f;
+            color: #f7f7f7;
+            font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+        }
+        .container.form-container {
+            background: #181c1f;
+            border-radius: 18px;
+            box-shadow: 0 0 40px #A0D68333;
+            padding: 36px 0 48px 0;
+            margin-bottom: 48px;
+        }
+        h2 {
+            color: #A0D683;
+            font-size: 2.1rem;
+            font-weight: bold;
+            text-align: center;
+            letter-spacing: 0.01em;
+            background: linear-gradient(90deg, #A0D683 70%, #8b5cf6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 2rem;
+        }
         .form-section {
             margin-bottom: 30px;
         }
-
         .form-section h3 {
-            color: #198754;
+            color: #A0D683;
         }
-
         .form-container form {
             width: 100%;
             max-width: 100%;
+            background: #23272b;
+            border-radius: 14px;
+            padding: 32px 24px 16px 24px;
+            box-shadow: 0 2px 16px #A0D68322;
+            margin: 0 auto;
         }
-
+        label, .form-label {
+            background: transparent;
+            color: #A0D683;
+            font-weight: 700;
+            margin-bottom: 8px;
+            margin-top: 6px;
+            padding: 0;
+            border-radius: 0;
+            display: inline-block;
+            font-size: 1rem;
+            box-shadow: none;
+        }
+        .form-control, .form-select, textarea {
+            background: #181c1f;
+            color: #f7f7f7;
+            border: 1.5px solid #A0D683;
+            border-radius: 7px;
+            font-size: 1.13rem;
+            margin-bottom: 18px;
+            margin-top: 3px;
+            padding: 12px 11px;
+            transition: border 0.3s, background 0.3s;
+            font-family: inherit;
+        }
+        .form-control:focus, .form-select:focus, textarea:focus {
+            border-color: #8B5CF6;
+            background: #23272b;
+            outline: none;
+        }
+        .form-control.is-invalid, .form-select.is-invalid, textarea.is-invalid {
+            border-color: #ff4d4d;
+            background: #2a2323;
+            color: #ffb3b3;
+        }
+        textarea.form-control {
+            min-height: 58px;
+            resize: vertical;
+        }
         .btn-group {
             display: flex;
             flex-wrap: wrap;
             gap: 10px;
+            justify-content: center;
         }
-
         .btn {
-            background-color: #f8f9fa;
-            border-color: #ccc;
-            color: #495057;
+            background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%);
+            color: #23272b;
             font-weight: bold;
-            padding: 10px 15px;
-            border-radius: 5px;
-            box-shadow: none;
-            transition: all 0.3s ease;
+            padding: 12px 24px;
+            border-radius: 7px;
+            border: none;
+            box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.12);
+            font-size: 1.13rem;
+            transition: background 0.3s, color 0.3s, filter 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-
-        .btn-check:checked + .btn {
-            background-color: #4CAF50;
-            border-color: #388E3C;
-            color: white;
+        .btn-success,
+        .btn-primary {
+            background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%) !important;
+            color: #23272b !important;
         }
-
-        .btn:hover {
-            background-color: #e9ecef;
-            border-color: #b0b0b0;
+        .btn-success:hover, .btn-primary:hover,
+        .btn-success:focus, .btn-primary:focus {
+            background: linear-gradient(90deg, #7DD23B 0%, #A0D683 100%) !important;
+            color: #181c1f !important;
+            filter: brightness(0.98);
         }
-
-        @media (max-width: 768px) {
+        .btn-secondary {
+            background: #23272b !important;
+            color: #A0D683 !important;
+            border: 1px solid #A0D683 !important;
+        }
+        .btn-secondary:hover, .btn-secondary:focus {
+            background: #181c1f !important;
+            color: #C5FFB1 !important;
+        }
+        /* Modal adjustments for dark theme */
+        .modal-content {
+            background: #23272b;
+            color: #f7f7f7;
+            border-radius: 10px;
+        }
+        .modal-header, .modal-footer {
+            border-color: #A0D683;
+        }
+        .modal-title {
+            color: #A0D683;
+        }
+        @media (max-width: 900px) {
+            .container.form-container, .form-container form {
+                max-width: 98vw;
+                padding: 1rem 0.4rem;
+            }
+        }
+        @media (max-width: 700px) {
+            .container.form-container, .form-container form {
+                padding: 1rem 0.2rem;
+                max-width: 99vw;
+            }
             .btn-group {
                 flex-direction: column;
                 align-items: stretch;
             }
             .btn {
                 width: 100%;
+                justify-content: center;
             }
         }
     </style>
