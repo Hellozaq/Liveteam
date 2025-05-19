@@ -1,53 +1,157 @@
-/* Estilos da página Home */
+
+:root {
+    --surface: #181c1f;
+    --surface-alt: #23272b;
+    --primary: #A0D683;
+    --secondary: #8B5CF6;
+    --accent: #F9D923;
+    --text: #f7f7f7;
+    --radius: 14px;
+    --shadow: 0 2px 16px #0006;
+    --transition: cubic-bezier(.77,0,.175,1);
+}
+
+/* Set global background and text color */
+body {
+    background: var(--surface);
+    color: var(--text, #f7f7f7);
+}
+
+/* Home page main container */
 .home-page {
-    max-width: 1200px; /* Largura máxima da página */
-    margin: 20px auto; /* Margem automática para centralizar a página */
-    padding: 20px; /* Espaçamento interno */
-    background-color: #f9f9f9; /* Cor de fundo suave */
-    border-radius: 8px; /* Bordas arredondadas */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 20px;
+    background: var(--surface-alt, #23272b);
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Estilos para o título principal */
+/* Main title */
 .home-page h1 {
-    font-size: 2.5rem; /* Tamanho do título */
-    margin-bottom: 20px; /* Espaçamento abaixo do título */
-    color: #A0D683; /* Cor do título (mesma do benefícios) */
-    text-align: left; /* Alinhamento à esquerda */
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--primary, #A0D683);
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.03em;
 }
 
-/* Estilos para os subtítulos (h2) */
+.home-page h1 i.ph {
+    font-size: 2rem;
+    color: var(--primary, #A0D683);
+    margin-right: 10px;
+}
+
+/* Subtitles */
 .home-page h2 {
-    font-size: 1.8rem; /* Tamanho dos subtítulos */
-    margin-top: 20px; /* Espaçamento acima dos subtítulos */
-    margin-bottom: 10px; /* Espaçamento abaixo dos subtítulos */
-    color: #A0D683; /* Cor dos subtítulos */
+    font-size: 1.8rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: var(--primary, #A0D683);
+    font-weight: 600;
+    letter-spacing: 0.02em;
 }
 
-/* Estilos para os parágrafos */
-.home-page p {
-    font-size: 1rem; /* Tamanho do texto */
-    line-height: 1.6; /* Espaçamento entre linhas */
-    margin-bottom: 15px; /* Espaçamento abaixo dos parágrafos */
-    color: #333; /* Cor do texto */
-    text-align: left; /* Alinhamento à esquerda */
-}
-
-/* Estilos para listas */
-.home-page ul {
-    padding-left: 20px; /* Espaçamento à esquerda para listas */
-    margin-bottom: 15px; /* Margem abaixo da lista */
-}
-
-/* Estilos para os itens da lista */
+/* Paragraphs and list items */
+.home-page p,
 .home-page li {
-    font-size: 1rem; /* Tamanho do texto das listas */
-    line-height: 1.6; /* Espaçamento entre linhas */
-    margin-bottom: 10px; /* Margem entre os itens da lista */
+    font-size: 1rem;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    color: var(--text, #f7f7f7);
+    text-align: left;
 }
 
-/* Itens destacados em negrito dentro das listas */
+/* Lists */
+.home-page ul {
+    padding-left: 20px;
+    margin-bottom: 15px;
+}
+
+/* List item highlight */
 .home-page li strong {
-    color: #A0D683; /* Cor do texto em destaque */
+    color: var(--primary, #A0D683);
     font-weight: bold;
+}
+
+/* Icon styles for uniformity */
+.home-page i.ph {
+    vertical-align: middle;
+    font-size: 1.5rem;
+    color: var(--primary, #A0D683);
+    margin-right: 8px;
+}
+
+/* Animation for fade-in (optional, for .animate class) */
+@keyframes fadeInHome {
+    from { opacity: 0; transform: translateY(24px);}
+    to { opacity: 1; transform: translateY(0);}
+}
+
+.home-page .animate {
+    opacity: 1 !important;
+    animation: fadeInHome 0.7s var(--transition, cubic-bezier(.77,0,.175,1)) both;
+}
+
+/* Button styles (reuse the auth green style for consistency) */
+.button,
+.button-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%);
+    color: #23272b;
+    font-weight: 700;
+    font-size: 1.1rem;
+    border-radius: 7px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0.75em 1.6em;
+    transition: background 0.3s, color 0.3s, filter 0.25s;
+    border: none;
+    box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.15);
+    cursor: pointer;
+    outline: none;
+}
+
+.button-primary:hover,
+.button-primary:focus,
+.button:hover,
+.button:focus {
+    background: linear-gradient(90deg, #7DD23B 0%, #A0D683 100%);
+    color: #181c1f;
+    filter: brightness(0.98);
+    text-decoration: none;
+}
+
+/* Alert boxes (success, error, info) */
+.alert {
+    padding: 1em 1.5em;
+    border-radius: 7px;
+    margin: 20px auto;
+    max-width: 600px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 1px 6px #0003;
+    letter-spacing: 0.01em;
+}
+.alert-success { background: #253824; color: #A0D683; border-left: 7px solid #A0D683;}
+.alert-error   { background: #3c2323; color: #FF5252; border-left: 7px solid #FF5252;}
+.alert-info    { background: #232948; color: #8B5CF6; border-left: 7px solid #8B5CF6;}
+
+/* Utility: hide until animated in */
+.home-page [class*="animate"]:not(.animate) {
+    opacity: 0;
+    transition: opacity 0.3s;
+}
+
+/* Responsive adjustments */
+@media (max-width: 800px) {
+    .home-page {
+        max-width: 96vw;
+        padding: 1.25rem;
+    }
+    .home-page h1 { font-size: 2rem; }
+    .home-page h2 { font-size: 1.3rem; }
 }
