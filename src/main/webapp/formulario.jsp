@@ -7,6 +7,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Formulário</title>
+    <!-- Phosphor Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
     <style>
         body {
@@ -38,6 +40,9 @@
         }
         .form-section h3 {
             color: #A0D683;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
         }
         .form-container form {
             width: 100%;
@@ -56,7 +61,9 @@
             margin-top: 6px;
             padding: 0;
             border-radius: 0;
-            display: inline-block;
+            display: flex;
+            align-items: center;
+            gap: 0.5em;
             font-size: 1rem;
             box-shadow: none;
         }
@@ -105,6 +112,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            gap: 0.5rem;
         }
         .btn-success,
         .btn-primary {
@@ -169,17 +177,17 @@
     %>
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <div class="container mt-4 form-container">
-        <h2>Formulário</h2>
+        <h2><i class="ph ph-article"></i> Formulário</h2>
         <form id="formulario" method="post" action="${pageContext.request.contextPath}/ExibirDietaServlet" novalidate>
             <!-- Dados Pessoais -->
             <div class="form-section">
-                <h3>Dados Pessoais</h3>
+                <h3><i class="ph ph-user"></i> Dados Pessoais</h3>
                 <div class="mb-3">
-                    <label for="idade" class="form-label">Idade</label>
+                    <label for="idade" class="form-label"><i class="ph ph-calendar-blank"></i> Idade</label>
                     <input type="number" id="idade" name="idade" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="sexo" class="form-label">Sexo</label>
+                    <label for="sexo" class="form-label"><i class="ph ph-gender-intersex"></i> Sexo</label>
                     <select id="sexo" name="sexo" class="form-select" required>
                         <option value="">Selecione</option>
                         <option value="Masculino">Masculino</option>
@@ -188,70 +196,70 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="altura_cm" class="form-label">Altura (cm)</label>
+                    <label for="altura_cm" class="form-label"><i class="ph ph-arrow-up"></i> Altura (cm)</label>
                     <input type="number" id="altura_cm" name="altura_cm" class="form-control" step="0.1" required>
                 </div>
                 <div class="mb-3">
-                    <label for="peso_kg" class="form-label">Peso (kg)</label>
+                    <label for="peso_kg" class="form-label"><i class="ph ph-barbell"></i> Peso (kg)</label>
                     <input type="number" id="peso_kg" name="peso_kg" class="form-control" step="0.1" required>
                 </div>
                 <div class="mb-3">
-                    <label for="objetivo_principal" class="form-label">Objetivo Principal</label>
+                    <label for="objetivo_principal" class="form-label"><i class="ph ph-target"></i> Objetivo Principal</label>
                     <textarea id="objetivo_principal" name="objetivo_principal" class="form-control" required></textarea>
                 </div>
             </div>
 
             <!-- Nível de Atividade Física -->
             <div class="form-section">
-                <h3>Nível de Atividade Física</h3>
+                <h3><i class="ph ph-armchair"></i> Nível de Atividade Física</h3>
                 <div class="mb-3">
-                    <label for="frequencia_semanal_treino" class="form-label">Frequência Semanal de Treino</label>
+                    <label for="frequencia_semanal_treino" class="form-label"><i class="ph ph-calendar-check"></i> Frequência Semanal de Treino</label>
                     <input type="number" id="frequencia_semanal_treino" name="frequencia_semanal_treino" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="duracao_media_treino_minutos" class="form-label">Duração Média do Treino (minutos)</label>
+                    <label for="duracao_media_treino_minutos" class="form-label"><i class="ph ph-timer"></i> Duração Média do Treino (minutos)</label>
                     <input type="number" id="duracao_media_treino_minutos" name="duracao_media_treino_minutos" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="tipo_atividade_fisica" class="form-label">Tipo de Atividade Física</label>
+                    <label for="tipo_atividade_fisica" class="form-label"><i class="ph ph-bicycle"></i> Tipo de Atividade Física</label>
                     <textarea id="tipo_atividade_fisica" name="tipo_atividade_fisica" class="form-control" required></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="objetivos_treino" class="form-label">Objetivos do Treino</label>
+                    <label for="objetivos_treino" class="form-label"><i class="ph ph-medal"></i> Objetivos do Treino</label>
                     <textarea id="objetivos_treino" name="objetivos_treino" class="form-control" required></textarea>
                 </div>
             </div>
 
             <!-- Hábitos Alimentares -->
             <div class="form-section">
-                <h3>Hábitos Alimentares</h3>
+                <h3><i class="ph ph-fork-knife"></i> Hábitos Alimentares</h3>
                 <div class="mb-3">
-                    <label for="nacionalidade" class="form-label">Nacionalidade</label>
+                    <label for="nacionalidade" class="form-label"><i class="ph ph-globe"></i> Nacionalidade</label>
                     <input type="text" id="nacionalidade" name="nacionalidade" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="residencia_atual" class="form-label">Residência Atual</label>
+                    <label for="residencia_atual" class="form-label"><i class="ph ph-map-pin"></i> Residência Atual</label>
                     <input type="text" id="residencia_atual" name="residencia_atual" class="form-control" required>
                 </div>
                 <div class="mb-3">
-                    <label for="alimentos_favoritos" class="form-label">Alimentos Favoritos</label>
+                    <label for="alimentos_favoritos" class="form-label"><i class="ph ph-heart"></i> Alimentos Favoritos</label>
                     <textarea id="alimentos_favoritos" name="alimentos_favoritos" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="alimentos_que_evita" class="form-label">Alimentos que Evita/ Restrições Alimentares</label>
+                    <label for="alimentos_que_evita" class="form-label"><i class="ph ph-x-circle"></i> Alimentos que Evita/ Restrições Alimentares</label>
                     <textarea id="alimentos_que_evita" name="alimentos_que_evita" class="form-control"></textarea>
                 </div>
                 <div class="mb-3">
-                    <label for="alimentos_para_incluir_excluir" class="form-label">Alimentos para Incluir/Excluir</label>
+                    <label for="alimentos_para_incluir_excluir" class="form-label"><i class="ph ph-plus-minus"></i> Alimentos para Incluir/Excluir</label>
                     <textarea id="alimentos_para_incluir_excluir" name="alimentos_para_incluir_excluir" class="form-control"></textarea>
                 </div>
             </div>
 
             <!-- Suplementação -->
             <div class="form-section">
-                <h3>Suplementação</h3>
+                <h3><i class="ph ph-pill"></i> Suplementação</h3>
                 <div class="mb-3">
-                    <label for="usa_suplementos" class="form-label">Usa Suplementos?</label>
+                    <label for="usa_suplementos" class="form-label"><i class="ph ph-question"></i> Usa Suplementos?</label>
                     <select id="usa_suplementos" name="usa_suplementos" class="form-select" required>
                         <option value="">Selecione</option>
                         <option value="true">Sim</option>
@@ -259,32 +267,32 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label for="suplementos_usados" class="form-label">Suplementos Usados</label>
+                    <label for="suplementos_usados" class="form-label"><i class="ph ph-bandaids"></i> Suplementos Usados</label>
                     <textarea id="suplementos_usados" name="suplementos_usados" class="form-control"></textarea>
                 </div>
             </div>
 
             <!-- Tempo Disponível -->
             <div class="form-section">
-                <h3>Tempo Disponível</h3>
+                <h3><i class="ph ph-clock"></i> Tempo Disponível</h3>
                 <div class="mb-3">
-                    <label for="tempo_por_treino_minutos" class="form-label">Tempo por Treino (minutos)</label>
+                    <label for="tempo_por_treino_minutos" class="form-label"><i class="ph ph-clock-countdown"></i> Tempo por Treino (minutos)</label>
                     <input type="number" id="tempo_por_treino_minutos" name="tempo_por_treino_minutos" class="form-control" required>
                 </div>
             </div>
 
             <!-- Cardápio Diário -->
             <div class="form-section">
-                <h3>Cardápio Diário</h3>
+                <h3><i class="ph ph-list-bullets"></i> Cardápio Diário</h3>
                 <div class="mb-3">
-                    <label for="cardapio_dia" class="form-label">Cardápio do Dia</label>
+                    <label for="cardapio_dia" class="form-label"><i class="ph ph-book-open"></i> Cardápio do Dia</label>
                     <textarea id="cardapio_dia" name="cardapio_dia" class="form-control" required></textarea>
                 </div>
             </div>
 
             <!-- Botões -->
             <div class="btn-group">
-                <button type="submit" class="btn btn-success">Enviar</button>
+                <button type="submit" class="btn btn-success"><i class="ph ph-check-circle"></i> Enviar</button>
             </div>
         </form>
     </div>
@@ -294,14 +302,14 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="modalMensagemLabel">Mensagem</h5>
+                    <h5 class="modal-title" id="modalMensagemLabel"><i class="ph ph-info"></i> Mensagem</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                     Preencha todos os campos obrigatórios corretamente antes de enviar o formulário.
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ph ph-x"></i> Fechar</button>
                 </div>
             </div>
         </div>

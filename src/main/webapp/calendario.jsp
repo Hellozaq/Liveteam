@@ -15,8 +15,8 @@
     <!-- Inclusão da biblioteca Vue.js -->
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
     
-    <!-- Inclusão do Bootstrap para estilização -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Phosphor Icons -->
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     
     <!-- Estilos personalizados para a página -->
     <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/assets/css/pages/calendario-page.css">
@@ -26,8 +26,14 @@
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
 </head>
 
-<!-- Estilos personalizados da página -->
 <style>
+body {
+    /* Garante fundo escuro padrão */
+    background: #181c1f;
+}
+.calendario-page-spacer {
+    height: 35px;
+}
 .calendario-container {
     max-width: 800px;
     margin: auto;
@@ -51,6 +57,9 @@
     color: #A0D683;
     text-align: center;
     letter-spacing: 0.01em;
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
 }
 
 .calendario-table {
@@ -108,6 +117,10 @@
     margin-bottom: 20px;
     font-size: 1.2rem;
     color: #C5FFB1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5em;
 }
 
 /* Green navigation buttons */
@@ -118,7 +131,7 @@
     border-radius: 50%;
     width: 40px;
     height: 40px;
-    font-size: 20px;
+    font-size: 22px;
     font-weight: bold;
     display: flex;
     align-items: center;
@@ -135,36 +148,44 @@
 </style>
 
 <body>
-    <!-- Inclusão do cabeçalho comum da página -->
     <%@ include file="WEB-INF/jspf/header.jspf" %>
+    <div class="calendario-page-spacer"></div>
     
     <!-- Aplicação Vue.js -->
     <div id="app" class="app-container">
         <!-- Descrição da página -->
         <div class="page-description">
-            <p>Use este calendário para navegar pelos dias e acessar dados que registrou em cada data.</p>
+            <i class="ph ph-calendar-check"></i>
+            <span>Use este calendário para navegar pelos dias e acessar dados que registrou em cada data.</span>
         </div>
         
         <!-- Contêiner do calendário -->
         <div class="calendario-container">
             <!-- Cabeçalho do calendário (com botões de navegação e título) -->
             <div class="calendario-header">
-                <button @click="prevMonth" class="nav-btn" title="Mês anterior">❮</button>
-                <h2 class="calendario-title">{{ currentMonthName }} {{ currentYear }}</h2>
-                <button @click="nextMonth" class="nav-btn" title="Próximo mês">❯</button>
+                <button @click="prevMonth" class="nav-btn" title="Mês anterior" aria-label="Mês anterior">
+                    <i class="ph ph-caret-left"></i>
+                </button>
+                <h2 class="calendario-title">
+                    <i class="ph ph-calendar-blank"></i>
+                    {{ currentMonthName }} {{ currentYear }}
+                </h2>
+                <button @click="nextMonth" class="nav-btn" title="Próximo mês" aria-label="Próximo mês">
+                    <i class="ph ph-caret-right"></i>
+                </button>
             </div>
 
             <!-- Tabela com os dias do mês -->
             <table class="calendario-table">
                 <thead class="calendario-thead">
                     <tr class="calendario-tr">
-                        <th class="calendario-th">DOM</th>
-                        <th class="calendario-th">SEG</th>
-                        <th class="calendario-th">TER</th>
-                        <th class="calendario-th">QUA</th>
-                        <th class="calendario-th">QUI</th>
-                        <th class="calendario-th">SEX</th>
-                        <th class="calendario-th">SAB</th>
+                        <th class="calendario-th" title="Domingo">DOM</th>
+                        <th class="calendario-th" title="Segunda-feira">SEG</th>
+                        <th class="calendario-th" title="Terça-feira">TER</th>
+                        <th class="calendario-th" title="Quarta-feira">QUA</th>
+                        <th class="calendario-th" title="Quinta-feira">QUI</th>
+                        <th class="calendario-th" title="Sexta-feira">SEX</th>
+                        <th class="calendario-th" title="Sábado">SAB</th>
                     </tr>
                 </thead>
                 <tbody class="calendario-tbody">
@@ -185,7 +206,6 @@
         </div>
     </div>
 
-    <!-- Inclusão do rodapé comum da página -->
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
 
     <!-- Script Vue.js para a funcionalidade do calendário -->
