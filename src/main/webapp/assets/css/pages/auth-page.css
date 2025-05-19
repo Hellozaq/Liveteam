@@ -29,6 +29,10 @@
   transition: background 0.3s, color 0.3s;
   border: none;
   box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.15);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .inicio-page .button-primary:hover,
@@ -71,6 +75,7 @@
 .inicio-page {
   box-shadow: 0 8px 40px 0 rgba(160, 214, 131, 0.10), 0 1.5px 3px 0 rgba(139, 92, 246, 0.09);
 }
+
 
 /* Optional: responsive fix for small screens */
 @media (max-width: 600px) {

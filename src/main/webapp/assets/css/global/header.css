@@ -1,6 +1,6 @@
 .site-header {
   width: 100%;
-  background: var(--surface-alt);
+  background: var(--surface);
   color: var(--primary);
   padding: 0.75rem 0;
   box-shadow: 0 4px 18px #0008;

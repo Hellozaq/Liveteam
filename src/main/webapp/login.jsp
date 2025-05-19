@@ -15,9 +15,9 @@
       <section class="inicio-page card-tilt reveal-on-scroll" style="max-width:420px;margin:48px auto;">
         <h2>
           <i class="ph ph-sign-in"></i>
-          Login
+          Faça Login
         </h2>
-        <% 
+        <%
           String success = request.getParameter("success");
           String error = request.getParameter("error");
           if ("reset".equals(success)) {

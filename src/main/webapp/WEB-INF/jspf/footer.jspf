@@ -11,10 +11,10 @@
       <!-- Links Column -->
       <div class="footer-col footer-links">
         <h6 class="footer-title">Saiba mais</h6>
-        <a href="${pageContext.request.contextPath}/home.jsp">Início</a>
-        <a href="${pageContext.request.contextPath}/sobreNos.jsp">Sobre Nós</a>
-        <a href="${pageContext.request.contextPath}/faleConosco.jsp">Fale Conosco</a>
-        <a href="${pageContext.request.contextPath}/faq.jsp">FAQ</a>
+        <a>Início</a>
+        <a>Sobre Nós</a>
+        <a>Fale Conosco</a>
+        <a>FAQ</a>
       </div>
       <!-- Contact Column -->
       <div class="footer-col footer-contact">

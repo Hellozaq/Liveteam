@@ -1,6 +1,6 @@
 .site-footer {
   width: 100%;
-  background: var(--surface-alt);
+  background: var(--surface);
   color: var(--text);
   border-top: 2px solid var(--primary);
   box-shadow: 0 -3px 16px #0009;

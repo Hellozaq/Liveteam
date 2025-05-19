@@ -5,31 +5,27 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Início</title>
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
-    <!-- Modern theme and utility CSS -->
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/theme.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/global.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/global/buttons.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/utilitarios/effects.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/inicio-page.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/style.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/auth-page.css">
-    <!-- PHOSPHOR ICONS CDN -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     <script src="${pageContext.request.contextPath}/assets/script/effects.js" defer></script>
 </head>
-<body data-theme-dark>
+<body style="background: var(--surface); color: var(--text);">
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <main>
         <!-- HERO SECTION -->
         <section class="inicio-page card-tilt parallax-bg reveal-on-scroll" style="margin-bottom: 2rem;">
-            <h1 style="margin-bottom: 1.2rem; animation: fadeInHeading 1s;">
+            <h1>
               <i class="ph ph-rocket-launch" style="font-size:4rem;color:var(--primary);margin-right:8px;"></i>
               Bem-vindo à Nossa Plataforma
             </h1>
-            <p style="font-size:1.16rem; margin-bottom: 1rem;">
+            <p>
                 <i class="ph ph-lightbulb" style="font-size: 2rem;color:var(--primary);margin-right:8px;"></i>
                 Na nossa plataforma, oferecemos ferramentas inovadoras para nutricionistas, permitindo que eles melhorem o atendimento aos pacientes e otimizem suas rotinas.
             </p>
-            <p style="font-size:1.08rem; margin-bottom: 1.8rem;">
+            <p>
                 <i class="ph ph-list-checks" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                 Explore funcionalidades que incluem criação de planos alimentares personalizados, relatórios detalhados e integração com plataformas de saúde. Tudo isso para facilitar sua rotina e maximizar o atendimento de qualidade.
             </p>
@@ -41,56 +37,56 @@
             </form>
         </section>
 
-        <!-- Seção de Benefícios (HTML Estático) -->
+        <!-- Seção de Benefícios -->
         <section class="benefits-page reveal-on-scroll">
             <div>
                 <h2><i class="ph ph-gift"></i>Benefícios</h2>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-user-circle" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Planos Alimentares Personalizados</h3>
+                        <h3>Planos Alimentares Personalizados</h3>
                         <p>Nossa plataforma oferece planos alimentares individualizados, adaptados às suas restrições alimentares, preferências e condições de saúde.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-file-text" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Relatórios Nutricionais Detalhados</h3>
+                        <h3>Relatórios Nutricionais Detalhados</h3>
                         <p>Usuários cadastrados e logados podem acessar relatórios nutricionais personalizados com diversas informações importantes.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-clock" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Acompanhamento em Tempo Real</h3>
+                        <h3>Acompanhamento em Tempo Real</h3>
                         <p>Monitore sua ingestão de líquidos, refeições e atividades físicas com feedback da IA.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-headset" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Suporte e Atendimento ao Cliente</h3>
+                        <h3>Suporte e Atendimento ao Cliente</h3>
                         <p>Acesso a suporte via chat, telefone e e-mail na área administrativa.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-notebook" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Atualização de Informações de Saúde</h3>
+                        <h3>Atualização de Informações de Saúde</h3>
                         <p>Atualize seus dados a qualquer momento e receba recomendações personalizadas.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-question" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Ajuda e Documentação</h3>
+                        <h3>Ajuda e Documentação</h3>
                         <p>Seção de ajuda detalhada para apoiar o uso da plataforma.</p>
                     </div>
                 </div>
                 <div class="benefit-item card-tilt">
                     <i class="ph ph-heartbeat" style="font-size:2rem;color:var(--primary);margin-right:8px;"></i>
                     <div>
-                        <h3 style="display:inline">Incentivo à Saúde Integral</h3>
+                        <h3>Incentivo à Saúde Integral</h3>
                         <p>Monitoramento de hábitos saudáveis para uma vida equilibrada.</p>
                     </div>
                 </div>
