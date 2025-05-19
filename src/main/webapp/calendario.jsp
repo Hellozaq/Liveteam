@@ -28,130 +28,110 @@
 
 <!-- Estilos personalizados da página -->
 <style>
-    /* Estilos para o contêiner do calendário */
-    .calendario-container {
-        max-width: 800px;
-        margin: auto;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        background-color: #f9f9f9;
-    }
+.calendario-container {
+    max-width: 800px;
+    margin: auto;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(160, 214, 131, 0.13);
+    background-color: #23272b;
+    color: #f7f7f7;
+}
 
-    /* Estilos para o cabeçalho do calendário */
-    .calendario-header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 10px;
-    }
+.calendario-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 14px;
+}
 
-    /* Botões de navegação */
-    .nav-btn {
-        background-color: #007bff;
-        color: #fff;
-        border: none;
-        border-radius: 50%;
-        width: 40px;
-        height: 40px;
-        font-size: 18px;
-        font-weight: bold;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-    }
+.calendario-title {
+    font-size: 2rem;
+    font-weight: 600;
+    color: #A0D683;
+    text-align: center;
+    letter-spacing: 0.01em;
+}
 
-    /* Hover para o botão de navegação */
-    .nav-btn:hover {
-        background-color: #0056b3;
-    }
+.calendario-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
 
-    /* Título do calendário */
-    .calendario-title {
-        font-size: 2rem;
-        font-weight: 600;
-        color: #333;
-        text-align: center;
-    }
+.calendario-thead th,
+.calendario-th {
+    font-weight: 700;
+    color: #C5FFB1;
+    background: #181c1f;
+    padding: 12px;
+    text-align: center;
+    border-bottom: 2px solid #A0D683;
+}
 
-    /* Estilos para a tabela do calendário */
-    .calendario-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 10px;
-    }
+.calendario-day {
+    text-align: center;
+    vertical-align: middle;
+    font-size: 1.25rem;
+    font-weight: 500;
+    padding: 20px;
+    color: #f7f7f7;
+    transition: background-color 0.3s;
+    position: relative;
+    background: #23272b;
+}
+.calendario-day a {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #C5FFB1;
+    text-decoration: none;
+    font-size: 1.3rem;
+    text-align: center;
+    line-height: 60px;
+}
+.calendario-day:hover {
+    background-color: #32363a;
+}
+.current-day {
+    background-color: #A0D683;
+    color: #23272b;
+    font-weight: bold;
+}
+.inactive {
+    color: #7a7a7a;
+    opacity: 0.5;
+    pointer-events: none;
+}
+.page-description {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.2rem;
+    color: #C5FFB1;
+}
 
-    /* Estilos para os dias da semana no cabeçalho da tabela */
-    .calendario-thead th {
-        font-weight: 600;
-        color: #555;
-        padding: 12px;
-        text-align: center;
-    }
-
-    /* Estilos para cada célula do dia no calendário */
-    .calendario-day {
-        text-align: center;
-        vertical-align: middle;
-        font-size: 2rem;
-        font-weight: 500;
-        padding: 20px;
-        transition: background-color 0.3s;
-        position: relative;
-    }
-
-    /* Estilos para o link do dia */
-    .calendario-day a {
-        display: block;
-        width: 100%;
-        height: 100%;
-        color: inherit;
-        text-decoration: none;
-        font-size: 2rem;
-        text-align: center;
-        line-height: 60px;
-    }
-
-    /* Estilos para o dia atual */
-    .current-day {
-        background-color: #e0f7fa;
-        color: #007bff;
-        font-weight: bold;
-        width: 100%;
-        height: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 auto;
-        position: relative;
-        border-radius: 0;
-    }
-
-    /* Hover para os dias do calendário */
-    .calendario-day:hover {
-        background-color: #f0f8ff;
-    }
-
-    /* Estilos para os dias do outro mês */
-    .inactive {
-        color: #bbb;
-        opacity: 0.5;
-        pointer-events: none; /* Evita cliques nos dias de outro mês */
-    }
-
-    /* Estilo para a descrição da página */
-    .page-description {
-        text-align: center;
-        margin-bottom: 20px;
-        font-size: 1.2rem;
-        color: #555;
-    }
-
-    /* Estilo para as semanas do calendário */
-    .calendario-week {
-        border-bottom: 2px solid #e0e0e0;
-    }
+/* Green navigation buttons */
+.nav-btn {
+    background-color: #A0D683;
+    color: #23272b;
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    font-size: 20px;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.12);
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.nav-btn:hover {
+    background-color: #7DD23B;
+    color: #181c1f;
+    box-shadow: 0 4px 16px #A0D68333;
+}
 </style>
 
 <body>
@@ -169,9 +149,9 @@
         <div class="calendario-container">
             <!-- Cabeçalho do calendário (com botões de navegação e título) -->
             <div class="calendario-header">
-                <button @click="prevMonth" class="nav-btn">❮</button>
+                <button @click="prevMonth" class="nav-btn" title="Mês anterior">❮</button>
                 <h2 class="calendario-title">{{ currentMonthName }} {{ currentYear }}</h2>
-                <button @click="nextMonth" class="nav-btn">❯</button>
+                <button @click="nextMonth" class="nav-btn" title="Próximo mês">❯</button>
             </div>
 
             <!-- Tabela com os dias do mês -->
