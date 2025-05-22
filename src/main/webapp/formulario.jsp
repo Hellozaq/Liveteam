@@ -166,6 +166,37 @@
                 justify-content: center;
             }
         }
+        
+                /* Chrome, Edge, Safari, Opera */
+        input:-webkit-autofill,
+        input:-webkit-autofill:focus,
+        input:-webkit-autofill:hover,
+        textarea:-webkit-autofill,
+        textarea:-webkit-autofill:focus,
+        select:-webkit-autofill {
+          box-shadow: 0 0 0 1000px #181c1f inset !important;
+          -webkit-box-shadow: 0 0 0 1000px #181c1f inset !important;
+          -webkit-text-fill-color: #f7f7f7 !important;
+          color: #f7f7f7 !important;
+          border-color: #A0D683 !important;
+          transition: background-color 9999s ease-in-out 0s;
+        }
+
+        /* Firefox */
+        input:-moz-autofill,
+        textarea:-moz-autofill,
+        select:-moz-autofill {
+          box-shadow: 0 0 0 1000px #181c1f inset !important;
+          -moz-box-shadow: 0 0 0 1000px #181c1f inset !important;
+          color: #f7f7f7 !important;
+          border-color: #A0D683 !important;
+        }
+
+        /* Remove autofill transition flash (Chrome workaround) */
+        input, textarea, select {
+          transition: background-color 0.3s, color 0.3s;
+          color: #fff !important;
+        }
     </style>
 </head>
 <body>

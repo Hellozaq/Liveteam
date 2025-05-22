@@ -6,6 +6,18 @@
     color: #198754 !important;
 }
 
+.form-container {
+    background: #181c1f !important;   /* fundo escuro igual aos campos */
+    border-radius: 18px;
+    box-shadow: 0 0 40px #38e38a33;
+    padding: 36px 0 48px 0;
+    margin-bottom: 48px;
+}
+
+/* Se quiser que TODO o container (incluindo bordas laterais) fique escuro: */
+.container {
+    background: #181c1f !important;
+}
 .form-container form {
     width: 100% !important;
     max-width: 100% !important;
@@ -85,6 +97,7 @@
     border-color: #388e3c !important;
     color: white !important;
 }
+
 
 /* Adaptação para mobile */
 @media (max-width: 768px) {
