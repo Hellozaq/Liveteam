@@ -23,9 +23,17 @@
     %>
 
     <% if (status != null && message != null) { %>
-        <div class="alert alert-<%= status %>">
+        <div id="alertaSucesso" class="alert alert-<%= status %>">
             <%= message %>
         </div>
+        <script>
+            setTimeout(function() {
+                var alerta = document.getElementById('alertaSucesso');
+                if (alerta) {
+                    alerta.style.display = 'none';
+                }
+            }, 1500);
+        </script>
     <% } %>
     
     <%@ include file="WEB-INF/jspf/header.jspf" %>

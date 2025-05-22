@@ -6,6 +6,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inserir Dados Diários</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css" rel="stylesheet">
     <!-- Phosphor Icons -->
     <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
     <%@ include file="WEB-INF/jspf/html-head.jspf" %>
@@ -114,31 +116,7 @@
             gap: 0.5rem;
             outline: none;
         }
-        /* Botões de radio numerados (1 a 5) do mesmo tamanho e alinhados - apenas para avaliação pessoal */
-        .btn-group.avaliacao-group .btn {
-            min-width: 44px;
-            max-width: 44px;
-            width: 44px;
-            justify-content: center;
-            padding-left: 0;
-            padding-right: 0;
-            font-size: 1.08rem;
-            font-weight: bold;
-            text-align: center;
-        }
-        .btn-group.avaliacao-group {
-            justify-content: space-between;
-            gap: 8px;
-        }
-        @media (max-width: 700px) {
-            .btn-group.avaliacao-group .btn {
-                min-width: 38px;
-                max-width: 38px;
-                width: 38px;
-                font-size: 0.98rem;
-            }
-        }
-        /* Intensidade do treino mantém tamanho padrão */
+        /* CORES INTENSIDADE --- ORIGINAL */
         .btn-group.intensidade-group .btn-dark   { background: linear-gradient(90deg, #424242 60%, #23272b 100%) !important; color: #fff !important; }
         .btn-group.intensidade-group .btn-warning { background: linear-gradient(90deg, #ffe082 60%, #ffb300 100%) !important; color: #333 !important; }
         .btn-group.intensidade-group .btn-danger  { background: linear-gradient(90deg, #ff5252 60%, #d32f2f 100%) !important; color: #fff !important; }
@@ -150,12 +128,27 @@
             border: 2px solid #8B5CF6 !important;
             z-index: 1;
         }
-        /* Avaliação Pessoal - fome, energia, sono */
+        /* --- FIM CORES INTENSIDADE --- */
+        .btn-group.avaliacao-group .btn {
+            min-width: 44px;
+            max-width: 44px;
+            width: 44px;
+            justify-content: center;
+            padding-left: 0;
+            padding-right: 0;
+            font-size: 1.08rem;
+            font-weight: bold;
+            text-align: center;
+        }
         .btn-group.avaliacao-group .btn-dark      { background: linear-gradient(90deg, #23272b 60%, #424242 100%) !important; color: #fff !important; }
         .btn-group.avaliacao-group .btn-danger    { background: linear-gradient(90deg, #f44336 60%, #ff8a65 100%) !important; color: #fff !important; }
         .btn-group.avaliacao-group .btn-warning   { background: linear-gradient(90deg, #ffb74d 60%, #fbc02d 100%) !important; color: #23272b !important; }
         .btn-group.avaliacao-group .btn-info      { background: linear-gradient(90deg, #29b6f6 60%, #0288d1 100%) !important; color: #fff !important; }
         .btn-group.avaliacao-group .btn-success   { background: linear-gradient(90deg, #66bb6a 60%, #2e7d32 100%) !important; color: #fff !important; }
+        .btn-group.avaliacao-group {
+            justify-content: space-between;
+            gap: 8px;
+        }
         .btn-group.avaliacao-group .btn:focus,
         .btn-group.avaliacao-group .btn:hover { filter: brightness(0.96); }
         .btn-group.avaliacao-group .btn-check:checked + .btn {
@@ -164,356 +157,399 @@
             border: 2px solid #8B5CF6 !important;
             z-index: 1;
         }
-        .btn-success,
-        .btn-primary {
-            background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%) !important;
-            color: #23272b !important;
-        }
-        .btn-success:hover, .btn-primary:hover,
-        .btn-success:focus, .btn-primary:focus {
-            background: linear-gradient(90deg, #7DD23B 0%, #A0D683 100%) !important;
-            color: #181c1f !important;
-            filter: brightness(0.98);
-        }
-        .btn-secondary {
-            background: #23272b !important;
-            color: #A0D683 !important;
-            border: 1px solid #A0D683 !important;
-        }
-        .btn-secondary:hover, .btn-secondary:focus {
-            background: #181c1f !important;
-            color: #C5FFB1 !important;
-        }
-        /* Modal adjustments for dark theme */
-        .modal-content {
-            background: #23272b;
-            color: #f7f7f7;
+        .img-upload-box {
+            width: 92px;
+            height: 92px;
+            border: 1.5px solid #A0D683;
             border-radius: 10px;
+            background: #23272b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            overflow: hidden;
+            position: relative;
+            margin-top: 6px;
         }
-        .modal-header, .modal-footer {
-            border-color: #A0D683;
-        }
-        .modal-title {
+        .img-upload-box i {
+            font-size: 2rem;
             color: #A0D683;
+            transition: color 0.3s;
+            z-index: 2;
+            position: absolute;
+            left: 0; top: 0; right: 0; bottom: 0;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        @media (max-width: 900px) {
-            .container.form-container, .form-container form {
-                max-width: 98vw;
-                padding: 1rem 0.4rem;
-            }
+        .img-upload-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+            display: none;
+            background: #23272b;
+            z-index: 1;
+            position: absolute;
+            left: 0; top: 0;
         }
-        @media (max-width: 700px) {
-            .container.form-container, .form-container form {
-                padding: 1rem 0.2rem;
-                max-width: 99vw;
-            }
-            .btn-group {
-                flex-direction: column;
-                align-items: stretch;
-            }
-            .btn {
-                width: 100%;
-                justify-content: center;
-            }
+        .img-upload-box.has-img i {
+            display: none;
         }
-        /* Chrome, Edge, Safari, Opera */
-        input:-webkit-autofill,
-        input:-webkit-autofill:focus,
-        input:-webkit-autofill:hover,
-        textarea:-webkit-autofill,
-        textarea:-webkit-autofill:focus,
-        select:-webkit-autofill {
-            box-shadow: 0 0 0 1000px #181c1f inset !important;
-            -webkit-box-shadow: 0 0 0 1000px #181c1f inset !important;
-            -webkit-text-fill-color: #f7f7f7 !important;
-            color: #f7f7f7 !important;
-            border-color: #A0D683 !important;
-            transition: background-color 9999s ease-in-out 0s;
+        .img-upload-box.has-img img {
+            display: block;
         }
-        /* Firefox */
-        input:-moz-autofill,
-        textarea:-moz-autofill,
-        select:-moz-autofill {
-            box-shadow: 0 0 0 1000px #181c1f inset !important;
-            -moz-box-shadow: 0 0 0 1000px #181c1f inset !important;
-            color: #f7f7f7 !important;
-            border-color: #A0D683 !important;
-        }
-        /* Remove autofill transition flash (Chrome workaround) */
+        
         input, textarea, select {
-            transition: background-color 0.3s, color 0.3s;
-            color: #fff !important;
-        }
-        /* Modal de sucesso centralizado */
-        .modal.fade:not(.show) .modal-dialog {
-            transform: translate(0,0);
-        }
-        #modalSucesso .modal-dialog {
-            top: 50vh;
-            transform: translateY(-50%);
-            margin-top: 0 !important;
-        }
+    color: #fff !important;
+}
     </style>
 </head>
 <body>
-    <% 
-    if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
-        response.sendRedirect("login.jsp");
-        return;
-    }
-    %>
-    <%@ include file="WEB-INF/jspf/header.jspf" %>
-    <%
-        LocalDate dataAtual = LocalDate.now();
-        int diaAtual = dataAtual.getDayOfMonth();
-        int mesAtual = dataAtual.getMonthValue();
-        int anoAtual = dataAtual.getYear();
-    %>
-    <div class="container mt-4 form-container">
-        <h2><i class="ph ph-calendar-blank"></i> Inserir Informações do dia <%= diaAtual %>/<%= mesAtual %></h2>
-        <form action="salvar-dados" method="post" id="formDiario" novalidate enctype="multipart/form-data">
-            <!-- Data (oculta) -->
-            <div class="form-section" style="display:none;">
-                <div class="row">
-                    <div class="mb-3 col-md-4">
-                        <label for="dia" class="form-label">Dia</label>
-                        <input type="number" id="dia" name="dia" class="form-control" value="<%= diaAtual %>" readonly>
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="mes" class="form-label">Mês</label>
-                        <input type="number" id="mes" name="mes" class="form-control" value="<%= mesAtual %>" readonly>
-                    </div>
-                    <div class="mb-3 col-md-4">
-                        <label for="ano" class="form-label">Ano</label>
-                        <input type="number" id="ano" name="ano" class="form-control" value="<%= anoAtual %>" readonly>
-                    </div>
-                </div>
-            </div>
+<% 
+if (request.getSession(false) == null || request.getSession(false).getAttribute("usuarioLogado") == null) {
+    response.sendRedirect("login.jsp");
+    return;
+}
+%>
+<%@ include file="WEB-INF/jspf/header.jspf" %>
+<%
+    LocalDate dataAtual = LocalDate.now();
+    int diaAtual = dataAtual.getDayOfMonth();
+    int mesAtual = dataAtual.getMonthValue();
+    int anoAtual = dataAtual.getYear();
+%>
+<div class="container mt-4 form-container">
+    <h2><i class="ph ph-calendar-blank"></i> Inserir Informações do dia <%= diaAtual %>/<%= mesAtual %></h2>
+    <form action="salvar-dados" method="post" id="formDiario" novalidate enctype="multipart/form-data">
+        <!-- Data (oculta) -->
+        <div class="form-section" style="display:none;">
             <div class="row">
-                <!-- Alimentação -->
-                <div class="form-section col-md-3">
-                    <h3><i class="ph ph-fork-knife"></i> Alimentação</h3>
-                    <div class="mb-3">
-                        <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
-                        <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
-                        <div class="invalid-feedback">Por favor, descreva seu café da manhã</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="almoco" class="form-label">Almoço</label>
-                        <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
-                        <div class="invalid-feedback">Por favor, descreva seu almoço</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="jantar" class="form-label">Jantar</label>
-                        <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
-                        <div class="invalid-feedback">Por favor, descreva seu jantar</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="lanches" class="form-label">Lanches</label>
-                        <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes_alimentacao" class="form-label">Observações</label>
-                        <textarea id="observacoes_alimentacao" name="observacoes_alimentacao" class="form-control" maxlength="500"></textarea>
-                    </div>
+                <div class="mb-3 col-md-4">
+                    <label for="dia" class="form-label">Dia</label>
+                    <input type="number" id="dia" name="dia" class="form-control" value="<%= diaAtual %>" readonly>
                 </div>
-                <!-- Líquidos -->
-                <div class="form-section col-md-3">
-                    <h3><i class="ph ph-drop"></i> Ingestão de Líquidos</h3>
-                    <div class="mb-3">
-                        <label for="agua" class="form-label">Água (em litros)</label>
-                        <input type="number" id="agua" name="agua" class="form-control" min="0" step="0.1" required>
-                        <div class="invalid-feedback">Por favor, informe a quantidade de água consumida</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="outros_liquidos" class="form-label">Outros Líquidos</label>
-                        <input type="text" id="outros_liquidos" name="outros_liquidos" class="form-control" maxlength="100">
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes_liquidos" class="form-label">Observações</label>
-                        <textarea id="observacoes_liquidos" name="observacoes_liquidos" class="form-control" maxlength="500"></textarea>
-                    </div>
+                <div class="mb-3 col-md-4">
+                    <label for="mes" class="form-label">Mês</label>
+                    <input type="number" id="mes" name="mes" class="form-control" value="<%= mesAtual %>" readonly>
                 </div>
-                <!-- Exercícios -->
-                <div class="form-section col-md-3">
-                    <h3><i class="ph ph-dumbbell"></i> Exercícios</h3>
-                    <div class="mb-3">
-                        <label for="tipo_treino" class="form-label">Tipo de Treino</label>
-                        <input type="text" id="tipo_treino" name="tipo_treino" class="form-control" maxlength="100" required>
-                        <div class="invalid-feedback">Por favor, informe o tipo de treino realizado</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="duracao_treino" class="form-label">Duração (minutos)</label>
-                        <input type="number" id="duracao_treino" name="duracao_treino" class="form-control" min="1" required>
-                        <div class="invalid-feedback">Por favor, informe a duração do treino</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Intensidade</label>
-                        <div class="btn-group intensidade-group w-100" role="group" aria-label="Intensidade do treino">
-                            <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino1" value="BAIXO" autocomplete="off" required>
-                            <label class="btn btn-dark" for="intensidade_treino1">BAIXA</label>
-                            <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino2" value="MEDIO" autocomplete="off">
-                            <label class="btn btn-warning" for="intensidade_treino2">MÉDIA</label>
-                            <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino3" value="ALTO" autocomplete="off">
-                            <label class="btn btn-danger" for="intensidade_treino3">ALTA</label>
-                        </div>
-                        <div class="invalid-feedback">Por favor, selecione a intensidade do treino</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="detalhes_exercicio" class="form-label">Detalhes</label>
-                        <textarea id="detalhes_exercicio" name="detalhes_exercicio" class="form-control" maxlength="500"></textarea>
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes_exercicio" class="form-label">Observações</label>
-                        <textarea id="observacoes_exercicio" name="observacoes_exercicio" class="form-control" maxlength="500"></textarea>
-                    </div>
-                </div>
-                <!-- Avaliação Pessoal -->
-                <div class="form-section col-md-3">
-                    <h3><i class="ph ph-user"></i> Avaliação Pessoal</h3>
-                    <div class="mb-3">
-                        <label class="form-label">Nível de Fome (1-5)</label>
-                        <div class="btn-group avaliacao-group w-100" role="group" aria-label="Nível de fome">
-                            <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_1" value="1" autocomplete="off" required>
-                            <label class="btn btn-dark" for="nivel_fome_1">1</label>
-                            <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_2" value="2" autocomplete="off">
-                            <label class="btn btn-danger" for="nivel_fome_2">2</label>
-                            <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_3" value="3" autocomplete="off">
-                            <label class="btn btn-warning" for="nivel_fome_3">3</label>
-                            <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_4" value="4" autocomplete="off">
-                            <label class="btn btn-info" for="nivel_fome_4">4</label>
-                            <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_5" value="5" autocomplete="off">
-                            <label class="btn btn-success" for="nivel_fome_5">5</label>
-                        </div>
-                        <div class="invalid-feedback">Por favor, selecione seu nível de fome</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Nível de Energia (1-5)</label>
-                        <div class="btn-group avaliacao-group w-100" role="group" aria-label="Nível de energia">
-                            <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_1" value="1" autocomplete="off" required>
-                            <label class="btn btn-dark" for="nivel_energia_1">1</label>
-                            <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_2" value="2" autocomplete="off">
-                            <label class="btn btn-danger" for="nivel_energia_2">2</label>
-                            <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_3" value="3" autocomplete="off">
-                            <label class="btn btn-warning" for="nivel_energia_3">3</label>
-                            <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_4" value="4" autocomplete="off">
-                            <label class="btn btn-info" for="nivel_energia_4">4</label>
-                            <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_5" value="5" autocomplete="off">
-                            <label class="btn btn-success" for="nivel_energia_5">5</label>
-                        </div>
-                        <div class="invalid-feedback">Por favor, selecione seu nível de energia</div>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Qualidade do Sono (1-5)</label>
-                        <div class="btn-group avaliacao-group w-100" role="group" aria-label="Qualidade do sono">
-                            <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_1" value="1" autocomplete="off" required>
-                            <label class="btn btn-dark" for="qualidade_sono_1">1</label>
-                            <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_2" value="2" autocomplete="off">
-                            <label class="btn btn-danger" for="qualidade_sono_2">2</label>
-                            <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_3" value="3" autocomplete="off">
-                            <label class="btn btn-warning" for="qualidade_sono_3">3</label>
-                            <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_4" value="4" autocomplete="off">
-                            <label class="btn btn-info" for="qualidade_sono_4">4</label>
-                            <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_5" value="5" autocomplete="off">
-                            <label class="btn btn-success" for="qualidade_sono_5">5</label>
-                        </div>
-                        <div class="invalid-feedback">Por favor, selecione a qualidade do sono</div>
-                    </div>
-                    <div class="mb-3">
-                        <label for="observacoes_avaliacao" class="form-label">Outras Observações</label>
-                        <textarea id="observacoes_avaliacao" name="observacoes_avaliacao" class="form-control" maxlength="500"></textarea>
-                    </div>
-                </div>
-            </div>
-            <div class="btn-group mt-3">
-                <button type="submit" class="btn btn-primary"><i class="ph ph-check-circle"></i> Salvar</button>
-            </div>
-        </form>
-    </div>
-    <!-- Modal de Erro -->
-    <div class="modal fade" id="modalMensagem" tabindex="-1" aria-labelledby="modalMensagemLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalMensagemLabel"><i class="ph ph-info"></i> Mensagem</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    Por favor, corrija os campos destacados antes de enviar o formulário.
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ph ph-x"></i> Fechar</button>
+                <div class="mb-3 col-md-4">
+                    <label for="ano" class="form-label">Ano</label>
+                    <input type="number" id="ano" name="ano" class="form-control" value="<%= anoAtual %>" readonly>
                 </div>
             </div>
         </div>
-    </div>
-    <!-- Modal de Sucesso -->
-    <div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background: #23272b; color: #A0D683;">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="modalSucessoLabel"><i class="ph ph-check-circle"></i> Sucesso</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+        <div class="row">
+            <!-- Alimentação -->
+            <div class="form-section col-md-3">
+                <h3><i class="ph ph-fork-knife"></i> Alimentação</h3>
+                <div class="mb-3">
+                    <label for="cafe_da_manha" class="form-label">Café da Manhã</label>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-8">
+                            <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
+                            <div class="invalid-feedback">Por favor, descreva seu café da manhã</div>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <div class="img-upload-box" id="cafe_da_manha_imgBox" onclick="triggerInput('imageUploadCafe')">
+                                <i class="fas fa-camera"></i>
+                                <img id="cafe_da_manha_preview" alt="Prévia Café da Manhã">
+                            </div>
+                            <input type="file" id="imageUploadCafe" name="cafe_imagem" accept="image/*" onchange="uploadImage(this, 'cafe_da_manha')" hidden>
+                        </div>
+                    </div>
                 </div>
-                <div class="modal-body">
-                    Dados salvos com sucesso!
+                <div class="mb-3">
+                    <label for="almoco" class="form-label">Almoço</label>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-8">
+                            <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
+                            <div class="invalid-feedback">Por favor, descreva seu almoço</div>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <div class="img-upload-box" id="almoco_imgBox" onclick="triggerInput('imageUploadAlmoco')">
+                                <i class="fas fa-camera"></i>
+                                <img id="almoco_preview" alt="Prévia Almoço">
+                            </div>
+                            <input type="file" id="imageUploadAlmoco" name="almoco_imagem" accept="image/*" onchange="uploadImage(this, 'almoco')" hidden>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="jantar" class="form-label">Jantar</label>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-8">
+                            <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
+                            <div class="invalid-feedback">Por favor, descreva seu jantar</div>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <div class="img-upload-box" id="jantar_imgBox" onclick="triggerInput('imageUploadJantar')">
+                                <i class="fas fa-camera"></i>
+                                <img id="jantar_preview" alt="Prévia Jantar">
+                            </div>
+                            <input type="file" id="imageUploadJantar" name="jantar_imagem" accept="image/*" onchange="uploadImage(this, 'jantar')" hidden>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="lanches" class="form-label">Lanches</label>
+                    <div class="row g-2 align-items-center">
+                        <div class="col-8">
+                            <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
+                        </div>
+                        <div class="col-4 d-flex align-items-center">
+                            <div class="img-upload-box" id="lanches_imgBox" onclick="triggerInput('imageUploadLanches')">
+                                <i class="fas fa-camera"></i>
+                                <img id="lanches_preview" alt="Prévia Lanches">
+                            </div>
+                            <input type="file" id="imageUploadLanches" name="lanches_imagem" accept="image/*" onchange="uploadImage(this, 'lanches')" hidden>
+                        </div>
+                    </div>
+                </div>
+                <div class="mb-3">
+                    <label for="observacoes_alimentacao" class="form-label">Observações</label>
+                    <textarea id="observacoes_alimentacao" name="observacoes_alimentacao" class="form-control" maxlength="500"></textarea>
+                </div>
+            </div>
+            <!-- Líquidos -->
+            <div class="form-section col-md-3">
+                <h3><i class="ph ph-drop"></i> Ingestão de Líquidos</h3>
+                <div class="mb-3">
+                    <label for="agua" class="form-label">Água (em litros)</label>
+                    <input type="number" id="agua" name="agua" class="form-control" min="0" step="0.1" required>
+                    <div class="invalid-feedback">Por favor, informe a quantidade de água consumida</div>
+                </div>
+                <div class="mb-3">
+                    <label for="outros_liquidos" class="form-label">Outros Líquidos</label>
+                    <input type="text" id="outros_liquidos" name="outros_liquidos" class="form-control" maxlength="100">
+                </div>
+                <div class="mb-3">
+                    <label for="observacoes_liquidos" class="form-label">Observações</label>
+                    <textarea id="observacoes_liquidos" name="observacoes_liquidos" class="form-control" maxlength="500"></textarea>
+                </div>
+            </div>
+            <!-- Exercícios -->
+            <div class="form-section col-md-3">
+                <h3><i class="ph ph-dumbbell"></i> Exercícios</h3>
+                <div class="mb-3">
+                    <label for="tipo_treino" class="form-label">Tipo de Treino</label>
+                    <input type="text" id="tipo_treino" name="tipo_treino" class="form-control" maxlength="100" required>
+                    <div class="invalid-feedback">Por favor, informe o tipo de treino realizado</div>
+                </div>
+                <div class="mb-3">
+                    <label for="duracao_treino" class="form-label">Duração (minutos)</label>
+                    <input type="number" id="duracao_treino" name="duracao_treino" class="form-control" min="1" required>
+                    <div class="invalid-feedback">Por favor, informe a duração do treino</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Intensidade</label>
+                    <div class="btn-group intensidade-group w-100" role="group" aria-label="Intensidade do treino">
+                        <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino1" value="BAIXO" autocomplete="off" required>
+                        <label class="btn btn-dark" for="intensidade_treino1">BAIXA</label>
+                        <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino2" value="MEDIO" autocomplete="off">
+                        <label class="btn btn-warning" for="intensidade_treino2">MÉDIA</label>
+                        <input type="radio" class="btn-check" name="intensidade_treino" id="intensidade_treino3" value="ALTO" autocomplete="off">
+                        <label class="btn btn-danger" for="intensidade_treino3">ALTA</label>
+                    </div>
+                    <div class="invalid-feedback">Por favor, selecione a intensidade do treino</div>
+                </div>
+                <div class="mb-3">
+                    <label for="detalhes_exercicio" class="form-label">Detalhes</label>
+                    <textarea id="detalhes_exercicio" name="detalhes_exercicio" class="form-control" maxlength="500"></textarea>
+                </div>
+                <div class="mb-3">
+                    <label for="observacoes_exercicio" class="form-label">Observações</label>
+                    <textarea id="observacoes_exercicio" name="observacoes_exercicio" class="form-control" maxlength="500"></textarea>
+                </div>
+            </div>
+            <!-- Avaliação Pessoal -->
+            <div class="form-section col-md-3">
+                <h3><i class="ph ph-user"></i> Avaliação Pessoal</h3>
+                <div class="mb-3">
+                    <label class="form-label">Nível de Fome (1-5)</label>
+                    <div class="btn-group avaliacao-group w-100" role="group" aria-label="Nível de fome">
+                        <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_1" value="1" autocomplete="off" required>
+                        <label class="btn btn-dark" for="nivel_fome_1">1</label>
+                        <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_2" value="2" autocomplete="off">
+                        <label class="btn btn-danger" for="nivel_fome_2">2</label>
+                        <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_3" value="3" autocomplete="off">
+                        <label class="btn btn-warning" for="nivel_fome_3">3</label>
+                        <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_4" value="4" autocomplete="off">
+                        <label class="btn btn-info" for="nivel_fome_4">4</label>
+                        <input type="radio" class="btn-check" name="nivel_fome" id="nivel_fome_5" value="5" autocomplete="off">
+                        <label class="btn btn-success" for="nivel_fome_5">5</label>
+                    </div>
+                    <div class="invalid-feedback">Por favor, selecione seu nível de fome</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Nível de Energia (1-5)</label>
+                    <div class="btn-group avaliacao-group w-100" role="group" aria-label="Nível de energia">
+                        <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_1" value="1" autocomplete="off" required>
+                        <label class="btn btn-dark" for="nivel_energia_1">1</label>
+                        <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_2" value="2" autocomplete="off">
+                        <label class="btn btn-danger" for="nivel_energia_2">2</label>
+                        <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_3" value="3" autocomplete="off">
+                        <label class="btn btn-warning" for="nivel_energia_3">3</label>
+                        <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_4" value="4" autocomplete="off">
+                        <label class="btn btn-info" for="nivel_energia_4">4</label>
+                        <input type="radio" class="btn-check" name="nivel_energia" id="nivel_energia_5" value="5" autocomplete="off">
+                        <label class="btn btn-success" for="nivel_energia_5">5</label>
+                    </div>
+                    <div class="invalid-feedback">Por favor, selecione seu nível de energia</div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Qualidade do Sono (1-5)</label>
+                    <div class="btn-group avaliacao-group w-100" role="group" aria-label="Qualidade do sono">
+                        <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_1" value="1" autocomplete="off" required>
+                        <label class="btn btn-dark" for="qualidade_sono_1">1</label>
+                        <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_2" value="2" autocomplete="off">
+                        <label class="btn btn-danger" for="qualidade_sono_2">2</label>
+                        <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_3" value="3" autocomplete="off">
+                        <label class="btn btn-warning" for="qualidade_sono_3">3</label>
+                        <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_4" value="4" autocomplete="off">
+                        <label class="btn btn-info" for="qualidade_sono_4">4</label>
+                        <input type="radio" class="btn-check" name="qualidade_sono" id="qualidade_sono_5" value="5" autocomplete="off">
+                        <label class="btn btn-success" for="qualidade_sono_5">5</label>
+                    </div>
+                    <div class="invalid-feedback">Por favor, selecione a qualidade do sono</div>
+                </div>
+                <div class="mb-3">
+                    <label for="observacoes_avaliacao" class="form-label">Outras Observações</label>
+                    <textarea id="observacoes_avaliacao" name="observacoes_avaliacao" class="form-control" maxlength="500"></textarea>
                 </div>
             </div>
         </div>
+        <div class="btn-group mt-3">
+            <button type="submit" class="btn btn-primary"><i class="ph ph-check-circle"></i> Salvar</button>
+        </div>
+    </form>
+</div>
+<!-- Modal de Erro -->
+<div class="modal fade" id="modalMensagem" tabindex="-1" aria-labelledby="modalMensagemLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background: #23272b; color: #fff;">
+            <div class="modal-header" style="border-bottom: 1px solid #A0D683;">
+                <h5 class="modal-title" id="modalMensagemLabel" style="color:#ff6b6b;">
+                    <i class="ph ph-warning"></i> Atenção
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body" style="font-size:1.1rem;">
+                Por favor, corrija os campos destacados antes de enviar o formulário.
+            </div>
+            <div class="modal-footer" style="border-top: 1px solid #A0D683;">
+                <button type="button" class="btn btn-outline-light" data-bs-dismiss="modal">
+                    <i class="ph ph-x"></i> Fechar
+                </button>
+            </div>
+        </div>
     </div>
-    <%@ include file="WEB-INF/jspf/footer.jspf" %>
-     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        // Validação do formulário
-        const formularioDiario = document.getElementById('formDiario');
-        formularioDiario.addEventListener('submit', function(event) {
-            let isValid = true;
-            // Limpar mensagens de erro anteriores
-            document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
-            document.querySelectorAll('.invalid-feedback').forEach(el => el.style.display = 'none');
-            // Verificar campos obrigatórios
-            const requiredFields = formularioDiario.querySelectorAll('[required]');
-            requiredFields.forEach(field => {
-                if (!field.value) {
-                    if (field.type === 'radio') {
-                        // Verificar grupo de rádio
-                        const radios = document.querySelectorAll(`input[name="${field.name}"]`);
-                        const checked = Array.from(radios).some(radio => radio.checked);
-                        if (!checked) {
-                            radios.forEach(radio => radio.closest('.btn-group')?.querySelector('.invalid-feedback')?.style.removeProperty('display'));
-                            isValid = false;
-                        }
-                    } else {
-                        field.classList.add('is-invalid');
-                        field.closest('.mb-3')?.querySelector('.invalid-feedback')?.style.removeProperty('display');
-                        isValid = false;
-                    }
-                }
-            });
-            if (!isValid) {
-                event.preventDefault();
-                new bootstrap.Modal(document.getElementById('modalMensagem')).show();
+</div>
+<!-- Modal de Sucesso -->
+<div class="modal fade" id="modalSucesso" tabindex="-1" aria-labelledby="modalSucessoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" style="background: #23272b; color: #A0D683;">
+            <div class="modal-header">
+                <h5 class="modal-title" id="modalSucessoLabel"><i class="ph ph-check-circle"></i> Sucesso</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fechar"></button>
+            </div>
+            <div class="modal-body">
+                Dados salvos com sucesso!
+            </div>
+        </div>
+    </div>
+</div>
+<%@ include file="WEB-INF/jspf/footer.jspf" %>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function triggerInput(inputId) {
+        document.getElementById(inputId).click();
+    }
+    function uploadImage(inputElement, refId) {
+        const file = inputElement.files[0];
+        if (!file) return;
+        const imgBox = document.getElementById(refId + "_imgBox");
+        const preview = document.getElementById(refId + "_preview");
+        if (preview && imgBox) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.src = e.target.result;
+                imgBox.classList.add("has-img");
+            };
+            reader.readAsDataURL(file);
+        }
+        // Envia imagem para o ImageAnalysisServlet via AJAX
+        const formData = new FormData();
+        formData.append("image", file);
+        fetch("ImageAnalysisServlet", {
+            method: "POST",
+            body: formData
+        })
+        .then(response => {
+            if (!response.ok) throw new Error('Erro na resposta do servidor');
+            return response.json();
+        })
+        .then(data => {
+            // Preenche o textarea relacionado com o texto retornado pela análise
+            const textarea = document.getElementById(refId);
+            if (textarea) {
+                textarea.value = data.response || "Não foi possível analisar a imagem.";
             }
-            // Simulação de sucesso: se o formulário está válido, mostra modal de sucesso e impede envio real
-            // Apague este bloco se o back-end já faz o salvamento e redirecionamento!
-            if(isValid) {
-                event.preventDefault();
-                showSuccessModalAndRedirect();
+        })
+        .catch(error => {
+            console.error('Erro:', error);
+            const textarea = document.getElementById(refId);
+            if (textarea) {
+                textarea.value = "Erro ao processar a imagem.";
             }
         });
-
-        // Função para mostrar o modal de sucesso centralizado, sumir após 2s e redirecionar
-        function showSuccessModalAndRedirect() {
-            const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'), {
-                backdrop: 'static',
-                keyboard: false
-            });
-            modalSucesso.show();
-            setTimeout(() => {
-                modalSucesso.hide();
-                window.location.href = "home.jsp"; // Redireciona para home.jsp após 2 segundos
-            }, 2000);
+    }
+    // Validação do formulário
+    const formularioDiario = document.getElementById('formDiario');
+    formularioDiario.addEventListener('submit', function(event) {
+        let isValid = true;
+        document.querySelectorAll('.is-invalid').forEach(el => el.classList.remove('is-invalid'));
+        document.querySelectorAll('.invalid-feedback').forEach(el => el.style.display = 'none');
+        const requiredFields = formularioDiario.querySelectorAll('[required]');
+        requiredFields.forEach(field => {
+            if (!field.value) {
+                if (field.type === 'radio') {
+                    const radios = document.querySelectorAll(`input[name="${field.name}"]`);
+                    const checked = Array.from(radios).some(radio => radio.checked);
+                    if (!checked) {
+                        radios.forEach(radio => radio.closest('.btn-group')?.querySelector('.invalid-feedback')?.style.removeProperty('display'));
+                        isValid = false;
+                    }
+                } else {
+                    field.classList.add('is-invalid');
+                    field.closest('.mb-3')?.querySelector('.invalid-feedback')?.style.removeProperty('display');
+                    isValid = false;
+                }
+            }
+        });
+        if (!isValid) {
+            event.preventDefault();
+            new bootstrap.Modal(document.getElementById('modalMensagem')).show();
         }
-    </script>
+        // Se quiser modal de sucesso sem enviar para o backend, descomente:
+        // else {
+        //     event.preventDefault();
+        //     showSuccessModal();
+        // }
+    });
+    
+function showSuccessModal() {
+    const modalSucesso = new bootstrap.Modal(document.getElementById('modalSucesso'), {
+        backdrop: 'static',
+        keyboard: false
+    });
+    modalSucesso.show();
+    setTimeout(() => {
+        modalSucesso.hide();
+        window.location.href = "home.jsp";
+    }, 2000);
+}
+</script>
 </body>
 </html>
