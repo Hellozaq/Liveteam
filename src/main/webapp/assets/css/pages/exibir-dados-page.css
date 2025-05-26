@@ -1,32 +1,149 @@
-/*
-Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
-Click nbfs://nbhost/SystemFileSystem/Templates/JSP_Servlet/CascadeStyleSheet.css to edit this template
-*/
-/* Estilos customizados */
-        .data-container {
-            background-color: #ffffff;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
+body {
+    background: #181c1f;
+    color: #f7f7f7;
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
+}
+.data-container {
+    background: #181c1f;
+    border-radius: 18px;
+    box-shadow: 0 0 40px #A0D68333;
+    padding: 36px 0 48px 0;
+    margin-bottom: 48px;
+}
+.data-title {
+    color: #A0D683;
+    font-size: 2.1rem;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.01em;
+    background: linear-gradient(90deg, #A0D683 70%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 2.3rem;
+}
+h2.data-title, h2.section-title {
+    font-size: 2.1rem;
+    font-weight: bold;
+    margin-top: 2rem;
+    margin-bottom: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    color: #A0D683;
+    background: linear-gradient(90deg, #A0D683 70%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
 
-        .data-title {
-            color: #2d6a4f;
-        }
+.table-section {
+    margin-bottom: 2.2rem;
+}
 
-        .table-custom {
-            background-color: #f1fdf2;
-            border-radius: 8px;
-            margin-top: 20px;
-        }
+.table-custom {
+    background: #23272b;
+    color: #f7f7f7;
+    border-radius: 16px;
+    box-shadow: 0 2px 16px #A0D68322;
+    margin-bottom: 36px;
+    overflow: hidden;
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    border: 2px solid #A0D68344;
+    box-shadow: 0 0 16px 0 #A0D68322;
+}
 
-        .table-custom th {
-            background-color: #4caf50 !important;
-            color: white !important;
-            text-align: center !important;
-        }
+.table-custom th, .table-custom td {
+    border: none;
+    padding: 18px 12px;
+    font-size: 1.09rem;
+    vertical-align: middle;
+    text-align: center;
+    transition: background 0.2s;
+}
 
-        .table-custom td {
-            text-align: center;
-            padding: 10px;
-        }
+.table-custom thead tr {
+    background: linear-gradient(90deg, #A0D683 58%, #8b5cf6 100%);
+}
+
+.table-custom thead th {
+    color: #181c1f;
+    font-weight: 700;
+    font-size: 1.09rem;
+    letter-spacing: 0.01em;
+    border-bottom: 2px solid #A0D683;
+    text-align: center;
+    background: transparent;
+    text-shadow: 0 1px 0 #fff3, 0 0 2px #8b5cf6bb;
+}
+
+.table-custom tbody tr {
+    background: #181c1f;
+    border-bottom: 1px solid #23272b;
+}
+.table-custom tbody tr:last-child {
+    border-bottom: none;
+}
+.table-custom td {
+    color: #f7f7f7;
+    font-weight: 400;
+    text-align: center;
+}
+
+.table-custom i {
+    font-size: 1.35em;
+    vertical-align: middle;
+    margin-right: 0.32em;
+    color: #8b5cf6;
+    filter: drop-shadow(0 0 6px #a0d683cc) brightness(1.25) saturate(1.3);
+    text-shadow: 0 0 8px #A0D68377, 0 0 2px #8b5cf688;
+    /* Deixa o ícone mais destacado */
+}
+
+@media (max-width: 900px) {
+    .data-container {
+        max-width: 98vw;
+        padding: 1rem 0.4rem;
+    }
+    .table-custom th, .table-custom td {
+        padding: 9px 5px;
+        font-size: 0.98rem;
+    }
+}
+@media (max-width: 700px) {
+    .data-container {
+        padding: 1rem 0.2rem;
+        max-width: 99vw;
+    }
+    .data-title, h2.section-title {
+        font-size: 1.3rem;
+    }
+    .table-custom th, .table-custom td {
+        font-size: 0.93rem;
+    }
+}
+@media (max-width: 650px) {
+    .table-custom {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+    .table-custom thead, .table-custom tbody, .table-custom tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+    }
+}
+::-webkit-scrollbar {
+    width: 7px;
+    background: #23272b;
+}
+::-webkit-scrollbar-thumb {
+    background: #A0D68355;
+    border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+    background: #A0D683;
+}

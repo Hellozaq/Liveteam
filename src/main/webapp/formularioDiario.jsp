@@ -331,7 +331,7 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
             </div>
             <!-- Exercícios -->
             <div class="form-section col-md-3">
-                <h3><i class="ph ph-dumbbell"></i> Exercícios</h3>
+                <h3><i class="ph ph-barbell"></i> Exercícios</h3>
                 <div class="mb-3">
                     <label for="tipo_treino" class="form-label">Tipo de Treino</label>
                     <input type="text" id="tipo_treino" name="tipo_treino" class="form-control" maxlength="100" required>

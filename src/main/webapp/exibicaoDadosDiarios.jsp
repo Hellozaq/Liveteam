@@ -14,19 +14,21 @@
 <head>
     <meta charset="UTF-8">
     <title>Dados do Dia</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Bootstrap & Phosphor Icons -->
     <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pages/exibir-dados-page.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <%@ include file="WEB-INF/jspf/html-head.jspf" %> 
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css" />
+    <%@ include file="WEB-INF/jspf/html-head.jspf" %>
 </head>
 <body>
 
     <%@ include file="WEB-INF/jspf/header.jspf" %>
 
     <div class="container data-container">
-        <h1 class="mt-4 data-title">Dados do Dia (<%= LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) %>)</h1>
+        <h1 class="mt-4 data-title"><i class="ph ph-calendar-blank"></i> Dados do Dia (<%= LocalDate.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")) %>)</h1>
 
-        <% 
+        <%
             // Verificar se o usuário está logado
             String idUsuarioStr = (String) session.getAttribute("idUsuario");
             Integer idUsuario = (idUsuarioStr != null) ? Integer.parseInt(idUsuarioStr) : null;
@@ -130,21 +132,20 @@
             }
         %>
 
-        <!-- Exibição das Tabelas -->
-
-        <!-- Tabela de Alimentação -->
-        <h2 class="mt-4 data-title">Alimentação</h2>
-        <table class="table table-custom">
-            <thead>
+        <!-- Alimentação -->
+        <div class="table-section">
+            <h2 class="section-title"><i class="ph ph-fork-knife"></i> Alimentação</h2>
+            <table class="table table-custom">
+                <thead>
                 <tr>
-                    <th scope="col">Café da Manhã</th>
-                    <th scope="col">Almoço</th>
-                    <th scope="col">Jantar</th>
-                    <th scope="col">Lanches</th>
-                    <th scope="col">Observações</th>
+                    <th><i class="ph ph-coffee"></i> Café da Manhã</th>
+                    <th><i class="ph ph-bowl-food"></i> Almoço</th>
+                    <th><i class="ph ph-knife"></i> Jantar</th>
+                    <th><i class="ph ph-cake"></i> Lanches</th>
+                    <th><i class="ph ph-note"></i> Observações</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td><%= cafeDaManha %></td>
                     <td><%= almoco %></td>
@@ -152,41 +153,43 @@
                     <td><%= lanches %></td>
                     <td><%= observacoesAlimentacao %></td>
                 </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabela de Líquidos -->
-        <h2 class="mt-4 data-title">Líquidos</h2>
-        <table class="table table-custom">
-            <thead>
+                </tbody>
+            </table>
+        </div>
+        <!-- Líquidos -->
+        <div class="table-section">
+            <h2 class="section-title"><i class="ph ph-drop"></i> Líquidos</h2>
+            <table class="table table-custom">
+                <thead>
                 <tr>
-                    <th scope="col">Água (Litros)</th>
-                    <th scope="col">Outros Líquidos</th>
-                    <th scope="col">Observações</th>
+                    <th><i class="ph ph-drop"></i> Água (Litros)</th>
+                    <th><i class="ph ph-drop"></i> Outros Líquidos</th>
+                    <th><i class="ph ph-note"></i> Observações</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td><%= agua %></td>
                     <td><%= outrosLiquidos %></td>
                     <td><%= observacoesLiquidos %></td>
                 </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabela de Treino -->
-        <h2 class="mt-4 data-title">Treino</h2>
-        <table class="table table-custom">
-            <thead>
+                </tbody>
+            </table>
+        </div>
+        <!-- Treino -->
+        <div class="table-section">
+            <h2 class="section-title"><i class="ph ph-barbell"></i> Treino</h2>
+            <table class="table table-custom">
+                <thead>
                 <tr>
-                    <th scope="col">Tipo de Treino</th>
-                    <th scope="col">Duração</th>
-                    <th scope="col">Intensidade</th>
-                    <th scope="col">Detalhes</th>
-                    <th scope="col">Observações</th>
+                    <th><i class="ph ph-barbell"></i> Tipo de Treino</th>
+                    <th><i class="ph ph-timer"></i> Duração</th>
+                    <th><i class="ph ph-fire"></i> Intensidade</th>
+                    <th><i class="ph ph-list-bullets"></i> Detalhes</th>
+                    <th><i class="ph ph-note"></i> Observações</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td><%= tipoTreino %></td>
                     <td><%= duracaoTreino %></td>
@@ -194,32 +197,33 @@
                     <td><%= detalhesExercicio %></td>
                     <td><%= observacoesExercicio %></td>
                 </tr>
-            </tbody>
-        </table>
-
-        <!-- Tabela de Avaliação Pessoal -->
-        <h2 class="mt-4 data-title">Avaliação Pessoal</h2>
-        <table class="table table-custom">
-            <thead>
+                </tbody>
+            </table>
+        </div>
+        <!-- Avaliação Pessoal -->
+        <div class="table-section">
+            <h2 class="section-title"><i class="ph ph-user"></i> Avaliação Pessoal</h2>
+            <table class="table table-custom">
+                <thead>
                 <tr>
-                    <th scope="col">Nível de Fome</th>
-                    <th scope="col">Nível de Energia</th>
-                    <th scope="col">Qualidade do Sono</th>
-                    <th scope="col">Observações</th>
+                    <th><i class="ph ph-bowl-food"></i> Nível de Fome</th>
+                    <th><i class="ph ph-battery-charging"></i> Nível de Energia</th>
+                    <th><i class="ph ph-moon-stars"></i> Qualidade do Sono</th>
+                    <th><i class="ph ph-note"></i> Observações</th>
                 </tr>
-            </thead>
-            <tbody>
+                </thead>
+                <tbody>
                 <tr>
                     <td><%= nivelFome %></td>
                     <td><%= nivelEnergia %></td>
                     <td><%= qualidadeSono %></td>
                     <td><%= observacoesAvaliacao %></td>
                 </tr>
-            </tbody>
-        </table>
+                </tbody>
+            </table>
+        </div>
     </div>
 
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
-
 </body>
 </html>
