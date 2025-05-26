@@ -32,7 +32,6 @@
         e.printStackTrace();
         mensagemErro = "Erro ao carregar usuários.";
     }
-
 %>
 <!DOCTYPE html>
 <html lang="pt-BR">
@@ -40,72 +39,6 @@
     <meta charset="UTF-8">
     <title>Admin</title>
     <link rel="stylesheet" href="assets/css/pages/admin.css">
-    <style>
-        /* ----------------------------------------------------
-            Modal de edição
-        ---------------------------------------------------- */
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0; top: 0;
-            width: 100%; height: 100%;
-            background: rgba(0,0,0,0.4);
-            align-items: center;
-            justify-content: center;
-        }
-        .modal-content {
-            background: #fff;
-            padding: 25px;
-            border-radius: 10px;
-            max-width: 500px;
-            width: 90%;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
-            position: relative;
-        }
-        .modal-content h2 {
-            margin-bottom: 20px;
-            color: #2c3e50;
-            text-align: center;
-        }
-        .close {
-            position: absolute;
-            top: 12px; right: 12px;
-            font-size: 1.5rem;
-            font-weight: bold;
-            color: #aaa;
-            cursor: pointer;
-        }
-        .close:hover {
-            color: #555;
-        }
-        .edit-user-form .form-group label {
-            color: #555;
-            font-weight: 600;
-        }
-        .paginacao {
-            margin-top: 20px;
-            display: flex;
-            justify-content: center;
-        }
-        .paginacao button {
-            padding: 8px 12px;
-            margin: 0 5px;
-            border: 1px solid #ddd;
-            background-color: #f9f9f9;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-        .paginacao button.ativo {
-            background-color: #007bff;
-            color: white;
-            border-color: #007bff;
-        }
-        .paginacao button:hover:not(.ativo) {
-            background-color: #eee;
-        }
-
-    </style>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
@@ -113,10 +46,9 @@
     <button onclick="voltar()" class="button"><i class="fas fa-chevron-left"></i></button>
     <h1 class="main-heading">Gerenciamento de Usuários</h1>
 
-
     <div class="nav">
-        <button onclick="showSection('userManagement')" class="button"><i class="fas fa-users"></i></button>
-        <button onclick="showSection('addUserForm')" class="button"><i class="fas fa-user-plus"></i></button>
+        <button onclick="showSection('userManagement', event)" class="button active"><i class="fas fa-users"></i></button>
+        <button onclick="showSection('addUserForm', event)" class="button"><i class="fas fa-user-plus"></i></button>
     </div>
     <div class="ordering-buttons">
         <button onclick="ordenarPorId('asc')" class="button">ID <i class="fas fa-sort-numeric-down"></i></button>
@@ -285,17 +217,30 @@
 </div>
 
 <script>
-    function showSection(sectionId) {
+    function showSection(sectionId, event) {
         document.querySelectorAll('.section')
             .forEach(s => s.classList.remove('active-section'));
         document.getElementById(sectionId)
             .classList.add('active-section');
+        // Alterna o botão ativo
+        document.querySelectorAll('.nav .button')
+            .forEach(btn => btn.classList.remove('active'));
+        if(event && event.currentTarget) {
+            event.currentTarget.classList.add('active');
+        }
+
+        // Mostra ou esconde os botões de ordenação
+        if (sectionId === 'addUserForm') {
+            document.querySelector('.ordering-buttons').style.display = 'none';
+        } else {
+            document.querySelector('.ordering-buttons').style.display = 'flex';
+        }
     }
     function voltar(){
         window.location.href = '${pageContext.request.contextPath}/perfil.jsp';
     }
 
-        // Lógica de confirmação para exclusão
+    // Lógica de confirmação para exclusão
     document.querySelectorAll('form[action$="/admin"]').forEach(form => {
         if (form.querySelector('input[name="action"][value="deleteUser"]')) {
             form.addEventListener('submit', function(event) {
@@ -333,6 +278,13 @@
     function ordenarPorNome(ordem) {
         window.location.href = '<%= request.getContextPath() %>/admin?sortBy=nome&order=' + ordem + '&page=<%= paginaAtual %>';
     }
+
+    // Esconde ordering-buttons se a tela inicia no modo de adicionar usuário
+    window.addEventListener('DOMContentLoaded', function () {
+        if (document.getElementById('addUserForm').classList.contains('active-section')) {
+            document.querySelector('.ordering-buttons').style.display = 'none';
+        }
+    });
 </script>
 </body>
 </html>
