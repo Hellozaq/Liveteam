@@ -4,15 +4,19 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONException;
-
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
+import servlets.SalvarPlanoNoBanco;
 
 @WebServlet("/ExibirDietaServlet")
 public class ExibirDietaServlet extends HttpServlet {
+
+        private final SalvarPlanoNoBanco salvarPlanoNoBanco = new SalvarPlanoNoBanco();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -25,6 +29,30 @@ public class ExibirDietaServlet extends HttpServlet {
     }
 
     private void exibirPlanoCompleto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        
+            int idUsuario = -1; // valor padrão inválido (ou 0), só pra garantir que seja inicializado
+            HttpSession session = request.getSession(false);
+
+            if (session != null) {
+                String idUsuarioStr = (String) session.getAttribute("idUsuario");
+                if (idUsuarioStr != null) {
+                    try {
+                        idUsuario = Integer.parseInt(idUsuarioStr);
+                        System.out.println("ID do usuário logado: " + idUsuario);
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                        response.sendRedirect("login.jsp?error=idInvalido");
+                        return;
+                    }
+                } else {
+                    response.sendRedirect("login.jsp?error=naoLogado");
+                    return;
+                }
+            } else {
+                response.sendRedirect("login.jsp?error=naoLogado");
+                return;
+            }
+        
         // Recupera os dados enviados pelo formulário
         String idade = request.getParameter("idade");
         String sexo = request.getParameter("sexo");
@@ -173,6 +201,8 @@ public class ExibirDietaServlet extends HttpServlet {
                 planoTreinoJson = planoCompletoJson.optJSONObject("plano_treino");
                 System.out.println("planoDietaJson (no Servlet): " + planoDietaJson);
                 System.out.println("planoTreinoJson (no Servlet): " + planoTreinoJson);
+                salvarPlanoNoBanco.salvarPlanoNoBanco(idUsuario, planoDietaJson, planoTreinoJson);
+                System.out.println("Plano salvo no banco com sucesso.");
             } else {
                 System.err.println("Seção 'plano_completo' não encontrada no JSON.");
             }

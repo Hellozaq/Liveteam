@@ -10,93 +10,112 @@ public class Tabelas {
         try (Connection connection = DatabaseConnection.getConnection();
              Statement statement = connection.createStatement()) {
 
-            // Criação da tabela de usuários
+            // Tabela de usuários
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS usuario (" +
                 "id SERIAL PRIMARY KEY, " +
                 "nome VARCHAR(50) NOT NULL, " +
                 "email VARCHAR(100) NOT NULL UNIQUE, " +
                 "senha VARCHAR(255) NOT NULL, " +
-                "role VARCHAR(20) NOT NULL DEFAULT 'usuario')"  
+                "role VARCHAR(20) NOT NULL DEFAULT 'usuario')"
             );
-
             System.out.println("Tabela 'usuario' criada com sucesso!");
 
-            // Criação da tabela de dados diários
+            // Tabela de dados diários
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS dados_diarios (" +
                     "id SERIAL PRIMARY KEY, " +
-                    "id_usuario INT NOT NULL, " + // Relacionamento com a tabela usuario
+                    "id_usuario INT NOT NULL, " +
                     "dia INT NOT NULL, " +
                     "mes INT NOT NULL, " +
                     "ano INT NOT NULL, " +
-                    // Alimentação
                     "cafe_da_manha TEXT, " +
                     "almoco TEXT, " +
                     "jantar TEXT, " +
                     "lanches TEXT, " +
                     "observacoes_alimentacao TEXT, " +
-                    // Líquidos
                     "agua VARCHAR(255), " +
                     "outros_liquidos VARCHAR(255), " +
                     "observacoes_liquidos TEXT, " +
-                    // Exercícios
                     "tipo_treino VARCHAR(255), " +
                     "duracao_treino VARCHAR(255), " +
                     "intensidade_treino VARCHAR(255), " +
                     "detalhes_exercicio TEXT, " +
                     "observacoes_exercicio TEXT, " +
-                    // Avaliação pessoal
                     "nivel_fome VARCHAR(255), " +
                     "nivel_energia VARCHAR(255), " +
                     "qualidade_sono VARCHAR(255), " +
                     "observacoes_avaliacao TEXT, " +
-                    // Relacionamento com chave estrangeira
                     "FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE)");
 
             System.out.println("Tabela 'dados_diarios' criada com sucesso!");
 
-            // Criação da tabela de plano de dieta e treino
-            statement.executeUpdate("CREATE TABLE IF NOT EXISTS plano_dieta_treino (" +
+            // Tabela plano
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS plano (" +
                     "id SERIAL PRIMARY KEY, " +
-                    // Dados Pessoais
-                    "idade INT NOT NULL, " +
-                    "sexo VARCHAR(20) NOT NULL, " +
-                    "altura_cm DECIMAL(5, 2) NOT NULL, " +
-                    "peso_kg DECIMAL(5, 2) NOT NULL, " +
-                    "objetivo_principal TEXT NOT NULL, " +
-                    // Nível de Atividade Física
-                    "frequencia_semanal_treino INT NOT NULL, " +
-                    "duracao_media_treino_minutos INT NOT NULL, " +
-                    "tipo_atividade_fisica TEXT NOT NULL, " +
-                    "objetivos_treino TEXT NOT NULL, " +
-                    // Hábitos Alimentares Culturais
-                    "nacionalidade VARCHAR(100) NOT NULL, " +
-                    "residencia_atual VARCHAR(255) NOT NULL, " +
-                    // Preferências Alimentares e Restrições
-                    "alimentos_favoritos TEXT, " +
-                    "alimentos_que_evita TEXT, " +
-                    "alimentos_para_incluir_excluir TEXT, " +
-                    // Suplementação
-                    "usa_suplementos BOOLEAN NOT NULL, " +
-                    "suplementos_usados TEXT, " +
-                    // Tempo Disponível para o Treino
-                    "tempo_por_treino_minutos INT NOT NULL, " +
-                    // Cardápio Diário
+                    "id_usuario INT NOT NULL, " +
+                    "data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP, " +
+                    "FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE)");
+
+            // Tabela dieta
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS dieta (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "plano_id INT NOT NULL, " +
+                    "objetivo TEXT NOT NULL, " +
+                    "calorias_totais VARCHAR(50), " +
+                    "observacoes TEXT, " +
+                    "FOREIGN KEY (plano_id) REFERENCES plano(id) ON DELETE CASCADE)");
+
+            // Tabela macronutrientes
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS macronutrientes (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "dieta_id INT NOT NULL, " +
+                    "proteinas VARCHAR(50), " +
+                    "carboidratos VARCHAR(50), " +
+                    "gorduras VARCHAR(50), " +
+                    "FOREIGN KEY (dieta_id) REFERENCES dieta(id) ON DELETE CASCADE)");
+
+            // Tabela refeicoes
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS refeicoes (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "dieta_id INT NOT NULL, " +
                     "cafe_da_manha TEXT, " +
                     "almoco TEXT, " +
                     "lanche_tarde TEXT, " +
                     "jantar TEXT, " +
-                    // Datas e Referências
-                    "data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP)");
+                    "FOREIGN KEY (dieta_id) REFERENCES dieta(id) ON DELETE CASCADE)");
 
-            System.out.println("Tabela 'plano_dieta_treino' criada com sucesso!");
+            // Tabela treino
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS treino (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "plano_id INT NOT NULL, " +
+                    "divisao TEXT, " +
+                    "justificativa_divisao TEXT, " +
+                    "observacoes TEXT, " +
+                    "FOREIGN KEY (plano_id) REFERENCES plano(id) ON DELETE CASCADE)");
 
-            // Criação da tabela de tokens de redefinição de senha
+            // Tabela subtreino
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS subtreino (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "treino_id INT NOT NULL, " +
+                    "nome VARCHAR(10), " +
+                    "foco TEXT, " +
+                    "FOREIGN KEY (treino_id) REFERENCES treino(id) ON DELETE CASCADE)");
+
+            // Tabela exercicio
+            statement.executeUpdate("CREATE TABLE IF NOT EXISTS exercicio (" +
+                    "id SERIAL PRIMARY KEY, " +
+                    "subtreino_id INT NOT NULL, " +
+                    "nome TEXT, " +
+                    "series VARCHAR(10), " +
+                    "repeticoes VARCHAR(10), " +
+                    "FOREIGN KEY (subtreino_id) REFERENCES subtreino(id) ON DELETE CASCADE)");
+
+            System.out.println("Tabelas de plano, dieta e treino criadas com sucesso!");
+
+            // Tabela de tokens de redefinição de senha
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS password_reset_tokens (" +
                     "user_id INT REFERENCES usuario(id) ON DELETE CASCADE, " +
                     "token VARCHAR(128) PRIMARY KEY, " +
-                    "expires_at TIMESTAMP NOT NULL" +
-                    ")");
-
+                    "expires_at TIMESTAMP NOT NULL)");
             System.out.println("Tabela 'password_reset_tokens' criada com sucesso!");
 
         } catch (SQLException e) {
