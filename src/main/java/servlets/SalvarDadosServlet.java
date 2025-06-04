@@ -3,7 +3,6 @@ package servlets;
 import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
-import jakarta.servlet.*;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;

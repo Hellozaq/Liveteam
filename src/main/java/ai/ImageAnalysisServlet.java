@@ -73,12 +73,12 @@ public class ImageAnalysisServlet extends HttpServlet {
 
             String prompt = "Observe a imagem de alimentos enviada. Retorne somente uma lista de itens no seguinte formato:\n" +
                     "\n" +
-                    "<nome do alimento> (<quantidade estimada>) – <calorias em número> kcal\n" +
+                    "<nome do alimento> (<quantidade estimada em gramas>) – <calorias em número> kcal\n" +
                     "\n" +
                     "Exemplo:\n" +
-                    "- Banana (1 unidade) – 89 kcal  \n" +
-                    "- Iogurte natural (1 copo) – 120 kcal  \n" +
-                    "- Granola (2 colheres de sopa) – 95 kcal\n" +
+                    "- Banana (100 Gramas) – 89 kcal  \n" +
+                    "- Iogurte natural (x Gramas) – 120 kcal  \n" +
+                    "- Granola (x Gramas) – 95 kcal\n" +
                     "\n" +
                     "Não adicione nenhum comentário ou explicação. Apenas a lista no formato acima.";
 
@@ -179,7 +179,8 @@ public class ImageAnalysisServlet extends HttpServlet {
             line = line.substring(1).trim();
             line = line.replace("–", "-");
 
-            String regex = "(.+) \\((.+)\\) - (\\d+) kcal";
+            String regex = "^(.*)\\s*\\(([^)]*)\\)\\s*-\\s*(\\d+)\\s*kcal$";
+
             Pattern pattern = Pattern.compile(regex);
             Matcher matcher = pattern.matcher(line);
 

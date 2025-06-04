@@ -250,7 +250,11 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                         <div class="col-8">
                             <textarea id="cafe_da_manha" name="cafe_da_manha" class="form-control" maxlength="500" required></textarea>
                             <div class="invalid-feedback">Por favor, descreva seu café da manhã</div>
+                            
                         </div>
+                        <div class="col-4">
+                                <input type="text" id="cafe_da_manha_calorias" readonly class="form-control" placeholder="Calorias">
+                            </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="cafe_da_manha_imgBox" onclick="triggerInput('imageUploadCafe')">
                                 <i class="fas fa-camera"></i>
@@ -266,7 +270,11 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                         <div class="col-8">
                             <textarea id="almoco" name="almoco" class="form-control" maxlength="500" required></textarea>
                             <div class="invalid-feedback">Por favor, descreva seu almoço</div>
+                            
                         </div>
+                        <div class="col-4">
+                                <input type="text" id="almoco_calorias" readonly class="form-control" placeholder="Calorias">
+                            </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="almoco_imgBox" onclick="triggerInput('imageUploadAlmoco')">
                                 <i class="fas fa-camera"></i>
@@ -282,7 +290,11 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                         <div class="col-8">
                             <textarea id="jantar" name="jantar" class="form-control" maxlength="500" required></textarea>
                             <div class="invalid-feedback">Por favor, descreva seu jantar</div>
+                            
                         </div>
+                        <div class="col-4">
+                                <input type="text" id="jantar_calorias" readonly class="form-control" placeholder="Calorias">
+                            </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="jantar_imgBox" onclick="triggerInput('imageUploadJantar')">
                                 <i class="fas fa-camera"></i>
@@ -298,6 +310,9 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                         <div class="col-8">
                             <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
                         </div>
+                        <div class="col-4">
+                                <input type="text" id="lanches_calorias" readonly class="form-control" placeholder="Calorias">
+                            </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="lanches_imgBox" onclick="triggerInput('imageUploadLanches')">
                                 <i class="fas fa-camera"></i>
@@ -465,8 +480,9 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
 <script>
     function triggerInput(inputId) {
         document.getElementById(inputId).click();
-    }
+        }
     function uploadImage(inputElement, refId) {
+        console.log('IDSS recebidos:', refId);
         const file = inputElement.files[0];
         if (!file) return;
         const imgBox = document.getElementById(refId + "_imgBox");
@@ -491,17 +507,25 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
             return response.json();
         })
         .then(data => {
-            // Preenche o textarea relacionado com o texto retornado pela análise
             const textarea = document.getElementById(refId);
-            if (textarea) {
-                textarea.value = data.response || "Não foi possível analisar a imagem.";
-            }
-        })
-        .catch(error => {
-            console.error('Erro:', error);
-            const textarea = document.getElementById(refId);
-            if (textarea) {
-                textarea.value = "Erro ao processar a imagem.";
+            const caloriasInput = document.getElementById(refId + "_calorias");
+            if (data.items && Array.isArray(data.items) && data.items.length > 0) {
+                const texto = data.items.map(item => {
+                    console.log(item);
+                    const nome = item.alimento?.trim() || 'Alimento desconhecido';
+                    const quantidade = item.quantidade?.trim() || 'Sem Quantidade Definida';
+                    return `- ` + nome +' ' + quantidade;
+                }).join('\n');
+                if (textarea) textarea.value = texto;
+                const totalCalorias = data.items.reduce((soma, item) =>
+                    soma + (parseInt(item.calorias) || 0), 0);
+                if (caloriasInput) caloriasInput.value = totalCalorias;
+            } else if (data.response) {
+                if (textarea) textarea.value = data.response;
+                if (caloriasInput) caloriasInput.value = "";
+            } else {
+                if (textarea) textarea.value = "Não foi possível analisar a imagem.";
+                if (caloriasInput) caloriasInput.value = "";
             }
         });
     }
