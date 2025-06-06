@@ -62,9 +62,14 @@ public class SalvarDadosServlet extends HttpServlet {
 
         // Extrair demais campos do formulário
         String cafeDaManha = request.getParameter("cafe_da_manha");
+        int cafe_da_manha_calorias = Integer.parseInt(request.getParameter("cafe_da_manha_calorias"));
+        System.out.println("Café da manha calorias " +cafe_da_manha_calorias);
         String almoco = request.getParameter("almoco");
+        int almoco_calorias = Integer.parseInt(request.getParameter("almoco_calorias"));
         String jantar = request.getParameter("jantar");
+        int jantar_calorias = Integer.parseInt(request.getParameter("jantar_calorias"));
         String lanches = request.getParameter("lanches");
+        int lanches_calorias = Integer.parseInt(request.getParameter("lanches_calorias"));
         String observacoesAlimentacao = request.getParameter("observacoes_alimentacao");
         String agua = request.getParameter("agua");
         String outrosLiquidos = request.getParameter("outros_liquidos");
@@ -118,38 +123,48 @@ public class SalvarDadosServlet extends HttpServlet {
                 return;
             }
 
-            // Inserir dados
-            String sql = "INSERT INTO dados_diarios (" +
-                    "id_usuario, dia, mes, ano, " +
-                    "cafe_da_manha, almoco, jantar, lanches, observacoes_alimentacao, " +
-                    "agua, outros_liquidos, observacoes_liquidos, " +
-                    "tipo_treino, duracao_treino, intensidade_treino, detalhes_exercicio, observacoes_exercicio, " +
-                    "nivel_fome, nivel_energia, qualidade_sono, observacoes_avaliacao" +
-                    ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            pstmt = conn.prepareStatement(sql);
-            pstmt.setInt(1, idUsuario);
-            pstmt.setInt(2, dia); // Valores corretos
-            pstmt.setInt(3, mes);
-            pstmt.setInt(4, ano);
-            pstmt.setString(5, cafeDaManha);
-            pstmt.setString(6, almoco);
-            pstmt.setString(7, jantar);
-            pstmt.setString(8, lanches);
-            pstmt.setString(9, observacoesAlimentacao);
-            pstmt.setString(10, agua);
-            pstmt.setString(11, outrosLiquidos);
-            pstmt.setString(12, observacoesLiquidos);
-            pstmt.setString(13, tipoTreino);
-            pstmt.setString(14, duracaoTreino);
-            pstmt.setString(15, intensidadeTreino);
-            pstmt.setString(16, detalhesExercicio);
-            pstmt.setString(17, observacoesExercicio);
-            pstmt.setString(18, nivelFome);
-            pstmt.setString(19, nivelEnergia);
-            pstmt.setString(20, qualidadeSono);
-            pstmt.setString(21, observacoesAvaliacao);
+            // Ajustando o SQL para incluir as colunas de calorias
+                String sql = "INSERT INTO dados_diarios (" +
+                        "id_usuario, dia, mes, ano, " +
+                        "cafe_da_manha, cafe_da_manha_calorias, " +
+                        "almoco, almoco_calorias, " +
+                        "jantar, jantar_calorias, " +
+                        "lanches, lanches_calorias, " +
+                        "observacoes_alimentacao, " +
+                        "agua, outros_liquidos, observacoes_liquidos, " +
+                        "tipo_treino, duracao_treino, intensidade_treino, detalhes_exercicio, observacoes_exercicio, " +
+                        "nivel_fome, nivel_energia, qualidade_sono, observacoes_avaliacao" +
+                        ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-            int rowsInserted = pstmt.executeUpdate();
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, idUsuario);
+                pstmt.setInt(2, dia);
+                pstmt.setInt(3, mes);
+                pstmt.setInt(4, ano);
+                pstmt.setString(5, cafeDaManha);
+                pstmt.setInt(6, cafe_da_manha_calorias);
+                pstmt.setString(7, almoco);
+                pstmt.setInt(8, almoco_calorias);
+                pstmt.setString(9, jantar);
+                pstmt.setInt(10, jantar_calorias);
+                pstmt.setString(11, lanches);
+                pstmt.setInt(12, lanches_calorias);
+                pstmt.setString(13, observacoesAlimentacao);
+                pstmt.setString(14, agua);
+                pstmt.setString(15, outrosLiquidos);
+                pstmt.setString(16, observacoesLiquidos);
+                pstmt.setString(17, tipoTreino);
+                pstmt.setString(18, duracaoTreino);
+                pstmt.setString(19, intensidadeTreino);
+                pstmt.setString(20, detalhesExercicio);
+                pstmt.setString(21, observacoesExercicio);
+                pstmt.setString(22, nivelFome);
+                pstmt.setString(23, nivelEnergia);
+                pstmt.setString(24, qualidadeSono);
+                pstmt.setString(25, observacoesAvaliacao);
+
+                int rowsInserted = pstmt.executeUpdate();
+
 
             if (rowsInserted > 0) {
                 response.sendRedirect("home.jsp?status=success&message=Dados%20salvos%20com%20sucesso!");

@@ -28,9 +28,13 @@ public class Tabelas {
                     "mes INT NOT NULL, " +
                     "ano INT NOT NULL, " +
                     "cafe_da_manha TEXT, " +
+                    "cafe_da_manha_calorias INT, " +
                     "almoco TEXT, " +
+                    "almoco_calorias INT, " +
                     "jantar TEXT, " +
+                    "jantar_calorias INT, " +
                     "lanches TEXT, " +
+                    "lanches_calorias INT, " +
                     "observacoes_alimentacao TEXT, " +
                     "agua VARCHAR(255), " +
                     "outros_liquidos VARCHAR(255), " +
@@ -44,7 +48,9 @@ public class Tabelas {
                     "nivel_energia VARCHAR(255), " +
                     "qualidade_sono VARCHAR(255), " +
                     "observacoes_avaliacao TEXT, " +
-                    "FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE)");
+                    "FOREIGN KEY (id_usuario) REFERENCES usuario(id) ON DELETE CASCADE" +
+                    ")");
+
 
             System.out.println("Tabela 'dados_diarios' criada com sucesso!");
 
