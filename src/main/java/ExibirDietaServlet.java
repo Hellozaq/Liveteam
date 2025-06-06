@@ -207,6 +207,7 @@ public class ExibirDietaServlet extends HttpServlet {
                 System.err.println("Seção 'plano_completo' não encontrada no JSON.");
             }
 
+
         } catch (JSONException e) {
             System.err.println("Erro ao analisar JSON: " + e.getMessage());
             if (respostaGemini != null && respostaGemini.length() > 500) {
@@ -318,4 +319,4 @@ public class ExibirDietaServlet extends HttpServlet {
             }
         }
     }
-}
+} 

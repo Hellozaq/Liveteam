@@ -1,4 +1,4 @@
-package servlets;
+ package servlets;
 
 import java.sql.*;
 import java.io.InputStream;
@@ -9,7 +9,7 @@ import org.json.JSONObject;
 
 public class SalvarPlanoNoBanco {
 
-    // Recebe também o id do usuário para relacionar o plano ao usuário
+    // Agora recebe também o JSON completo para salvar como string
     public void salvarPlanoNoBanco(int idUsuario, JSONObject planoDietaJson, JSONObject planoTreinoJson) throws Exception {
         Connection conn = null;
         PreparedStatement psPlano = null, psDieta = null, psMacro = null, psRefeicoes = null;
@@ -37,7 +37,7 @@ public class SalvarPlanoNoBanco {
             conn = DriverManager.getConnection(url, username, password);
             conn.setAutoCommit(false);
 
-            // Inserir plano
+            // Inserir plano 
             String sqlPlano = "INSERT INTO plano (id_usuario) VALUES (?)";
             psPlano = conn.prepareStatement(sqlPlano, Statement.RETURN_GENERATED_KEYS);
             psPlano.setInt(1, idUsuario);
@@ -165,4 +165,4 @@ public class SalvarPlanoNoBanco {
             if (psExercicio != null) try { psExercicio.close(); } catch(SQLException e) {}
         }
     }
-}
+} 

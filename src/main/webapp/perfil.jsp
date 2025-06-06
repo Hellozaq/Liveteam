@@ -131,10 +131,25 @@
             color: #181c1f;
             filter: brightness(0.97);
         }
+        /* NOVO: Modal do Plano preenchido */
+        #planoModal .modal-content {
+            max-width: 600px;
+            font-size: 1.08rem;
+        }
+        #planoModal pre {
+            white-space: pre-line;
+            font-family: inherit;
+            font-size: 1.07em;
+            color: #f7f7f7;
+            margin: 0;
+        }
         @media (max-width: 600px) {
             .modal-content {
                 padding: 18px 6vw 18px 6vw;
                 min-width: unset;
+                max-width: 98vw;
+            }
+            #planoModal .modal-content {
                 max-width: 98vw;
             }
         }
@@ -208,12 +223,26 @@
                 <%= request.getAttribute("success") %>
             </div>
         <% } %>
+
+        <!-- NOVO: Botão para visualizar último preenchimento -->
+        <div style="margin-top:2rem; text-align:center;">
+            <button id="openPlanoModal" class="btn btn-info" style="background:#A0D683;color:#23272b;font-weight:bold;">Ver Último Preenchimento Diário</button>
+        </div>
+
+        <!-- Modal do Plano preenchido -->
+        <div id="planoModal" class="modal">
+            <div class="modal-content">
+                <button class="close" id="closePlanoModal" title="Fechar" tabindex="0" aria-label="Fechar">&times;</button>
+                <h2>Último Preenchimento Diário</h2>
+                <pre id="conteudoPlano"></pre>
+            </div>
+        </div>
     </main>
 
     <%@ include file="WEB-INF/jspf/footer.jspf" %>
 
     <script>
-        // Modal JS
+        // Modal redefinição de senha
         const modal = document.getElementById("senhaModal");
         const btn = document.getElementById("redefinirSenhaBtn");
         const closeBtn = document.getElementById("closeModal");
@@ -229,6 +258,9 @@
         window.onclick = function (event) {
             if (event.target === modal) {
                 modal.style.display = "none";
+            }
+            if (event.target === planoModal) {
+                planoModal.style.display = "none";
             }
         };
 
@@ -255,6 +287,70 @@
                 }, 1500);
             }
         });
+
+        // NOVO: Modal Plano preenchido
+        const openPlanoModalBtn = document.getElementById("openPlanoModal");
+        const planoModal = document.getElementById("planoModal");
+        const closePlanoModalBtn = document.getElementById("closePlanoModal");
+        const conteudoPlano = document.getElementById("conteudoPlano");
+
+        openPlanoModalBtn.onclick = function () {
+            conteudoPlano.textContent = "Carregando...";
+            planoModal.style.display = "flex";
+            fetch('BuscarUltimoPlano')
+                .then(resp => resp.json())
+                .then(data => {
+                    if (data.error) {
+                        conteudoPlano.textContent = data.error;
+                        return;
+                    }
+                    let html = "";
+                    if (data.dieta) {
+                        html += "----- DIETA -----\n";
+                        html += "Objetivo: " + (data.dieta.objetivo || '-') + "\n";
+                        html += "Calorias totais: " + (data.dieta.calorias_totais || '-') + "\n";
+                        if (data.dieta.macronutrientes) {
+                            html += "Macronutrientes:\n";
+                            html += "  Proteínas: " + (data.dieta.macronutrientes.proteinas || '-') + "\n";
+                            html += "  Carboidratos: " + (data.dieta.macronutrientes.carboidratos || '-') + "\n";
+                            html += "  Gorduras: " + (data.dieta.macronutrientes.gorduras || '-') + "\n";
+                        }
+                        if (data.dieta.refeicoes) {
+                            html += "Refeições:\n";
+                            html += "  Café da manhã: " + (data.dieta.refeicoes.cafe_da_manha || '-') + "\n";
+                            html += "  Almoço: " + (data.dieta.refeicoes.almoco || '-') + "\n";
+                            html += "  Lanche da tarde: " + (data.dieta.refeicoes.lanche_tarde || '-') + "\n";
+                            html += "  Jantar: " + (data.dieta.refeicoes.jantar || '-') + "\n";
+                        }
+                        html += "Observações: " + (data.dieta.observacoes || '-') + "\n";
+                    }
+                    if (data.treino) {
+                        html += "\n----- TREINO -----\n";
+                        html += "Divisão: " + (data.treino.divisao || '-') + "\n";
+                        html += "Justificativa: " + (data.treino.justificativa_divisao || '-') + "\n";
+                        html += "Observações: " + (data.treino.observacoes || '-') + "\n";
+                        if (data.treino.subtreinos && data.treino.subtreinos.length > 0) {
+                            html += "\n----- SUBTREINOS E EXERCÍCIOS -----\n";
+                            data.treino.subtreinos.forEach(sub => {
+                                html += "\nSubtreino: " + (sub.nome || '-') + " | Foco: " + (sub.foco || '-') + "\n";
+                                if (sub.exercicios && sub.exercicios.length > 0) {
+                                    sub.exercicios.forEach(ex => {
+                                        html += "  - " + (ex.nome || '-') + " | Séries: " + (ex.series || '-') + " | Repetições: " + (ex.repeticoes || '-') + "\n";
+                                    });
+                                }
+                            });
+                        }
+                    }
+                    conteudoPlano.textContent = html || "Nenhum preenchimento encontrado.";
+                })
+                .catch(() => {
+                    conteudoPlano.textContent = "Erro ao buscar dados do plano.";
+                });
+        };
+
+        closePlanoModalBtn.onclick = function () {
+            planoModal.style.display = "none";
+        };
     </script>
 </body>
 </html>
