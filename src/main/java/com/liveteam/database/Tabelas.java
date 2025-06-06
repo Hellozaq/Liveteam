@@ -66,7 +66,7 @@ public class Tabelas {
                     "id SERIAL PRIMARY KEY, " +
                     "plano_id INT NOT NULL, " +
                     "objetivo TEXT NOT NULL, " +
-                    "calorias_totais VARCHAR(50), " +
+                    "calorias_totais INT, " +
                     "observacoes TEXT, " +
                     "FOREIGN KEY (plano_id) REFERENCES plano(id) ON DELETE CASCADE)");
 
@@ -74,9 +74,9 @@ public class Tabelas {
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS macronutrientes (" +
                     "id SERIAL PRIMARY KEY, " +
                     "dieta_id INT NOT NULL, " +
-                    "proteinas VARCHAR(50), " +
-                    "carboidratos VARCHAR(50), " +
-                    "gorduras VARCHAR(50), " +
+                    "proteinas INT, " +
+                    "carboidratos INT, " +
+                    "gorduras INT, " +
                     "FOREIGN KEY (dieta_id) REFERENCES dieta(id) ON DELETE CASCADE)");
 
             // Tabela refeicoes

@@ -34,13 +34,22 @@
         <canvas id="caloriasChart"></canvas>
     </div>
 
+    <div style="width: 400px; margin: 40px auto;">
+        <canvas id="comparativoCalorias"></canvas>
+    </div>
+
     <script>
+        // Gráfico de calorias por refeição
         const data = {
             labels: ['Café', 'Almoço', 'Jantar', 'Lanches'],
             datasets: [{
                 label: 'Calorias (kcal)',
-                data: [<%= request.getAttribute("cafe") %>, <%= request.getAttribute("almoco") %>, 
-                       <%= request.getAttribute("jantar") %>, <%= request.getAttribute("lanches") %>],
+                data: [
+                    <%= request.getAttribute("cafe") != null ? request.getAttribute("cafe") : 0 %>,
+                    <%= request.getAttribute("almoco") != null ? request.getAttribute("almoco") : 0 %>,
+                    <%= request.getAttribute("jantar") != null ? request.getAttribute("jantar") : 0 %>,
+                    <%= request.getAttribute("lanches") != null ? request.getAttribute("lanches") : 0 %>
+                ],
                 backgroundColor: ['#ffa07a', '#f08080', '#20b2aa', '#87cefa']
             }]
         };
@@ -49,7 +58,30 @@
             type: 'bar',
             data: data
         });
+
+        // Gráfico comparativo de calorias consumidas vs meta
+        const totalCalorias = <%= request.getAttribute("totalCalorias") != null ? request.getAttribute("totalCalorias") : 0 %>;
+        const metaCalorias = <%= request.getAttribute("metaCalorias") != null ? request.getAttribute("metaCalorias") : 0 %>;
+
+        new Chart(document.getElementById('comparativoCalorias'), {
+            type: 'bar',
+            data: {
+                labels: ['Consumido', 'Meta'],
+                datasets: [{
+                    label: 'Calorias (kcal)',
+                    data: [totalCalorias, metaCalorias],
+                    backgroundColor: ['#4caf50', '#2196f3']
+                }]
+            },
+            options: {
+                plugins: {
+                    title: {
+                        display: true,
+                        text: 'Comparativo de Calorias do Dia'
+                    }
+                }
+            }
+        });
     </script>
 </body>
 </html>
-    

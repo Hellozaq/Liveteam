@@ -37,7 +37,9 @@
     <% } %>
     
     <%@ include file="WEB-INF/jspf/header.jspf" %>
-
+        <button onclick="window.location.href='/Liveteam/dashboard'">
+    Ir para o Dashboard
+</button>
     <main id="home-app" class="home-page">
         <div class="global-vue">
             <h1 :class="{ 'animate': isLoaded[0] }">

@@ -102,11 +102,11 @@ public class ExibirDietaServlet extends HttpServlet {
                 "  \"plano_completo\": {\n" +
                 "    \"plano_dieta\": {\n" +
                 "      \"objetivo\": \"[string: objetivo principal da dieta]\",\n" +
-                "      \"calorias_totais\": \"[string: estimativa de calorias totais]\",\n" +
+                "      \"calorias_totais\": \"[int: estimativa de calorias totais]\",\n" +
                 "      \"macronutrientes\": {\n" +
-                "        \"proteinas\": \"[string: percentual ou gramas de proteína]\",\n" +
-                "        \"carboidratos\": \"[string: percentual ou gramas de carboidrato]\",\n" +
-                "        \"gorduras\": \"[string: percentual ou gramas de gordura]\"\n" +
+                "        \"proteinas\": \"[int: percentual d]\",\n" +
+                "        \"carboidratos\": \"[int: percentual ]\",\n" +
+                "        \"gorduras\": \"[int: percentual ]\"\n" +
                 "      },\n" +
                 "      \"refeicoes\": {\n" +
                 "        \"cafe_da_manha\": \"[string: sugestão para o café da manhã]\",\n" +
@@ -239,15 +239,15 @@ public class ExibirDietaServlet extends HttpServlet {
             out.println("<h2>Plano de Dieta</h2>");
             if (planoDietaJson != null) {
                 out.println("<p><strong>Objetivo:</strong> " + planoDietaJson.optString("objetivo") + "</p>");
-                out.println("<p><strong>Calorias Totais Estimadas:</strong> " + planoDietaJson.optString("calorias_totais") + "</p>");
+                out.println("<p><strong>Calorias Totais Estimadas:</strong> " + planoDietaJson.optString("calorias_totais") + "kcal</p>");
 
                 JSONObject macroJson = planoDietaJson.optJSONObject("macronutrientes");
                 if (macroJson != null) {
                     out.println("<h3>Macronutrientes:</h3>");
                     out.println("<ul>");
-                    out.println("<li><strong>Proteínas:</strong> " + macroJson.optString("proteinas") + "</li>");
-                    out.println("<li><strong>Carboidratos:</strong> " + macroJson.optString("carboidratos") + "</li>");
-                    out.println("<li><strong>Gorduras:</strong> " + macroJson.optString("gorduras") + "</li>");
+                    out.println("<li><strong>Proteínas:</strong> " + macroJson.optString("proteinas") + "%</li>");
+                    out.println("<li><strong>Carboidratos:</strong> " + macroJson.optString("carboidratos") + "%</li>");
+                    out.println("<li><strong>Gorduras:</strong> " + macroJson.optString("gorduras") + "%</li>");
                     out.println("</ul>");
                 }
 

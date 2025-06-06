@@ -54,7 +54,7 @@ public class SalvarPlanoNoBanco {
             psDieta = conn.prepareStatement(sqlDieta, Statement.RETURN_GENERATED_KEYS);
             psDieta.setInt(1, planoId);
             psDieta.setString(2, planoDietaJson.optString("objetivo"));
-            psDieta.setString(3, planoDietaJson.optString("calorias_totais"));
+            psDieta.setInt(3, planoDietaJson.optInt("calorias_totais", 0));
             psDieta.setString(4, planoDietaJson.optString("observacoes"));
             psDieta.executeUpdate();
             rsKeys = psDieta.getGeneratedKeys();
@@ -70,9 +70,9 @@ public class SalvarPlanoNoBanco {
                 String sqlMacro = "INSERT INTO macronutrientes (dieta_id, proteinas, carboidratos, gorduras) VALUES (?, ?, ?, ?)";
                 psMacro = conn.prepareStatement(sqlMacro);
                 psMacro.setInt(1, dietaId);
-                psMacro.setString(2, macro.optString("proteinas"));
-                psMacro.setString(3, macro.optString("carboidratos"));
-                psMacro.setString(4, macro.optString("gorduras"));
+                psMacro.setInt(2, macro.optInt("proteinas", 0));
+                psMacro.setInt(3, macro.optInt("carboidratos", 0));
+                psMacro.setInt(4, macro.optInt("gorduras", 0));
                 psMacro.executeUpdate();
             }
 

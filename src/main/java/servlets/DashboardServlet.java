@@ -69,21 +69,59 @@ public class DashboardServlet extends HttpServlet {
             stmt.setInt(4, ano);
 
             ResultSet rs = stmt.executeQuery();
+            int cafe = 0, almoco = 0, jantar = 0, lanches = 0;
             if (rs.next()) {
-                request.setAttribute("cafe", rs.getInt("cafe_da_manha_calorias"));
-                request.setAttribute("almoco", rs.getInt("almoco_calorias"));
-                request.setAttribute("jantar", rs.getInt("jantar_calorias"));
-                request.setAttribute("lanches", rs.getInt("lanches_calorias"));
+                cafe = rs.getInt("cafe_da_manha_calorias");
+                almoco = rs.getInt("almoco_calorias");
+                jantar = rs.getInt("jantar_calorias");
+                lanches = rs.getInt("lanches_calorias");
+                request.setAttribute("cafe", cafe);
+                request.setAttribute("almoco", almoco);
+                request.setAttribute("jantar", jantar);
+                request.setAttribute("lanches", lanches);
                 request.setAttribute("agua", rs.getString("agua"));
                 request.setAttribute("energia", rs.getString("nivel_energia"));
                 request.setAttribute("sono", rs.getString("qualidade_sono"));
+            } else {
+                // Se não houver dados do dia, envie 0 para as calorias
+                request.setAttribute("cafe", 0);
+                request.setAttribute("almoco", 0);
+                request.setAttribute("jantar", 0);
+                request.setAttribute("lanches", 0);
+                request.setAttribute("agua", "");
+                request.setAttribute("energia", "");
+                request.setAttribute("sono", "");
+            }
+
+            int totalCalorias = cafe + almoco + jantar + lanches;
+            request.setAttribute("totalCalorias", totalCalorias);
+
+            // Buscar meta de calorias do usuário (última dieta cadastrada)
+            String metaSql = "SELECT d.calorias_totais FROM dieta d " +
+                             "JOIN plano p ON d.plano_id = p.id " +
+                             "WHERE p.id_usuario = ? ORDER BY d.id DESC LIMIT 1";
+            try (PreparedStatement metaStmt = conn.prepareStatement(metaSql)) {
+                metaStmt.setInt(1, idUsuario);
+                ResultSet metaRs = metaStmt.executeQuery();
+                if (metaRs.next()) {
+                    String metaCaloriasStr = metaRs.getString("calorias_totais");
+                    int metaCalorias = 0;
+                    try {
+                        metaCalorias = Integer.parseInt(metaCaloriasStr.replaceAll("[^0-9]", ""));
+                    } catch (Exception e) { metaCalorias = 0; }
+                    request.setAttribute("metaCalorias", metaCalorias);
+                } else {
+                    request.setAttribute("metaCalorias", 0);
+                }
             }
 
         } catch (IOException | ClassNotFoundException | SQLException e) {
+            e.printStackTrace();
         } finally {
             try {
                 if (conn != null && !conn.isClosed()) conn.close();
             } catch (SQLException e) {
+                e.printStackTrace();
             }
         }
 
