@@ -63,12 +63,13 @@ public class Tabelas {
 
             // Tabela dieta
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS dieta (" +
-                    "id SERIAL PRIMARY KEY, " +
-                    "plano_id INT NOT NULL, " +
-                    "objetivo TEXT NOT NULL, " +
-                    "calorias_totais INT, " +
-                    "observacoes TEXT, " +
-                    "FOREIGN KEY (plano_id) REFERENCES plano(id) ON DELETE CASCADE)");
+                        "id SERIAL PRIMARY KEY, " +
+                        "plano_id INT NOT NULL, " +
+                        "objetivo TEXT NOT NULL, " +
+                        "calorias_totais INT, " +
+                        "observacoes TEXT, " +
+                        "meta_agua INT, " + // <-- campo adicionado
+                        "FOREIGN KEY (plano_id) REFERENCES plano(id) ON DELETE CASCADE)");
 
             // Tabela macronutrientes
             statement.executeUpdate("CREATE TABLE IF NOT EXISTS macronutrientes (" +

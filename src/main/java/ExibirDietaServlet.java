@@ -103,10 +103,12 @@ public class ExibirDietaServlet extends HttpServlet {
                 "    \"plano_dieta\": {\n" +
                 "      \"objetivo\": \"[string: objetivo principal da dieta]\",\n" +
                 "      \"calorias_totais\": \"[int: estimativa de calorias totais]\",\n" +
+                "       \"meta_agua\": \"[int: litros ]\"\n" +
                 "      \"macronutrientes\": {\n" +
                 "        \"proteinas\": \"[int: percentual d]\",\n" +
                 "        \"carboidratos\": \"[int: percentual ]\",\n" +
                 "        \"gorduras\": \"[int: percentual ]\"\n" +
+                "        \"meta_agua\": \"[int: litros ]\"\n" +
                 "      },\n" +
                 "      \"refeicoes\": {\n" +
                 "        \"cafe_da_manha\": \"[string: sugestão para o café da manhã]\",\n" +

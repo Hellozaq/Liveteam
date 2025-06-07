@@ -50,12 +50,13 @@ public class SalvarPlanoNoBanco {
             rsKeys.close();
 
             // Inserir dieta
-            String sqlDieta = "INSERT INTO dieta (plano_id, objetivo, calorias_totais, observacoes) VALUES (?, ?, ?, ?)";
+            String sqlDieta = "INSERT INTO dieta (plano_id, objetivo, calorias_totais, observacoes, meta_agua) VALUES (?, ?, ?, ?, ?)";
             psDieta = conn.prepareStatement(sqlDieta, Statement.RETURN_GENERATED_KEYS);
             psDieta.setInt(1, planoId);
             psDieta.setString(2, planoDietaJson.optString("objetivo"));
             psDieta.setInt(3, planoDietaJson.optInt("calorias_totais", 0));
             psDieta.setString(4, planoDietaJson.optString("observacoes"));
+            psDieta.setInt(5, planoDietaJson.optInt("meta_agua", 0));
             psDieta.executeUpdate();
             rsKeys = psDieta.getGeneratedKeys();
             if (!rsKeys.next()) {
