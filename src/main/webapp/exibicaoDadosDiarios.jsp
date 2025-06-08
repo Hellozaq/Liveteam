@@ -222,6 +222,28 @@
                 </tbody>
             </table>
         </div>
+        <div style="display: flex; justify-content: center; margin: 32px 0;">
+            <button 
+                onclick="window.location.href='/Liveteam/dashboard'"
+                style="
+                    background: #23272b;
+                    color: #f7f7f7;
+                    border: none;
+                    border-radius: 8px;
+                    padding: 12px 32px;
+                    font-size: 1.1rem;
+                    font-family: 'Open Sans', 'Roboto', Arial, sans-serif;
+                    font-weight: bold;
+                    box-shadow: 2px 2px 6px #222a;
+                    cursor: pointer;
+                    transition: background 0.2s, color 0.2s;
+                "
+                onmouseover="this.style.background='#4caf50'; this.style.color='#181c1f';"
+                onmouseout="this.style.background='#23272b'; this.style.color='#f7f7f7';"
+            >
+                Ir para o Dashboard
+            </button>
+        </div>
     </div>
 
     <%@ include file="WEB-INF/jspf/footer.jspf" %>

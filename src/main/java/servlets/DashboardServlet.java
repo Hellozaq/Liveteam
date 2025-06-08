@@ -101,7 +101,7 @@ public class DashboardServlet extends HttpServlet {
                 request.setAttribute("duracao_treino", "-");
                 request.setAttribute("intensidade_treino", "-");
                 request.setAttribute("nivel_fome", "-");
-            }
+            }   
             request.setAttribute("nivel_fome", nivel_fome);
 
             int totalCalorias = cafe + almoco + jantar + lanches;

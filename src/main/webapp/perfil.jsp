@@ -322,29 +322,29 @@
                     }
                     let html = "";
                     if (data.dieta) {
-                        html += "----- DIETA -----\n";
+                        html += "----- DIETA -----\n\n";
                         html += "Objetivo: " + (data.dieta.objetivo || '-') + "\n";
-                        html += "Calorias totais: " + (data.dieta.calorias_totais || '-') + "\n";
+                        html += "Calorias totais: " + (data.dieta.calorias_totais + " Kcal" || '-') + "\n";
                         if (data.dieta.macronutrientes) {
-                            html += "Macronutrientes:\n";
-                            html += "  Proteínas: " + (data.dieta.macronutrientes.proteinas || '-') + "\n";
-                            html += "  Carboidratos: " + (data.dieta.macronutrientes.carboidratos || '-') + "\n";
-                            html += "  Gorduras: " + (data.dieta.macronutrientes.gorduras || '-') + "\n";
+                            html += "\nMacronutrientes:\n\n";
+                            html += "  Proteínas: " + (data.dieta.macronutrientes.proteinas + "%" || '-') + "\n";
+                            html += "  Carboidratos: " + (data.dieta.macronutrientes.carboidratos + "%" || '-') + "\n";
+                            html += "  Gorduras: " + (data.dieta.macronutrientes.gorduras + "%" || '-') + "\n";
                         }
                         if (data.dieta.refeicoes) {
-                            html += "Refeições:\n";
-                            html += "  Café da manhã: " + (data.dieta.refeicoes.cafe_da_manha || '-') + "\n";
-                            html += "  Almoço: " + (data.dieta.refeicoes.almoco || '-') + "\n";
-                            html += "  Lanche da tarde: " + (data.dieta.refeicoes.lanche_tarde || '-') + "\n";
-                            html += "  Jantar: " + (data.dieta.refeicoes.jantar || '-') + "\n";
+                            html += "\nRefeições:\n\n";
+    html += "  Café da manhã:\n " + ((data.dieta.refeicoes.cafe_da_manha || '-').replace(/\+/g, '\n    + ')) + "\n\n";
+    html += "  \nAlmoço:\n " + ((data.dieta.refeicoes.almoco || '-').replace(/\+/g, '\n    + ')) + "\n";
+    html += "  \nLanche da tarde:\n " + ((data.dieta.refeicoes.lanche_tarde || '-').replace(/\+/g, '\n    + ')) + "\n";
+    html += "  \nJantar:\n " + ((data.dieta.refeicoes.jantar || '-').replace(/\+/g, '\n    + ')) + "\n\n";
                         }
-                        html += "Observações: " + (data.dieta.observacoes || '-') + "\n";
+                        html += "Observações:\n " + (data.dieta.observacoes || '-') + "\n";
                     }
                     if (data.treino) {
                         html += "\n----- TREINO -----\n";
-                        html += "Divisão: " + (data.treino.divisao || '-') + "\n";
-                        html += "Justificativa: " + (data.treino.justificativa_divisao || '-') + "\n";
-                        html += "Observações: " + (data.treino.observacoes || '-') + "\n";
+                        html += "Divisão: " + (data.treino.divisao || '-') + "\n\n";
+                        html += "Justificativa:\n " + (data.treino.justificativa_divisao || '-') + "\n\n";
+                        html += "Observações: \n" + (data.treino.observacoes || '-') + "\n\n";
                         if (data.treino.subtreinos && data.treino.subtreinos.length > 0) {
                             html += "\n----- SUBTREINOS E EXERCÍCIOS -----\n";
                             data.treino.subtreinos.forEach(sub => {
@@ -382,7 +382,7 @@
             respostaAtualizacao.textContent = "";
         };
         closeAtualizarPlanoModal.onclick = function () {
-            modalAtualizarPlano.style.display = "none";
+            modalAtualizarPlano.style.display = "none"; 
         };
         formAtualizarPlano.onsubmit = function(e) {
             e.preventDefault();

@@ -253,7 +253,7 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                             
                         </div>
                         <div class="col-4">
-                                <input type="text" id="cafe_da_manha_calorias" name="cafe_da_manha_calorias" readonly class="form-control" placeholder="Calorias">
+                                <input type="number" id="cafe_da_manha_calorias" name="cafe_da_manha_calorias" class="form-control" placeholder="Calorias">
                             </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="cafe_da_manha_imgBox" onclick="triggerInput('imageUploadCafe')">
@@ -273,7 +273,7 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                             
                         </div>
                         <div class="col-4">
-                                <input type="text" id="almoco_calorias" name="almoco_calorias" readonly class="form-control" placeholder="Calorias">
+                                <input type="number" id="almoco_calorias" name="almoco_calorias" class="form-control" placeholder="Calorias">
                             </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="almoco_imgBox" onclick="triggerInput('imageUploadAlmoco')">
@@ -293,7 +293,7 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                             
                         </div>
                         <div class="col-4">
-                                <input type="text" id="jantar_calorias" name="jantar_calorias" readonly class="form-control" placeholder="Calorias">
+                                <input type="number" id="jantar_calorias" name="jantar_calorias" class="form-control" placeholder="Calorias">
                             </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="jantar_imgBox" onclick="triggerInput('imageUploadJantar')">
@@ -311,7 +311,7 @@ if (request.getSession(false) == null || request.getSession(false).getAttribute(
                             <textarea id="lanches" name="lanches" class="form-control" maxlength="500"></textarea>
                         </div>
                         <div class="col-4">
-                                <input type="text" id="lanches_calorias" name="lanches_calorias"  readonly class="form-control" placeholder="Calorias">
+                                <input type="number" id="lanches_calorias" name="lanches_calorias"  class="form-control" placeholder="Calorias">
                             </div>
                         <div class="col-4 d-flex align-items-center">
                             <div class="img-upload-box" id="lanches_imgBox" onclick="triggerInput('imageUploadLanches')">

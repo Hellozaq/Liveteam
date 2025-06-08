@@ -76,9 +76,9 @@ public class ImageAnalysisServlet extends HttpServlet {
                     "<nome do alimento> (<quantidade estimada em gramas>) – <calorias em número> kcal\n" +
                     "\n" +
                     "Exemplo:\n" +
-                    "- Banana (100 Gramas) – 89 kcal  \n" +
-                    "- Iogurte natural (x Gramas) – 120 kcal  \n" +
-                    "- Granola (x Gramas) – 95 kcal\n" +
+                    "- Banana (<quantidade estimada em gramas Em numeros>) – 89 kcal  \n" +
+                    "- Iogurte natural (<quantidade estimada em gramas Em numeros>) – 120 kcal  \n" +
+                    "- Granola (<quantidade estimada em gramas Em numeros>) – 95 kcal\n" +
                     "\n" +
                     "Não adicione nenhum comentário ou explicação. Apenas a lista no formato acima.";
 
