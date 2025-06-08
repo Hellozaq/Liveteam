@@ -48,7 +48,7 @@ public class SalvarPlanoNoBanco {
             }
             int planoId = rsKeys.getInt(1);
             rsKeys.close();
-
+            
             // Inserir dieta
             String sqlDieta = "INSERT INTO dieta (plano_id, objetivo, calorias_totais, observacoes, meta_agua) VALUES (?, ?, ?, ?, ?)";
             psDieta = conn.prepareStatement(sqlDieta, Statement.RETURN_GENERATED_KEYS);
@@ -56,7 +56,18 @@ public class SalvarPlanoNoBanco {
             psDieta.setString(2, planoDietaJson.optString("objetivo"));
             psDieta.setInt(3, planoDietaJson.optInt("calorias_totais", 0));
             psDieta.setString(4, planoDietaJson.optString("observacoes"));
-            psDieta.setInt(5, planoDietaJson.optInt("meta_agua", 0));
+
+            Object metaAguaObj = planoDietaJson.opt("meta_agua");
+            if (metaAguaObj != null && !metaAguaObj.toString().isBlank()) {
+                try {
+                    psDieta.setInt(5, Integer.parseInt(metaAguaObj.toString()));
+                } catch(NumberFormatException e) {
+                    psDieta.setNull(5, java.sql.Types.INTEGER);
+                }
+            } else {
+                psDieta.setNull(5, java.sql.Types.INTEGER);
+            }
+
             psDieta.executeUpdate();
             rsKeys = psDieta.getGeneratedKeys();
             if (!rsKeys.next()) {
