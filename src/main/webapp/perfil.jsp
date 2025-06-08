@@ -12,6 +12,27 @@
             color: #f7f7f7;
             font-family: 'Inter', 'Segoe UI', Arial, sans-serif;
         }
+        
+        #planoModal .modal-content::-webkit-scrollbar {
+  width: 10px;
+  background: #181c1f;                 /* Fundo da barra igual ao fundo da página */
+}
+
+#planoModal .modal-content::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #A0D683 70%, #8b5cf6 100%);
+  border-radius: 7px;
+  border: 2px solid #23272b;           /* Espaço entre o thumb e a borda */
+}
+
+#planoModal .modal-content::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #8b5cf6 0%, #A0D683 100%);
+}
+
+/* Para Firefox */
+#planoModal .modal-content {
+  scrollbar-width: thin;
+  scrollbar-color: #A0D683 #181c1f;
+}
         .modal {
             display: none;
             position: fixed;
@@ -23,20 +44,23 @@
             overflow: auto;
             background: rgba(24, 28, 31, 0.93);
             justify-content: center;
-            align-items: center;
+            align-items: flex-start; /* fixar no topo */
         }
+
         .modal-content {
             background: #23272b;
             color: #f7f7f7;
-            margin: 0 auto;
+            margin: 40px auto 40px auto; /* espaço do topo */
             padding: 32px 28px 24px 28px;
             border-radius: 14px;
             border: 1.5px solid #A0D683;
             box-shadow: 0 4px 28px #A0D68333, 0 0 0 1.5px #A0D683;
-            max-width: 420px;
+            max-width: 600px;
             width: 92vw;
             position: relative;
             animation: modalShow 0.22s cubic-bezier(.6,.2,.5,1.2);
+            max-height: 90vh;
+            overflow-y: auto;
         }
         @keyframes modalShow {
             from { opacity: 0; transform: translateY(-32px) scale(0.98);}
