@@ -134,7 +134,6 @@
             background: #181c1f !important;
             color: #C5FFB1 !important;
         }
-        /* Modal adjustments for dark theme */
         .modal-content {
             background: #23272b;
             color: #f7f7f7;
@@ -166,8 +165,6 @@
                 justify-content: center;
             }
         }
-        
-                /* Chrome, Edge, Safari, Opera */
         input:-webkit-autofill,
         input:-webkit-autofill:focus,
         input:-webkit-autofill:hover,
@@ -181,8 +178,6 @@
           border-color: #A0D683 !important;
           transition: background-color 9999s ease-in-out 0s;
         }
-
-        /* Firefox */
         input:-moz-autofill,
         textarea:-moz-autofill,
         select:-moz-autofill {
@@ -191,8 +186,6 @@
           color: #f7f7f7 !important;
           border-color: #A0D683 !important;
         }
-
-        /* Remove autofill transition flash (Chrome workaround) */
         input, textarea, select {
           transition: background-color 0.3s, color 0.3s;
           color: #fff !important;
@@ -209,6 +202,8 @@
     <%@ include file="WEB-INF/jspf/header.jspf" %>
     <div class="container mt-4 form-container">
         <h2><i class="ph ph-article"></i> Formulário</h2>
+        <p style="text-align:center; color:#A0D683; font-size:1.1em; margin-bottom:2rem;">
+        </p>
         <form id="formulario" method="post" action="${pageContext.request.contextPath}/ExibirDietaServlet" novalidate>
             <!-- Dados Pessoais -->
             <div class="form-section">
@@ -320,7 +315,6 @@
                     <textarea id="cardapio_dia" name="cardapio_dia" class="form-control" required></textarea>
                 </div>
             </div>
-
             <!-- Botões -->
             <div class="btn-group">
                 <button type="submit" class="btn btn-success"><i class="ph ph-check-circle"></i> Enviar</button>

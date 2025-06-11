@@ -11,12 +11,16 @@ import org.json.JSONException;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.util.Properties;
 import servlets.SalvarPlanoNoBanco;
 
 @WebServlet("/ExibirDietaServlet")
 public class ExibirDietaServlet extends HttpServlet {
 
-        private final SalvarPlanoNoBanco salvarPlanoNoBanco = new SalvarPlanoNoBanco();
+    private final SalvarPlanoNoBanco salvarPlanoNoBanco = new SalvarPlanoNoBanco();
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -29,30 +33,29 @@ public class ExibirDietaServlet extends HttpServlet {
     }
 
     private void exibirPlanoCompleto(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        
-            int idUsuario = -1; // valor padrão inválido (ou 0), só pra garantir que seja inicializado
-            HttpSession session = request.getSession(false);
+        int idUsuario = -1; // valor padrão inválido
+        HttpSession session = request.getSession(false);
 
-            if (session != null) {
-                String idUsuarioStr = (String) session.getAttribute("idUsuario");
-                if (idUsuarioStr != null) {
-                    try {
-                        idUsuario = Integer.parseInt(idUsuarioStr);
-                        System.out.println("ID do usuário logado: " + idUsuario);
-                    } catch (NumberFormatException e) {
-                        e.printStackTrace();
-                        response.sendRedirect("login.jsp?error=idInvalido");
-                        return;
-                    }
-                } else {
-                    response.sendRedirect("login.jsp?error=naoLogado");
+        if (session != null) {
+            String idUsuarioStr = (String) session.getAttribute("idUsuario");
+            if (idUsuarioStr != null) {
+                try {
+                    idUsuario = Integer.parseInt(idUsuarioStr);
+                    System.out.println("ID do usuário logado: " + idUsuario);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    response.sendRedirect("login.jsp?error=idInvalido");
                     return;
                 }
             } else {
                 response.sendRedirect("login.jsp?error=naoLogado");
                 return;
             }
-        
+        } else {
+            response.sendRedirect("login.jsp?error=naoLogado");
+            return;
+        }
+
         // Recupera os dados enviados pelo formulário
         String idade = request.getParameter("idade");
         String sexo = request.getParameter("sexo");
@@ -74,6 +77,37 @@ public class ExibirDietaServlet extends HttpServlet {
         String cafeDaManha = request.getParameter("cafe_da_manha");
         String almoco = request.getParameter("almoco");
         String jantar = request.getParameter("jantar");
+
+        // ---------- ATUALIZA IDADE, ALTURA E PESO NO BANCO SEMPRE QUE O FORMULÁRIO FOR ENVIADO ----------
+        // (Apenas estes três campos, sem afetar outros dados do usuário)
+        if (idade != null && alturaCm != null && pesoKg != null) {
+            Connection conn = null;
+            PreparedStatement pstmt = null;
+            try {
+                Properties props = new Properties();
+                props.load(getServletContext().getResourceAsStream("/WEB-INF/classes/db.properties"));
+
+                Class.forName(props.getProperty("db.driver"));
+                conn = DriverManager.getConnection(
+                    props.getProperty("db.url"),
+                    props.getProperty("db.username"),
+                    props.getProperty("db.password")
+                );
+                String sql = "UPDATE usuario SET idade = ?, altura_cm = ?, peso_kg = ? WHERE id = ?";
+                pstmt = conn.prepareStatement(sql);
+                pstmt.setInt(1, Integer.parseInt(idade));
+                pstmt.setBigDecimal(2, new java.math.BigDecimal(alturaCm));
+                pstmt.setBigDecimal(3, new java.math.BigDecimal(pesoKg));
+                pstmt.setInt(4, idUsuario);
+                pstmt.executeUpdate();
+            } catch (Exception e) {
+                e.printStackTrace(); // log ou trate conforme desejar
+            } finally {
+                try { if (pstmt != null) pstmt.close(); } catch (Exception ignored) {}
+                try { if (conn != null) conn.close(); } catch (Exception ignored) {}
+            }
+        }
+        // ----------------------------------------------------------------------------------------------
 
         // Monta a mensagem a ser enviada para o Gemini com especificação detalhada do JSON
         String mensagem = "Por favor, crie um plano completo de dieta e treino para academia com base nas seguintes informações:\n\n" +
@@ -191,7 +225,6 @@ public class ExibirDietaServlet extends HttpServlet {
             respostaGemini = respostaGemini.replace("|#]", "").trim();
             respostaGemini = respostaGemini.replace("\n", "");
             respostaGemini = respostaGemini.replace("\t", "");
-            // respostaGemini = respostaGemini.replace(" ", ""); // Manter espaços por enquanto
 
             System.out.println("Resposta Bruta do Gemini (no Servlet - Limpa): " + respostaGemini);
 
@@ -208,7 +241,6 @@ public class ExibirDietaServlet extends HttpServlet {
             } else {
                 System.err.println("Seção 'plano_completo' não encontrada no JSON.");
             }
-
 
         } catch (JSONException e) {
             System.err.println("Erro ao analisar JSON: " + e.getMessage());
@@ -233,12 +265,30 @@ public class ExibirDietaServlet extends HttpServlet {
         out.println("<head>");
         out.println("<meta charset=\"UTF-8\">");
         out.println("<title>Plano de Dieta e Treino</title>");
+        // INÍCIO CSS ADICIONADO
+        out.println("<meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">");
+        out.println("<link rel=\"stylesheet\" href=\"https://unpkg.com/@phosphor-icons/web@2.0.3/src/regular/style.css\" />");
+        out.println("<style>");
+        out.println("body { background: #181c1f; color: #f7f7f7; font-family: 'Inter', 'Segoe UI', Arial, sans-serif; }");
+        out.println(".container { background: #23272b; border-radius: 18px; box-shadow: 0 0 40px #A0D68333; padding: 36px 32px 36px 32px; margin: 56px auto 48px auto; max-width: 720px; }");
+        out.println("h1 { color: #A0D683; font-size: 2.1rem; font-weight: bold; text-align: center; margin-bottom: 1.4em; background: linear-gradient(90deg, #A0D683 70%, #8b5cf6 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }");
+        out.println("h2 { color: #A0D683; font-size: 1.35rem; font-weight: bold; margin-top: 2.2em; margin-bottom: 1.2em; text-align:left; letter-spacing:0.01em; }");
+        out.println("h3 { color: #8b5cf6; font-size:1.11rem; font-weight:bold; margin-top:1.2em; margin-bottom:0.6em; }");
+        out.println("ul { margin-bottom: 1.6em; }");
+        out.println("li { margin-bottom: 0.55em; }");
+        out.println("strong { color: #A0D683; }");
+        out.println(".btn { background: linear-gradient(90deg, #A0D683 0%, #7DD23B 100%); color: #23272b; font-weight: bold; padding: 13px 24px; border-radius: 7px; border: none; box-shadow: 0 2px 8px 0 rgba(160, 214, 131, 0.12); font-size: 1.13rem; transition: background 0.3s, color 0.3s, filter 0.2s; display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; margin-top: 2rem; }");
+        out.println(".btn:hover, .btn:focus { background: linear-gradient(90deg, #7DD23B 0%, #A0D683 100%); color: #181c1f; filter: brightness(0.98); outline: none; }");
+        out.println("@media (max-width: 700px) { .container { padding: 1.3rem 0.6rem; max-width: 98vw; } h1 { font-size: 1.35rem; } .btn { width: 100%; justify-content: center; } }");
+        out.println("</style>");
+        // FIM CSS ADICIONADO
         out.println("</head>");
         out.println("<body>");
-        out.println("<h1>Plano de Dieta e Treino</h1>");
+        out.println("<div class=\"container\">");
+        out.println("<h1><i class=\"ph ph-leaf\"></i> Plano de Dieta e Treino</h1>");
 
         if (planoCompletoJson != null) {
-            out.println("<h2>Plano de Dieta</h2>");
+            out.println("<h2><i class='ph ph-bowl-food'></i> Plano de Dieta</h2>");
             if (planoDietaJson != null) {
                 out.println("<p><strong>Objetivo:</strong> " + planoDietaJson.optString("objetivo") + "</p>");
                 out.println("<p><strong>Calorias Totais Estimadas:</strong> " + planoDietaJson.optString("calorias_totais") + "kcal</p>");
@@ -273,7 +323,7 @@ public class ExibirDietaServlet extends HttpServlet {
                 out.println("<p>Erro ao exibir o plano de dieta.</p>");
             }
 
-            out.println("<h2>Plano de Treino</h2>");
+            out.println("<h2><i class='ph ph-dumbbell'></i> Plano de Treino</h2>");
             if (planoTreinoJson != null) {
                 out.println("<p><strong>Divisão do Treino:</strong> " + planoTreinoJson.optString("divisao") + "</p>");
                 out.println("<p><strong>Justificativa da Divisão:</strong> " + planoTreinoJson.optString("justificativa_divisao") + "</p>");
@@ -297,6 +347,12 @@ public class ExibirDietaServlet extends HttpServlet {
             out.println("<p>Resposta Bruta do Gemini (Limpa): " + respostaGemini + "</p>");
         }
 
+        // BOTÃO DE REDIRECIONAMENTO ADICIONADO ABAIXO
+        out.println("<form action=\"home.jsp\" method=\"get\" style=\"text-align:center;\">");
+        out.println("<button class=\"btn\" type=\"submit\"><i class=\"ph ph-house\"></i> Voltar para Home</button>");
+        out.println("</form>");
+
+        out.println("</div>");
         out.println("</body>");
         out.println("</html>");
     }
@@ -321,4 +377,4 @@ public class ExibirDietaServlet extends HttpServlet {
             }
         }
     }
-} 
+}

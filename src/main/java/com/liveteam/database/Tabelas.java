@@ -16,7 +16,10 @@ public class Tabelas {
                 "nome VARCHAR(50) NOT NULL, " +
                 "email VARCHAR(100) NOT NULL UNIQUE, " +
                 "senha VARCHAR(255) NOT NULL, " +
-                "role VARCHAR(20) NOT NULL DEFAULT 'usuario')"
+                "role VARCHAR(20) NOT NULL DEFAULT 'usuario', " +
+                "idade INTEGER, " +
+                "altura_cm NUMERIC(5,2), " +
+                "peso_kg NUMERIC(5,2))"
             );
             System.out.println("Tabela 'usuario' criada com sucesso!");
 
